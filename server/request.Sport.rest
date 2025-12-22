@@ -1,0 +1,41 @@
+### változók
+@protocol = http://
+@hostname = localhost
+@port = 8000
+@host = {{protocol}}{{hostname}}:{{port}}
+### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
+
+
+
+### get sports
+GET  {{host}}/api/sports
+Accept: application/json
+# Authorization: Bearer {{token}}
+
+### get sport by id
+GET  {{host}}/api/sports/5
+Accept: application/json
+
+### post sport
+POST {{host}}/api/sports 
+Content-Type: application/json
+Accept: application/json
+
+{
+    "sportNev": "Táj csí1"
+}
+
+### patch sport
+PATCH {{host}}/api/sports/39
+Content-Type: application/json
+Accept: application/json
+
+{
+    "sportNev": "Táj csí"
+}
+
+### delete sport
+DELETE {{host}}/api/sports/1
+Content-Type: application/json
+Accept: application/json
+
