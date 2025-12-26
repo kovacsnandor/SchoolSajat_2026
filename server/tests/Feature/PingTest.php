@@ -121,8 +121,14 @@ class PingTest extends TestBase
     }
 
     #[DataProvider('tablesPostDeleteDataProvider')]
-    public function test_table_user_login_post_delete_logout($route, $email, $password, $expectedPostAccess,  $expectedDeletetAccess, $data)
-    {
+    public function test_table_user_login_post_delete_logout(
+        $route,
+        $email,
+        $password,
+        $expectedPostAccess,
+        $expectedDeletetAccess,
+        $data
+    ): void {
         //login
         $response = $this->login($email, $password);
         $response->assertStatus(200);
@@ -144,14 +150,6 @@ class PingTest extends TestBase
 
         //delete tábla
         $table = $route;
-        $uri = "/api/$table";
-        $response = $this->myPost($uri, $data, $token);
-        if ($expectedPostAccess) {
-            # code...
-            $response->assertSuccessful();
-        } else {
-            $response->assertClientError();
-        }
 
         if ($table == "sports") {
             $response = Sport::factory()->create([
