@@ -9,6 +9,7 @@
     <ul>
       <li><RouterLink to="/">Home</RouterLink></li>
       <li><RouterLink to="/about">About</RouterLink></li>
+      <li><RouterLink to="/sports">Sportok</RouterLink></li>
     </ul>
 
     <!-- Ide töltődnek be az oldalak -->
