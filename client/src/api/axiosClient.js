@@ -4,13 +4,15 @@ import axios from 'axios';
 const apiClient = axios.create({
   baseURL: 'https://api.pelda.hu/v1',
   headers: {
-    'Content-Type': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
   }
 });
 
 // REQUEST INTERCEPTOR (elfogó): Lefut minden egyes kérés előtt
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('user_token'); // Vagy a Pinia store-ból
+  // const token = localStorage.getItem('user_token'); // Vagy a Pinia store-ból
+  const token = ""; // Vagy a Pinia store-ból
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
