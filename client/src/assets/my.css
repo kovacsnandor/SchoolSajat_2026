@@ -9,3 +9,9 @@
 .my-pointer {
   cursor: pointer;
 }
+
+.my-debug {
+  color: red;
+  font-weight: bold;
+  background-color: lightgreen;
+}

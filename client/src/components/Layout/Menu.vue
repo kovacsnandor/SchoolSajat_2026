@@ -43,29 +43,61 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
+        <div class="d-flex align-items-center" role="search">
           <input
             class="form-control me-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
+            v-model="searchWordInput"
+            id="search"
           />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+          <label for="search" class="form-label m-0">
+            <i class="bi bi-search fs-4 my-pointer"></i>
+          </label>
+          <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+        </div>
       </div>
     </div>
   </nav>
-
-  <!-- <p>
-    <RouterLink to="/">Home</RouterLink> |
-    <RouterLink to="/about">About</RouterLink> |
-    <RouterLink to="/sports">Sportok</RouterLink> |
-  </p> -->
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia';
+import { useSearchStore } from '@/stores/searchStore';  
 export default {
-  name: "Menu",
+  data(){
+    return {
+      name: "Menu",
+      searchWordInput: '',
+      timeout: null,
+    }
+  },
+  computed: {
+    ...mapState(useSearchStore,['searchWord'])
+  },
+  watch: {
+    searchWordInput(newVal){
+      //töröljük az éppen futó setTimeout-ot
+      //hogy újraindíthassuk
+      clearTimeout(this.timeout);
+      //x-re kattintva kiürül az kereső input
+      if (newVal === '') {
+        this.setSearchWord('');
+        return;
+      }
+      //500ms késleltetés után tárolja
+      this.timeout = setTimeout(() => {
+        this.setSearchWord(newVal);
+      }, 500);
+    }
+  },
+  methods: {
+    ...mapActions(useSearchStore, ['setSearchWord'])
+  },
+  mounted(){
+    this.searchWordInput = this.searchWord;
+  }
 };
 </script>
 
