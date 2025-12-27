@@ -20,9 +20,11 @@ import { mapState, mapActions } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
 
 export default {
+  methods: {
+    ...mapActions(useToastStore, ["close"]),
+  },
   computed: {
     ...mapState(useToastStore, ["messages"]),
-    ...mapActions(useToastStore, ["close"]),
   },
 };
 </script>
