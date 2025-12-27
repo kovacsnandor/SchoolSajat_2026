@@ -45,7 +45,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to,from, next) => {
-  document.title = 'Valami - ' + to.meta.title(to);
+  document.title = 'Iskola - ' + to.meta.title(to);
   //mehetsz tovább az oldalra
   next();
 });
