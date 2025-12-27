@@ -13,6 +13,9 @@ export const useToastStore = defineStore('toast', {
             setTimeout(() => {
                 this.messages = this.messages.filter(m => m.id !== id);
             }, 3000);
+        },
+        close(){
+            this.messages = [];
         }
     }
 });

@@ -1,21 +1,27 @@
-<script setup></script>
 
 <template>
   <div class="container-fluid my-container my-border mt-5">
     <!-- Head -->
-    <h1>Vue alkalmazás Tanár</h1>
+    <h1>Iskola</h1>
 
     <!-- Menü -->
-    <ul>
-      <li><RouterLink to="/">Home</RouterLink></li>
-      <li><RouterLink to="/about">About</RouterLink></li>
-      <li><RouterLink to="/sports">Sportok</RouterLink></li>
-    </ul>
+    <Menu/>
 
     <!-- Ide töltődnek be az oldalak -->
     <RouterView />
   </div>
 </template>
+
+<script>
+import Menu from '@/components/Menu.vue';
+
+export default {
+  components: {
+    Menu
+  }
+}
+</script>
+
 
 <style>
 
