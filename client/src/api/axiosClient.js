@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //Ez egy objektum, ami tartalmazza az összes crud függvényt
 const apiClient = axios.create({
-  baseURL: 'https://api.pelda.hu/v1',
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

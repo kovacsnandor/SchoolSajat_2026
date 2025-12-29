@@ -13,6 +13,10 @@ import "bootstrap-icons/font/bootstrap-icons.min.css"
 
 const app = createApp(App)
 
+//Globális komponensek
+import ToastContainer from './components/Message/ToastContainer.vue'
+app.component('ToastContainer', ToastContainer);
+
 app.use(createPinia())
 app.use(router)
 

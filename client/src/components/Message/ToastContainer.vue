@@ -1,18 +1,20 @@
 <template>
-  <div class="alert alert-success" role="alert" v-if="messages.length">
+  <div 
+     class="alert" 
+     :class="{
+      'alert-danger': type == 'Error',
+      'alert-success': type == 'Success'
+      }" 
+    role="alert" v-if="messages.length"
+    >
     <div class="d-flex justify-content-between">
-      <p v-for="m in messages" :key="m.id">
-        {{ m.text }}
+      <h5>{{type}}</h5>
+      <p v-for="message in messages" :key="message" class="m-0">
+        {{ message }}
       </p>
       <i class="bi bi-x-lg my-pointer" @click="close()"></i>
     </div>
   </div>
-
-  <!-- <div class="toast-container">
-    <div v-for="m in messages" :key="m.id" :class="['toast', m.type]">
-      {{ m.text }}
-    </div>
-  </div> -->
 </template>
 
 <script>
@@ -24,7 +26,7 @@ export default {
     ...mapActions(useToastStore, ["close"]),
   },
   computed: {
-    ...mapState(useToastStore, ["messages"]),
+    ...mapState(useToastStore, ["messages", 'type']),
   },
 };
 </script>
