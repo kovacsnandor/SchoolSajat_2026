@@ -11,7 +11,7 @@
 }
 
 .my-debug {
-  color: blue;
-  font-weight: bold;
-  background-color: lightgreen;
+  color: blue !important;
+  font-weight: bold !important;
+  background-color: lightgreen !important;
 }

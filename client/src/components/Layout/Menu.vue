@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-md bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <!-- <a class="navbar-brand" href="#">Navbar</a> -->
       <button
         class="navbar-toggler"
         type="button"
@@ -77,6 +77,7 @@ export default {
     ...mapState(useSearchStore,['searchWord'])
   },
   watch: {
+    //Keresőszó késleltetés
     searchWordInput(newVal){
       //töröljük az éppen futó setTimeout-ot
       //hogy újraindíthassuk

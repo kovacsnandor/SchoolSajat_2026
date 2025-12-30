@@ -17,7 +17,8 @@ export const createTableStore = (storeId, service) => {
         const toast = useToastStore();
         this.loading = true;
         try {
-          this.items = await service.getAll();
+          const request = await service.getAll();
+          this.items = request.data;
         } catch (err) {
           this.error = err;
         } finally {
@@ -30,7 +31,8 @@ export const createTableStore = (storeId, service) => {
         this.loading = true;
         const toast = useToastStore();
         try {
-          this.items = await service.getById(id);
+          const request = service.getById(id);
+          this.items = await request.data;
         } catch (err) {
           this.error = err;
           toast.messages.push(`Not found. id: ${id}`)

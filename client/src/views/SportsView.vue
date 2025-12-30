@@ -1,10 +1,22 @@
 <template>
   <div>
-    <h1>Sportok</h1>
+    <h1>{{ pageTitle }}</h1>
+    
     <!-- Sportok táblázat CRUD -->
     <div>
       <ToastContainer />
-      <p v-if="debug != 0" class="my-debug">[{{ searchWord }}]</p>
+      <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
+
+      <div v-if="loading">Betöltés...</div>
+      <!-- Táblázat -->
+      <GenericTable
+        v-else
+        :items="items"
+        :columns="tableColumns"
+        @create="createHandler"
+        @update="updateHandler"
+        @delete="deleteHandler"
+      />
     </div>
   </div>
 </template>
@@ -13,21 +25,23 @@
 import { mapActions, mapState } from "pinia";
 import { useSearchStore } from "@/stores/searchStore";
 import { useSportStore } from "@/stores/sportStore";
-import ToastContainer from "@/components/Message/ToastContainer.vue";
 
 export default {
   name: "sports",
-  components: {
-    ToastContainer,
-  },
-  data() {
+    data() {
     return {
       debug: import.meta.env.VITE_DEBUG_MODE,
+      pageTitle: "Sportok",
+      // Itt definiálod, melyik kulcsokat akarod látni a Store-ból
+      tableColumns: [
+        { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
+        { key: "sportNev", label: "Sportnév", debug: 2},
+      ],
     };
   },
   computed: {
     ...mapState(useSportStore, ["items", "loading", "error"]),
-    
+
     ...mapState(useSearchStore, ["searchWord"]),
   },
   methods: {
@@ -38,9 +52,19 @@ export default {
       "update",
       "delete",
     ]),
+    createHandler(){
+      console.log('create');
+    },
+    updateHandler(id){
+      console.log('update:', id);
+    },
+    deleteHandler(id){
+      console.log('delete:', id);
+    },
   },
   async mounted() {
     await this.getAll();
+    console.log(this.items);
   },
 };
 </script>
