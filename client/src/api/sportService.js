@@ -1,4 +1,4 @@
-import apiClient from './axiosClient'; // Az előző válaszban megírt példány
+import apiClient from './axiosClient'; 
 const route = '/sports';
 
 export default {
@@ -7,14 +7,15 @@ export default {
     return apiClient.get(`${route}`);
   },
 
-  // GET: Egy konkrét termék (ID alapján)
+  // GET: Egy termék (ID alapján)
   getById(id) {
     return apiClient.get(`${route}/${id}`);
   },
 
-  // POST: Új termék mentése (itt adjuk át a 'product' objektumot)
+  // POST: Új termék posztolás
   create(data) {
-    // Az Axios automatikusan JSON-ná alakítja és beteszi a Body-ba
+    // Az Axios automatikusan JSON-ná alakítja
+    // és beteszi a Body-ba
     return apiClient.post(`${route}`, data);
   },
 

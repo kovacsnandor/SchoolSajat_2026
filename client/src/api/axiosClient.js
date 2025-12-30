@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-//Ez egy objektum, ami tartalmazza az összes crud függvényt
+// apiClient objektum: 
+// tartalmazza az összes crud függvényt
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -9,7 +10,8 @@ const apiClient = axios.create({
   }
 });
 
-// REQUEST INTERCEPTOR (elfogó): Lefut minden egyes kérés előtt
+// REQUEST INTERCEPTOR (elfogó):
+// Lefut minden egyes kérés előtt
 apiClient.interceptors.request.use((config) => {
   // const token = localStorage.getItem('user_token'); // Vagy a Pinia store-ból
   const token = ""; // Vagy a Pinia store-ból
@@ -21,7 +23,8 @@ apiClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// RESPONSE INTERCEPTOR: Lefut minden válasz érkezésekor
+// RESPONSE INTERCEPTOR:
+// Lefut minden válasz érkezésekor
 apiClient.interceptors.response.use(
   (response) => response.data, // Csak az adatot adjuk vissza, nem a teljes objektumot
   (error) => {

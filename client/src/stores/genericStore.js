@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { useToastStore } from '@/stores/toastStore';
 
-// Ezt a függvényt fogjuk exportálni, amit minden táblánál egyedi névvel hívsz meg
+// Ezt a függvényt fogjuk exportálni, 
+// amit minden táblánál egyedi névvel hívsz meg
 export const createTableStore = (storeId, service) => {
   return defineStore(storeId, {
     state: () => ({
@@ -11,7 +12,7 @@ export const createTableStore = (storeId, service) => {
     }),
 
     actions: {
-      // 1. READ - Összes adat lekérése
+      // READ - Összes adat lekérése
       async getAll() {
         const toast = useToastStore();
         this.loading = true;
@@ -23,6 +24,8 @@ export const createTableStore = (storeId, service) => {
           this.loading = false;
         }
       },
+
+      // READ - Egy adat lekérése
       async getById(id) {
         this.loading = true;
         const toast = useToastStore();
@@ -38,7 +41,7 @@ export const createTableStore = (storeId, service) => {
         }
       },
 
-      // 2. CREATE - Új elem hozzáadása
+      // CREATE - Új elem hozzáadása
       async create(data) {
         try {
           const newItem = await service.create(data);
@@ -69,7 +72,7 @@ export const createTableStore = (storeId, service) => {
           }
           
           const toast = useToastStore();
-          toast.show("Sikeresen frissítve!", "success");
+          toast.show("Sikeresen frissítve!", "Success");
           return true;
         } catch (err) {
           return false;

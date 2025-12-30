@@ -1,8 +1,11 @@
 <template>
   <div>
     <h1>Sportok</h1>
-    <ToastContainer/>
-    <p v-if="debug != 0" class="my-debug">[{{ searchWord }}]</p>
+    <!-- Sportok táblázat CRUD -->
+    <div>
+      <ToastContainer />
+      <p v-if="debug != 0" class="my-debug">[{{ searchWord }}]</p>
+    </div>
   </div>
 </template>
 
@@ -14,24 +17,31 @@ import ToastContainer from "@/components/Message/ToastContainer.vue";
 
 export default {
   name: "sports",
+  components: {
+    ToastContainer,
+  },
   data() {
     return {
       debug: import.meta.env.VITE_DEBUG_MODE,
     };
   },
   computed: {
-    ...mapState(useSearchStore, ['searchWord']),
-    ...mapState(useSportStore, ['items', 'loading', 'error']),
+    ...mapState(useSportStore, ["items", "loading", "error"]),
+    
+    ...mapState(useSearchStore, ["searchWord"]),
   },
   methods: {
-    ...mapActions(useSportStore,['getAll', 'getById', 'create', 'update', 'delete'])
+    ...mapActions(useSportStore, [
+      "getAll",
+      "getById",
+      "create",
+      "update",
+      "delete",
+    ]),
   },
-  async mounted(){
+  async mounted() {
     await this.getAll();
-    console.log('getAll',this.items.data);
-    await this.getById(1111);
-    console.log('getjById',this.items.data);
-  }
+  },
 };
 </script>
 
