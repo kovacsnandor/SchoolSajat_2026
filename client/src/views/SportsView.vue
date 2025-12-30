@@ -1,13 +1,14 @@
 <template>
   <div>
     <h1>{{ pageTitle }}</h1>
-    
+
     <!-- Sportok táblázat CRUD -->
     <div>
       <ToastContainer />
       <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
 
       <div v-if="loading">Betöltés...</div>
+
       <!-- Táblázat -->
       <GenericTable
         v-else
@@ -18,6 +19,13 @@
         @delete="deleteHandler"
       />
     </div>
+
+    <!-- Confirm modal -->
+    <ConfirmModal
+      :isOpenConfirmModal="isOpenConfirmModal"
+      @confirm="confirmHandler"
+      @cancel="cancelHandler"
+    />
   </div>
 </template>
 
@@ -28,15 +36,17 @@ import { useSportStore } from "@/stores/sportStore";
 
 export default {
   name: "sports",
-    data() {
+  data() {
     return {
       debug: import.meta.env.VITE_DEBUG_MODE,
       pageTitle: "Sportok",
       // Itt definiálod, melyik kulcsokat akarod látni a Store-ból
       tableColumns: [
         { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
-        { key: "sportNev", label: "Sportnév", debug: 2},
+        { key: "sportNev", label: "Sportnév", debug: 2 },
       ],
+      isOpenConfirmModal: false,
+      selectedId: null,
     };
   },
   computed: {
@@ -52,14 +62,22 @@ export default {
       "update",
       "delete",
     ]),
-    createHandler(){
-      console.log('create');
+    createHandler() {
+      console.log("create");
     },
-    updateHandler(id){
-      console.log('update:', id);
+    updateHandler(id) {
+      console.log("update:", id);
     },
-    deleteHandler(id){
-      console.log('delete:', id);
+    deleteHandler(id) {
+      this.selectedId = id;
+      this.isOpenConfirmModal = true;
+    },
+    confirmHandler() {
+      console.log("delete:", this.selectedId);
+      this.isOpenConfirmModal = false;
+    },
+    cancelHandler() {
+      this.isOpenConfirmModal = false;
     },
   },
   async mounted() {

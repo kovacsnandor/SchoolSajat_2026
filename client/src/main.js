@@ -16,8 +16,10 @@ const app = createApp(App)
 //Globális komponensek
 import ToastContainer from '@/components/Message/ToastContainer.vue'
 import GenericTable from '@/components/Table/GenericTable.vue'
+import ConfirmModal from '@/components/Confirm/ConfirmModal.vue'
 app.component('ToastContainer', ToastContainer);
 app.component('GenericTable', GenericTable);
+app.component('ConfirmModal', ConfirmModal);
 
 app.use(createPinia())
 app.use(router)
