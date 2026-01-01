@@ -40,7 +40,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <RouterLink class="nav-link" to="/login">Login</RouterLink>
           </li>
         </ul>
         <div class="d-flex align-items-center" role="search">
