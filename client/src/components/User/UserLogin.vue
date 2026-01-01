@@ -10,7 +10,7 @@
         <!-- Password -->
         <PasswordField class="mt-3" v-model="password" :label="'Jelszavad'" />
         <button type="button" class="btn btn-success">Login</button>
-        <button href="#" class="btn btn-primary ms-2">Regisztráció</button>
+        <RouterLink to="/registration" class="btn btn-primary ms-2">Regisztráció</RouterLink>
       </div>
     </div>
   </div>

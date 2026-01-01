@@ -29,6 +29,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/registration',
+      name: 'registration',
+      component: () => import('@/views/RegistrationView.vue'),
+      meta:{
+        title: (route) => 'About'
+      }
+    },
+    {
       path: '/sports',
       name: 'sports',
       // route level code-splitting
