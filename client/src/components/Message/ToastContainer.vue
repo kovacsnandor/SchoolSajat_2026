@@ -1,6 +1,6 @@
 <template>
   <div 
-     class="alert" 
+     class="alert mt-3" 
      :class="{
       'alert-danger': type == 'Error',
       'alert-success': type == 'Success'

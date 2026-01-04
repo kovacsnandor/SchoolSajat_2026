@@ -15,35 +15,50 @@
               type="email"
               class="form-control"
               id="email"
-              v-model="email"
+              v-model="user.email"
               required
             />
             <div class="invalid-feedback">Az email üres, vagy helytelen</div>
           </div>
           <!-- Password -->
-          <PasswordField class="mt-3" v-model="password" :label="'Jelszavad'" />
+          <PasswordField
+            class="mt-3"
+            v-model="user.password"
+            :label="'Jelszavad'"
+          />
           <button type="submit" class="btn btn-success">Login</button>
           <RouterLink to="/registration" class="btn btn-primary ms-2"
             >Regisztráció</RouterLink
           >
         </form>
+        <ToastContainer />
       </div>
     </div>
+    <!-- hibaüzenet -->
   </div>
 </template>
 
 <script>
 import PasswordField from "./PasswordField.vue";
+import ToastContainer from "@/components/Message/ToastContainer.vue";
+class User {
+  constructor(email = "", password = "") {
+    this.email = email;
+    this.password = password;
+  }
+}
 export default {
   name: "UserLogin",
   components: {
     PasswordField,
+    ToastContainer,
   },
   data() {
     return {
       password: "",
       email: "",
       validated: false,
+      user: new User(),
     };
   },
   methods: {
@@ -56,6 +71,7 @@ export default {
         console.log("Hiba:");
       } else {
         console.log("Sikeres validáció!");
+        this.$emit("logIn", this.user);
       }
     },
   },

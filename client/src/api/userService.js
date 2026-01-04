@@ -1,7 +1,8 @@
-import apiClient from './axiosClient'; 
-const route = '/sports';
+import apiClient from "./axiosClient";
+const route = "/users";
 
 export default {
+    //--- User CRUD
   // GET: Összes rekord lekérése
   getAll() {
     return apiClient.get(`${route}`);
@@ -27,5 +28,5 @@ export default {
   // DELETE: Törlés
   delete(id) {
     return apiClient.delete(`${route}/${id}`);
-  }
+  },
 };

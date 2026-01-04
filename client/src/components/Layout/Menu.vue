@@ -16,7 +16,9 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/">Home</RouterLink>
+            <RouterLink class="nav-link active" aria-current="page" to="/"
+              >Home</RouterLink
+            >
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/about">About</RouterLink>
@@ -32,15 +34,45 @@
               Adatok
             </a>
             <ul class="dropdown-menu">
-              <li><RouterLink class="dropdown-item" to="/sports">Sportok</RouterLink></li>
-              <li><RouterLink class="dropdown-item" to="/schoolclasses">Osztályok</RouterLink></li>
-              <li><RouterLink class="dropdown-item" to="/students">Diákok</RouterLink></li>
+              <li>
+                <RouterLink class="dropdown-item" to="/sports"
+                  >Sportok</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/schoolclasses"
+                  >Osztályok</RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink class="dropdown-item" to="/students"
+                  >Diákok</RouterLink
+                >
+              </li>
               <li><hr class="dropdown-divider" /></li>
-              <li><RouterLink class="dropdown-item" to="/playngsports">Sportolás</RouterLink></li>
+              <li>
+                <RouterLink class="dropdown-item" to="/playngsports"
+                  >Sportolás</RouterLink
+                >
+              </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/login">Login</RouterLink>
+          <li class="nav-item ms-5">
+            <!-- login -->
+            <RouterLink class="nav-link" to="/login" v-if="!isLoggedIn">
+              Login
+            </RouterLink>
+            <div v-if="isLoggedIn" class="d-flex align-items-center">
+              <i class="bi bi-person"></i>
+              {{ userName }}
+
+              <!-- logout -->
+              <i
+                class="bi bi-box-arrow-right ms-2 my-pointer"
+                style="font-size: 2rem"
+                @click="logout()"
+              ></i>
+            </div>
           </li>
         </ul>
         <div class="d-flex align-items-center" role="search">
@@ -63,42 +95,45 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia';
-import { useSearchStore } from '@/stores/searchStore';  
+import { mapActions, mapState } from "pinia";
+import { useSearchStore } from "@/stores/searchStore";
+import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 export default {
-  data(){
+  data() {
     return {
       name: "Menu",
-      searchWordInput: '',
+      searchWordInput: "",
       timeout: null,
-    }
+    };
   },
   computed: {
-    ...mapState(useSearchStore,['searchWord'])
+    ...mapState(useSearchStore, ["searchWord"]),
+    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName"]),
   },
   watch: {
     //Keresőszó késleltetés
-    searchWordInput(newVal){
+    searchWordInput(newVal) {
       //töröljük az éppen futó setTimeout-ot
       //hogy újraindíthassuk
       clearTimeout(this.timeout);
       //x-re kattintva kiürül az kereső input
-      if (newVal === '') {
-        this.setSearchWord('');
+      if (newVal === "") {
+        this.setSearchWord("");
         return;
       }
       //500ms késleltetés után tárolja
       this.timeout = setTimeout(() => {
         this.setSearchWord(newVal);
       }, 500);
-    }
+    },
   },
   methods: {
-    ...mapActions(useSearchStore, ['setSearchWord'])
+    ...mapActions(useSearchStore, ["setSearchWord"]),
+    ...mapActions(useUserLoginLogoutStore, ["logout"]),
   },
-  mounted(){
+  mounted() {
     this.searchWordInput = this.searchWord;
-  }
+  },
 };
 </script>
 

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useUserLoginLogoutStore } from '@/stores/userLoginLogoutStore';
 
 // apiClient objektum: 
 // tartalmazza az összes crud függvényt
@@ -14,7 +15,7 @@ const apiClient = axios.create({
 // Lefut minden egyes kérés előtt
 apiClient.interceptors.request.use((config) => {
   // const token = localStorage.getItem('user_token'); // Vagy a Pinia store-ból
-  const token = ""; // Vagy a Pinia store-ból
+  const token = useUserLoginLogoutStore().token; // Vagy a Pinia store-ból
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
