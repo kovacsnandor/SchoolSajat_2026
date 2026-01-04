@@ -57,7 +57,7 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item ms-5">
+          <li class="nav-item ms-5 d-flex align-items-center">
             <!-- login -->
             <RouterLink class="nav-link" to="/login" v-if="!isLoggedIn">
               Login
@@ -68,9 +68,9 @@
 
               <!-- logout -->
               <i
-                class="bi bi-box-arrow-right ms-2 my-pointer"
+                class="bi bi-box-arrow-right ms-2 my-pointer tight-icon"
                 style="font-size: 2rem"
-                @click="logout()"
+                @click="onClickLogut()"
               ></i>
             </div>
           </li>
@@ -130,6 +130,10 @@ export default {
   methods: {
     ...mapActions(useSearchStore, ["setSearchWord"]),
     ...mapActions(useUserLoginLogoutStore, ["logout"]),
+    async onClickLogut(){
+      await this.logout();
+      this.$router.push('/login');
+    },
   },
   mounted() {
     this.searchWordInput = this.searchWord;
@@ -137,5 +141,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+  .tight-icon {
+    line-height: 1 !important;
+    display: inline-flex;
+    vertical-align: middle;
+}
 </style>
