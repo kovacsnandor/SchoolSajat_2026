@@ -82,7 +82,6 @@ export default {
   },
   async mounted() {
     await this.getAll();
-    console.log(this.items);
   },
 };
 </script>

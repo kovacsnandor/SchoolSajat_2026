@@ -47,6 +47,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/userprofil',
+      name: 'userprofil',
+      component: () => import('@/views/UserProfilView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta:{
+        title: (route) => 'User profil'
+      }
+    },
+    {
       path: '/sports',
       name: 'sports',
       // route level code-splitting

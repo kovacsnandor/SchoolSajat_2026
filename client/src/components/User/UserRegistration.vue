@@ -6,47 +6,75 @@
         <form
           @submit.prevent="handleSubmit"
           :class="{ 'was-validated': validated }"
-          novalidate>
+          novalidate
+        >
           <!-- User név -->
-           <div class="mb-3">
-             <label for="userName" class="form-label">User neved:</label>
-             <input type="text" class="form-control" id="userName"
-             v-model="userName" required/>
-             <div class="invalid-feedback">A user név kötelező</div>
-            </div>
+          <div class="mb-3">
+            <label for="userName" class="form-label">User neved:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="userName"
+              v-model="userName"
+              required
+            />
+            <div class="invalid-feedback">A user név kötelező</div>
+          </div>
           <!-- Email -->
-           <div class="mb-3">
-             <label for="email" class="form-label">Email címed:</label>
-             <input type="email" class="form-control"
-             id="email" v-model="email" required/>
-             <div class="invalid-feedback">
-               A email kötelező, vagy nem szabályos
-              </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email címed:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              v-model="email"
+              required
+            />
+            <div class="invalid-feedback">
+              A email kötelező, vagy nem szabályos
             </div>
+          </div>
           <!-- Password1 -->
-          <PasswordField class="mb-3" ref="pass1Comp" v-model="password"
+          <PasswordField
+            class="mb-3"
+            ref="pass1Comp"
+            v-model="password"
             :label="'Jelszavad'"
             :inputRef="'firstInput'"
-            :label-id="'password'"/>
+            :label-id="'password'"
+          />
           <!-- Password2 -->
-          <PasswordField ref="pass2Comp" v-model="confirmPassword"
+          <PasswordField
+            ref="pass2Comp"
+            v-model="confirmPassword"
             :label="'Jelszavad mégegyszer'"
             :inputRef="'confirmInput'"
             :label-id="'confirmPassword'"
-            :passwordErrorMessage="passwordErrorMessage"/>
+            :passwordErrorMessage="passwordErrorMessage"
+          />
           <button type="submit" class="btn btn-success">Regisztrálás</button>
+          <button
+            type="button"
+            class="btn btn-primary ms-2"
+            @click="this.$router.push('/login')"
+          >
+            Mégsem
+          </button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ToastContainer from "../Message/ToastContainer.vue";
 import PasswordField from "./PasswordField.vue";
 export default {
-  name: "UserLogin",
+  name: "UserRegistration",
   components: {
     PasswordField,
+    ToastContainer,
   },
   data() {
     return {
@@ -58,7 +86,7 @@ export default {
       passwordErrorMessage: "",
     };
   },
-  
+
   methods: {
     validatePasswords() {
       const comp2 = this.$refs.pass2Comp;
@@ -85,6 +113,16 @@ export default {
         console.log("Hiba:");
       } else {
         console.log("Sikeres validáció!");
+        //user létrehozás
+        const data = {
+          name: this.userName,
+          email: this.email,
+          password: this.password,
+        };
+        this.$emit("createUser", data);
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 3500);
       }
     },
   },

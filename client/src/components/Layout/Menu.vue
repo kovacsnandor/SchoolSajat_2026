@@ -63,8 +63,10 @@
               Login
             </RouterLink>
             <div v-if="isLoggedIn" class="d-flex align-items-center">
-              <i class="bi bi-person"></i>
-              {{ userName }}
+              <RouterLink class="nav-link" to="/userprofil">
+                <i class="bi bi-person"></i>
+                {{ userName }}
+              </RouterLink>
 
               <!-- logout -->
               <i
@@ -130,9 +132,9 @@ export default {
   methods: {
     ...mapActions(useSearchStore, ["setSearchWord"]),
     ...mapActions(useUserLoginLogoutStore, ["logout"]),
-    async onClickLogut(){
+    async onClickLogut() {
       await this.logout();
-      this.$router.push('/login');
+      this.$router.push("/login");
     },
   },
   mounted() {
@@ -142,9 +144,9 @@ export default {
 </script>
 
 <style scoped>
-  .tight-icon {
-    line-height: 1 !important;
-    display: inline-flex;
-    vertical-align: middle;
+.tight-icon {
+  line-height: 1 !important;
+  display: inline-flex;
+  vertical-align: middle;
 }
 </style>

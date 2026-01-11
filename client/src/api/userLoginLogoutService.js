@@ -5,7 +5,6 @@ export default {
   //--- login, logout
   //Login user
   login(data) {
-    console.log('login data:', data);
     return apiClient.post(`${route}/login`, data);
   },
   //Logout user

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
 import service from "@/api/userMeService";
 
-export const useUserLoginLogoutStore = defineStore("userMe", {
+export const useUserMeStore = defineStore("userMe", {
   //Ezek a változók
   state: () => ({
     item: null,
@@ -12,26 +12,17 @@ export const useUserLoginLogoutStore = defineStore("userMe", {
   }),
   //valamilyen formában visszaadja
   getters: {
-    token() {
-      if (!this.item) {
-        return null;
-      }
-      return this.item.token;
-    },
-    role() {
-      if (!this.item) {
-        return null;
-      }
-      return this.item.role;
-    },
     userName() {
       if (!this.item) {
         return null;
       }
       return this.item.name;
     },
-    isLoggedIn() {
-      return this.item != null ? true : false;
+    email() {
+      if (!this.item) {
+        return null;
+      }
+      return this.item.email;
     },
   },
   //csinál vele valamit

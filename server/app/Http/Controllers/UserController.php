@@ -379,9 +379,7 @@ class UserController extends Controller
         $status = 200;
         $data = [
             'message' => 'OK',
-            'data' => [
-                'data' => $userToGet
-            ]
+            'data' => $userToGet
         ];
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
