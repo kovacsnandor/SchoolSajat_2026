@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserPasswordRequest;
 
 class UserController extends Controller
 {
@@ -67,6 +68,7 @@ class UserController extends Controller
                     'students:delete',
                     'usersme:get',
                     'usersme:patch',
+                    'usersme:updatePassword',
                     'usersme:delete',
                 ];
                 break;
@@ -75,6 +77,7 @@ class UserController extends Controller
                 $abilities = [
                     'usersme:get',
                     'usersme:patch',
+                    'usersme:updatePassword',
                     'usersme:delete',
                 ];
                 break;
@@ -267,6 +270,7 @@ class UserController extends Controller
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -329,7 +333,7 @@ class UserController extends Controller
         $this->authorize('update', $userToUpdate);
 
         $status = 200;
-        $userToUpdate->update($request->all());
+        $userToUpdate->update($request->validated());
 
         $data = [
             'message' => 'OK',
@@ -340,6 +344,30 @@ class UserController extends Controller
 
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
+
+        //Önmagam jelszavának módosítása
+    public function updatePassword(UpdateUserPasswordRequest $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+
+        // Frissítjük a jelszót (a Laravel 10+ automatikusan hasheli, 
+        // ha a model-ben a 'password' mező 'hashed' cast-ot kapott)
+        $user->update([
+            'password' => Hash::make($request->newpassword)
+        ]);
+
+        $data = [
+            'message' => 'Jelszó sikeresen módosítva.',
+            'data' => [
+                'user' => $user
+            ]
+        ];
+        $status = 200;
+
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
 
     //Önmagam megnézése
     public function indexSelf(Request $request)
