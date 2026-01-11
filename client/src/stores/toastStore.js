@@ -6,7 +6,7 @@ export const useToastStore = defineStore('toast', {
         type: null
     }),
     actions: {
-        show( type = 'success') {
+        show( type = 'Success') {
             // 3 másodperc után automatikusan töröljük
             this.type = type;
             setTimeout(() => {
