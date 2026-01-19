@@ -26,6 +26,9 @@
       @confirm="confirmHandler"
       @cancel="cancelHandler"
     />
+
+    <!-- Form -->
+    <FormSport/> 
   </div>
 </template>
 
@@ -33,9 +36,13 @@
 import { mapActions, mapState } from "pinia";
 import { useSearchStore } from "@/stores/searchStore";
 import { useSportStore } from "@/stores/sportStore";
+import FormSport from "@/components/Forms/FormSport.vue";
 
 export default {
   name: "sports",
+  components: {
+    FormSport
+  },
   data() {
     return {
       debug: import.meta.env.VITE_DEBUG_MODE,
