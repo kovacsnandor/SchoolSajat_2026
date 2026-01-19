@@ -2,6 +2,8 @@
   <div>
     <UserProfil 
     :user="item"
+    :loadingStates="loadings"
+    @saveField="saveFieldHandler"
     />
   </div>
 </template>
@@ -16,15 +18,28 @@ export default {
   components: {
     UserProfil,
   },
+  data(){
+    return {
+      loadings: { name: false, email: false }
+    }
+  },
   methods: {
-    ...mapActions(useUserMeStore, ["getMe"]),
+    ...mapActions(useUserMeStore, ["getMe", "updateMe"]),
+    saveFieldHandler(data){
+      const dataUser = {
+        [data.field]: data.value
+      }
+      console.log('adat mentés', dataUser);
+      this.updateMe(dataUser);
+      
+    }
   },
   computed:{
     ...mapState(useUserMeStore, ["item"])
   },
   async mounted(){
     await this.getMe();
-    console.log("item:",this.item);
+    console.log("UserProfilView.vue item:",this.item);
     
   }
 };

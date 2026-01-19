@@ -6,9 +6,18 @@ import service from "@/api/userService";
 // Csak átadod a Store nevét és a hozzá tartozó Service-t
 // export const useUserStore = createTableStore('users', service);
 
+class User {
+  constructor(name='', email='', role=3, token=''){
+    this.name = name;
+    this.email = email;
+    this.role = role;
+    this.token = token;
+  }
+}
+
 export const useUserStore = defineStore("user", {
   state: () => ({
-    items: [],
+    items: [new User()],
     loading: false,
     error: null,
   }),

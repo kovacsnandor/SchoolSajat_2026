@@ -1,39 +1,31 @@
 <template>
   <div>
     <div class="d-flex justify-content-center my-4">
-      <div class="card" style="width: 26rem">
+      <div class="card" style="width: 32rem">
         <div class="card-header text-bg-primary">Profil adatok</div>
+        <!-- card body -->
         <div class="card-body">
-          <div class="d-flex">
-            <span>User név: </span>
-            <!-- read -->
-            <span v-if="!modifyName">
-                {{ user?.name }}
-            </span>
-            <button v-if="!modifyName"
-              type="button"
-              class="btn btn-outline-success ms-2"
-              @click="modifyName = !modifyName"
-            >
-              <i class="bi bi-pencil"></i>
-            </button>
+          <EditableField
+            type="text"
+            label="User név:"
+            :initialValue="user?.name"
+            :loading="loadingStates.name"
+            :required="true"
+            @save="$emit('saveField', { field: 'name', value: $event })"
+            ref="nameField"
+          />
 
-            <!-- modify -->
-            <input type="text" class="form-control" id="exampleFormControlInput1"
-                v-if="modifyName"
-                v-model="user.name"
-            >
-            <button v-if="modifyName"
-              type="button"
-              class="btn btn-outline-success ms-2"
-              @click="modifyName = !modifyName"
-            >
-              <i class="bi bi-escape"></i>
-            </button>
+          <EditableField
+            type="email"
+            label="Email:"
+            :initialValue="user?.email"
+            :loading="loadingStates.email"
+            :required="true"
+            @save="$emit('saveField', { field: 'email', value: $event })"
+            ref="nameField"
+          />
 
-          </div>
-          <div>Email: {{ user?.email }}</div>
-          <button type="button" class="btn btn-danger">Jelszó módosítás</button>
+          <button type="button" class="btn btn-danger mt-5">Jelszó módosítás</button>
         </div>
       </div>
     </div>
@@ -41,10 +33,16 @@
 </template>
 
 <script>
+import EditableField from "./EditableField.vue";
 export default {
   name: "UserProfil",
+  emits: ['saveField'],
+  components: {
+    EditableField,
+  },
   props: {
     user: { require: true },
+    loadingStates: { require: true },
   },
   data() {
     return {
@@ -54,5 +52,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
