@@ -12,6 +12,7 @@
 import UserProfil from "@/components/User/UserProfil.vue";
 import { mapActions, mapState } from "pinia";
 import { useUserMeStore } from "@/stores/userMeStore";
+import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 
 export default {
   name: "UserProfilView",
@@ -25,13 +26,14 @@ export default {
   },
   methods: {
     ...mapActions(useUserMeStore, ["getMe", "updateMe"]),
-    saveFieldHandler(data){
+    ...mapActions(useUserLoginLogoutStore, ["getMeRefresh"]),
+    async saveFieldHandler(data){
       const dataUser = {
         [data.field]: data.value
       }
       console.log('adat mentés', dataUser);
-      this.updateMe(dataUser);
-      
+      await this.updateMe(dataUser);
+      await this.getMeRefresh();
     }
   },
   computed:{

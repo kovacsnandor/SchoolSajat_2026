@@ -28,7 +28,7 @@
     />
 
     <!-- Form -->
-    <FormSport/> 
+    <FormSport ref="form" :title="title"/> 
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       ],
       isOpenConfirmModal: false,
       selectedId: null,
+      title: '',
     };
   },
   computed: {
@@ -71,9 +72,14 @@ export default {
     ]),
     createHandler() {
       console.log("create");
+      this.title= "Új sport felvitele"
+      this.$refs.form.show();
+
     },
     updateHandler(id) {
       console.log("update:", id);
+      this.title= "Sport módosítás"
+      this.$refs.form.show();
     },
     deleteHandler(id) {
       this.selectedId = id;

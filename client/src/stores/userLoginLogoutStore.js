@@ -61,5 +61,18 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         return false;
       }
     },
+    async getMeRefresh() {
+      try {
+        const response = await service.getMeRefresh();
+        this.item.name = response.data.name;
+        this.item.email = response.data.email;
+        this.loading = true;
+        return true;
+      } catch (err) {
+        this.toast.messages.push(`Ferfesh failed`);
+        this.toast.show("Error");
+        return false;
+      }
+    },
   },
 });

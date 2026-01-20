@@ -11,4 +11,7 @@ export default {
   logout() {
     return apiClient.post(`${route}/logout`, null);
   },
+  getMeRefresh() {
+    return apiClient.get(`/usersme`);
+  },
 };
