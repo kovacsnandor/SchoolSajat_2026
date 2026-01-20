@@ -10,48 +10,51 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <!-- header -->
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ title }}</h1>
-          <button
-            type="button"
-            class="btn-close"
-            @click="
-              hide();
-              $event.target.blur();
-            "
-          ></button>
-        </div>
-        <!-- body -->
-        <div class="modal-body">
-          <slot></slot>
-        </div>
-        <!-- footer -->
-        <div class="modal-footer">
+        <form
+          @submit.prevent="onClickYes"
+          :class="{ 'was-validated': validated }"
+          novalidate
+        >
+          <!-- header -->
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ title }}</h1>
+            <button
+              type="button"
+              class="btn-close"
+              @click="
+                hide();
+                $event.target.blur();
+              "
+            ></button>
+          </div>
+          <!-- body -->
+          <div class="modal-body">
+            <slot></slot>
+          </div>
+          <!-- footer -->
+          <div class="modal-footer">
             <!-- cancel -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            v-if="no"
-            @click="
-              hide();
-              $event.target.blur();
-            "
-          >
-            {{ no }}
-          </button>
-          <!-- save -->
-          <button
-            type="button"
-            class="btn btn-danger"
-            @click="
-              onClickYes();
-              $event.target.blur();
-            "
-          >
-            {{ yes }}
-          </button>
-        </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              v-if="no"
+              @click="
+                hide();
+                $event.target.blur();
+              "
+            >
+              {{ no }}
+            </button>
+            <!-- save -->
+            <button
+              type="submit"
+              class="btn btn-danger"
+              @click="$event.target.blur()"
+            >
+              {{ yes }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -60,7 +63,7 @@
 <script>
 import { Modal } from "bootstrap";
 export default {
-  emits: ['yesEvent'],  
+  emits: ["yesEvent"],
   props: {
     title: { type: String, default: "Modális ablak" },
     yes: { type: String, default: "Mentés" },
@@ -69,15 +72,25 @@ export default {
   data() {
     return {
       modal: null,
+      validated: false,
     };
   },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
   },
   methods: {
-    onClickYes() {
-      this.$emit("yesEvent");
-      this.hide();
+    onClickYes(event) {
+      // validáció
+      const form = event.target;
+      this.validated = true;
+      if (form.checkValidity()===false) {
+        //hiba van az űrlapon
+        console.log("Hiba az űrlapon");
+        
+      }else{
+        this.$emit("yesEvent");
+        this.hide();
+      }
     },
     show() {
       this.modal.show();
