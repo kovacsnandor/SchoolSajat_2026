@@ -18,10 +18,13 @@ export const useSportStore = defineStore("sport", {
     error: null,
   }),
   actions: {
+    clearItem(){
+        this.item = new Item();
+    },
     // READ - Összes adat lekérése
     async getAll() {
-      const toast = useToastStore();
-      this.loading = true;
+    //   const toast = useToastStore();
+      this.loading = false;
       try {
         const request = await service.getAll();
         this.items = request.data;
@@ -34,11 +37,11 @@ export const useSportStore = defineStore("sport", {
 
     // READ - Egy adat lekérése
     async getById(id) {
-      this.loading = true;
-      const toast = useToastStore();
+      this.loading = false;
+    //   const toast = useToastStore();
       try {
-        const request = service.getById(id);
-        this.item = await request.data;
+        const request = await service.getById(id);
+        this.item = request.data;
       } catch (err) {
         this.error = err;
         toast.messages.push(`User nem található`);
@@ -52,11 +55,10 @@ export const useSportStore = defineStore("sport", {
     async create(data) {
       try {
         const newItem = await service.create(data);
-        this.items.push(newItem);
-
-        const toast = useToastStore();
-        toast.messages.push("User sikeresen létrehozva!");
-        toast.show("Success");
+        await this.getAll();
+        // const toast = useToastStore();
+        // toast.messages.push("User sikeresen létrehozva!");
+        // toast.show("Success");
         return true;
       } catch (err) {
         toast.messages.push(`Usert nem sikarült létrehozni`);
@@ -69,17 +71,9 @@ export const useSportStore = defineStore("sport", {
     async update(id, updateData) {
       try {
         const updatedItem = await service.update(id, updateData);
-
-        // Megkeressük az elem helyét a listában
-        const index = this.items.findIndex((item) => item.id === id);
-
-        if (index !== -1) {
-          // A splice-szal garantáljuk, hogy a Vue azonnal észrevegye a változást
-          this.items.splice(index, 1, updatedItem);
-        }
-
-        const toast = useToastStore();
-        toast.show("User sikeresen frissítve!", "Success");
+        await this.getAll();
+        // const toast = useToastStore();
+        // toast.show("User sikeresen frissítve!", "Success");
         return true;
       } catch (err) {
         return false;
@@ -90,10 +84,9 @@ export const useSportStore = defineStore("sport", {
     async delete(id) {
       try {
         await service.delete(id);
-        this.items = this.items.filter((item) => item.id !== id);
-
-        const toast = useToastStore();
-        toast.show("User törlés sikeres!", "Success");
+        await this.getAll();
+        // const toast = useToastStore();
+        // toast.show("User törlés sikeres!", "Success");
         return true;
       } catch (err) {
         return false;

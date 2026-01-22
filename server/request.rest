@@ -14,7 +14,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "tanar@example.com",
+    "email": "admin@example.com",
     "password": "123"
 }
 
@@ -179,13 +179,13 @@ Authorization: Bearer {{token}}
 }
 
 ### patch sport 
-PATCH {{host}}/api/sports/39 
+PATCH {{host}}/api/sports/1 
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "Táj csí"
+"sportNev": "foci1"
 }
 
 ### delete sport 

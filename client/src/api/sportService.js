@@ -3,29 +3,33 @@ const route = '/sports';
 
 export default {
   // GET: Összes rekord lekérése
-  getAll() {
-    return apiClient.get(`${route}`);
+  async getAll() {
+    return await apiClient.get(`${route}`);
   },
 
   // GET: Egy rekord (ID alapján)
-  getById(id) {
-    return apiClient.get(`${route}/${id}`);
+  async getById(id) {
+    const url = `${route}/${id}`
+    return await apiClient.get(url);
   },
 
   // POST: Új rekord posztolás
-  create(data) {
+  async create(data) {
     // Az Axios automatikusan JSON-ná alakítja
     // és beteszi a Body-ba
-    return apiClient.post(`${route}`, data);
+    delete data.id;
+    return await apiClient.post(`${route}`, data);
   },
 
   // PUT: Módosítás
-  update(id, data) {
-    return apiClient.put(`${route}/${id}`, data);
+  async update(id, data) {
+    delete data.id;
+    console.log("data", data);
+    return await apiClient.patch(`${route}/${id}`, data);
   },
 
   // DELETE: Törlés
-  delete(id) {
-    return apiClient.delete(`${route}/${id}`);
+  async delete(id) {
+    return await apiClient.delete(`${route}/${id}`);
   }
 };

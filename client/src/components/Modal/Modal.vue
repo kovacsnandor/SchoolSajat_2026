@@ -83,20 +83,21 @@ export default {
       // validáció
       const form = event.target;
       this.validated = true;
-      if (form.checkValidity()===false) {
+      if (form.checkValidity() === false) {
         //hiba van az űrlapon
         console.log("Hiba az űrlapon");
-        
-      }else{
+      } else {
         this.$emit("yesEvent");
         this.hide();
       }
     },
     show() {
       this.modal.show();
+      this.validated = false;
     },
     hide() {
       this.modal.hide();
+      this.validated = false;
     },
   },
 };
