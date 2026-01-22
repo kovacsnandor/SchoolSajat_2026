@@ -6,8 +6,10 @@ import service from "@/api/userService";
 // Csak átadod a Store nevét és a hozzá tartozó Service-t
 // export const useUserStore = createTableStore('users', service);
 
-class User {
-  constructor(name='', email='', role=3, token=''){
+//változtatás
+class Item {
+  constructor(id = 0, name = "", email = "", role = 3, token = "") {
+    this.id = id;
     this.name = name;
     this.email = email;
     this.role = role;
@@ -17,7 +19,8 @@ class User {
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    items: [new User()],
+    item: new Item(),
+    items: [new Item()],
     loading: false,
     error: null,
   }),
@@ -42,7 +45,7 @@ export const useUserStore = defineStore("user", {
       const toast = useToastStore();
       try {
         const request = service.getById(id);
-        this.items = await request.data;
+        this.item = await request.data;
       } catch (err) {
         this.error = err;
         toast.messages.push(`User nem található`);

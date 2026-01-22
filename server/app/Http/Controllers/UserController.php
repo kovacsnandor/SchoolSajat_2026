@@ -216,7 +216,7 @@ class UserController extends Controller
             $status = 200;
             $data = [
                 'message' => 'OK',
-                'data' => $row
+                'data' => $row[0]
             ];
         } else {
             # code...
