@@ -7,6 +7,11 @@ export default {
     return await apiClient.get(`${route}`);
   },
 
+  //paginátor: oldal/rekord_oldalanként
+  async getPaging(page, per_page = 10) {
+    return await apiClient.get(`/sportspaging/${page}/${per_page}`);
+  },
+
   // GET: Egy rekord (ID alapján)
   async getById(id) {
     const url = `${route}/${id}`

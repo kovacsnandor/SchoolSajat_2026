@@ -9,22 +9,30 @@ class Item {
     this.sportNev = sportNev;
   }
 }
+class Pagination {
+  constructor(current_page = 1, last_page = 1, total = 10) {
+    this.current_page = current_page;
+    this.last_page = last_page;
+    this.total = total;
+  }
+}
 
 export const useSportStore = defineStore("sport", {
   state: () => ({
     item: new Item(),
     items: [new Item()],
+    pagination: new Pagination(),
     loading: false,
     error: null,
   }),
   actions: {
-    clearItem(){
-        this.item = new Item();
+    clearItem() {
+      this.item = new Item();
     },
     // READ - Összes adat lekérése
     async getAll() {
-    //   const toast = useToastStore();
-      this.loading = false;
+      //   const toast = useToastStore();
+      this.loading = true;
       try {
         const request = await service.getAll();
         this.items = request.data;
@@ -35,13 +43,29 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
+    async getPaging(page = 1, per_page = 10) {
+      //   const toast = useToastStore();
+      this.loading = true;
+      try {
+        const request = await service.getAll(page, per_page);
+        this.items = request.data;
+        this.pagination = response.meta;
+      } catch (err) {
+        this.error = err;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     // READ - Egy adat lekérése
     async getById(id) {
-      this.loading = false;
-    //   const toast = useToastStore();
+      this.loading = true;
+      //   const toast = useToastStore();
       try {
         const request = await service.getById(id);
         this.item = request.data;
+        console.log("ccc", this.item);
+        
       } catch (err) {
         this.error = err;
         toast.messages.push(`User nem található`);
@@ -53,6 +77,7 @@ export const useSportStore = defineStore("sport", {
 
     // CREATE - Új elem hozzáadása
     async create(data) {
+      this.loading = true;
       try {
         const newItem = await service.create(data);
         await this.getAll();
@@ -69,6 +94,7 @@ export const useSportStore = defineStore("sport", {
 
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
     async update(id, updateData) {
+      this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
         await this.getAll();
@@ -82,6 +108,7 @@ export const useSportStore = defineStore("sport", {
 
     // 4. DELETE - Törlés
     async delete(id) {
+      this.loading = true;
       try {
         await service.delete(id);
         await this.getAll();

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1>{{ pageTitle }}</h1>
+    <h1>{{ pageTitle }} 
+      <!-- <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
+      <i v-if="loading"  class="bi bi-hourglass-split"></i>
+    </h1>
 
     <!-- Sportok táblázat CRUD -->
     <div>
@@ -76,6 +79,7 @@ export default {
     ...mapActions(useSportStore, [
       "clearItem",
       "getAll",
+      "getPaging",
       "getById",
       "create",
       "update",

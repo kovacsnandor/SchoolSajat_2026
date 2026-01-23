@@ -87,7 +87,7 @@ Route::delete('schoolclasses/{id}', [SchoolclassController::class, 'destroy'])
 
 //region Sport
 Route::get('sports', [SportController::class, 'index']);
-Route::get('sports/{page}/{per_page?}', [SportController::class, 'indexPaging']);
+Route::get('sportspaging/{page}/{per_page?}', [SportController::class, 'indexPaging']);
 Route::get('sports/{id}', [SportController::class, 'show']);
 Route::post('sports', [SportController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:sports:post']);
