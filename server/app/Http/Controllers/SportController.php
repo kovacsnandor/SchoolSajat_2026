@@ -6,6 +6,7 @@ use App\Models\Sport;
 use App\Http\Requests\StoreSportRequest;
 use App\Http\Requests\UpdateSportRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Pagination\Paginator;
 use PhpParser\Node\Stmt\TryCatch;
 
 class SportController extends Controller
@@ -34,6 +35,45 @@ class SportController extends Controller
 
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
+
+    public function indexPaging($page, $per_page = 10)
+    {
+        //
+        if (!is_numeric($page) || $page < 1) {
+            $page = 1;
+        }
+
+        if (!is_numeric($per_page) || $per_page < 1 || $per_page > 100) {
+            $per_page = 10; // Maximáljuk is a lapméretet, ne lehessen 1 milliót kérni
+        }
+        try {
+            // Kényszerítjük a Laravelt, hogy a mi $page változónkat használja
+            // alapértelmezett query paraméter helyett
+            Paginator::currentPageResolver(function () use ($page) {
+                return $page;
+            });
+            $rows = Sport::paginate($per_page);
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $rows->items(),
+                'meta' => [
+                    'current_page' => $rows->currentPage(),
+                    'last_page' => $rows->lastPage(),
+                    'total' => $rows->total(),
+                ]
+            ];
+        } catch (\Exception $e) {
+            $status = 500;
+            $data = [
+                'message' => "Server error: {$e->getCode()}",
+                'data' => $rows
+            ];
+        }
+
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -88,11 +128,9 @@ class SportController extends Controller
                 'message' => "Not found id: $id",
                 'data' => null
             ];
-
         }
 
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
-
     }
 
     /**
@@ -120,7 +158,6 @@ class SportController extends Controller
                     'message' => "Patch error. Not found id: $id",
                     'data' => null
                 ];
-
             }
             return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
         } catch (QueryException $e) {
