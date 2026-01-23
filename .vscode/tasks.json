@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🚀 INDÍTÁS",
+            "dependsOn": ["S-PHP", "S-BASH", "C-JS", "C-BASH"],
+            "group": { "kind": "build", "isDefault": true }
+        },
+        {
+            "label": "S-PHP",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd server && php artisan serve; exec bash'"
+        },
+        {
+            "label": "S-BASH",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd server; exec bash'"
+        },
+        {
+            "label": "C-JS",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd client && npm run dev; exec bash'"
+        },
+        {
+            "label": "C-BASH",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd client; exec bash'"
+        }
+    ]
+}
