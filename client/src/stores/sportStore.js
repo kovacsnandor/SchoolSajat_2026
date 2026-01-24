@@ -22,10 +22,14 @@ export const useSportStore = defineStore("sport", {
     item: new Item(),
     items: [new Item()],
     pagination: new Pagination(),
+    selectedPerPage: 10,
     loading: false,
     error: null,
   }),
   actions: {
+    setSelectedPerPage(value) {
+      this.selectedPerPage = value;
+    },
     clearItem() {
       this.item = new Item();
     },
@@ -34,8 +38,8 @@ export const useSportStore = defineStore("sport", {
       //   const toast = useToastStore();
       this.loading = true;
       try {
-        const request = await service.getAll();
-        this.items = request.data;
+        const response = await service.getAll();
+        this.items = response.data;
       } catch (err) {
         this.error = err;
       } finally {
@@ -46,12 +50,16 @@ export const useSportStore = defineStore("sport", {
     async getPaging(page = 1, per_page = 10) {
       //   const toast = useToastStore();
       this.loading = true;
+
       try {
-        const request = await service.getAll(page, per_page);
-        this.items = request.data;
+        console.log("getPaging!!!!!!!!!!!");
+        const response = await service.getPaging(page, per_page);
+        this.items = response.data;
         this.pagination = response.meta;
+        console.log("pppppppppppp:", this.pagination);
       } catch (err) {
         this.error = err;
+        console.log("getPaging Error !!!!!!!!!!!", this.error);
       } finally {
         this.loading = false;
       }
@@ -62,10 +70,9 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       //   const toast = useToastStore();
       try {
-        const request = await service.getById(id);
-        this.item = request.data;
+        const response = await service.getById(id);
+        this.item = response.data;
         console.log("ccc", this.item);
-        
       } catch (err) {
         this.error = err;
         toast.messages.push(`User nem található`);
@@ -80,15 +87,23 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const newItem = await service.create(data);
-        await this.getAll();
+        const response = await service.getPaging(
+          this.pagination.current_page,
+          this.selectedPerPage,
+        );
+        this.items = response.data;
+        this.pagination = response.meta;
         // const toast = useToastStore();
         // toast.messages.push("User sikeresen létrehozva!");
         // toast.show("Success");
         return true;
       } catch (err) {
-        toast.messages.push(`Usert nem sikarült létrehozni`);
-        toast.show("Error");
+        console.log("új elem Error", err);
+        // toast.messages.push(`Usert nem sikarült létrehozni`);
+        // toast.show("Error");
         return false;
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -97,12 +112,19 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
-        await this.getAll();
+        const response = await service.getPaging(
+          this.pagination.current_page,
+          this.selectedPerPage,
+        );
+        this.items = response.data;
+        this.pagination = response.meta;
         // const toast = useToastStore();
         // toast.show("User sikeresen frissítve!", "Success");
         return true;
       } catch (err) {
         return false;
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -111,12 +133,16 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         await service.delete(id);
-        await this.getAll();
+        const response = await service.getPaging(this.pagination.current_page, this.selectedPerPage);
+        this.items = response.data;
+        this.pagination = response.meta;
         // const toast = useToastStore();
         // toast.show("User törlés sikeres!", "Success");
-        return true;
-      } catch (err) {
         return false;
+      } catch (err) {
+        return true;
+      } finally {
+        this.loading = false;
       }
     },
   },

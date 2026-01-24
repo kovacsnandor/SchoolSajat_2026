@@ -9,7 +9,10 @@ export default {
 
   //paginátor: oldal/rekord_oldalanként
   async getPaging(page, per_page = 10) {
-    return await apiClient.get(`/sportspaging/${page}/${per_page}`);
+    const url = `/sportspaging/${page}/${per_page}`;
+        console.log("getPaging url:", url);
+
+    return await apiClient.get(url);
   },
 
   // GET: Egy rekord (ID alapján)

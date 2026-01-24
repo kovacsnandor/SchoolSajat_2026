@@ -1,14 +1,26 @@
 <template>
   <div>
-    <h1>{{ pageTitle }} 
-      <!-- <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
-      <i v-if="loading"  class="bi bi-hourglass-split"></i>
-    </h1>
+    <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>
+        {{ pageTitle }}
+        <!-- <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
+      </h1>
+
+      <!-- homokóra -->
+      <i v-if="loading" class="bi bi-hourglass-split fs-3"></i>
+    </div>
+    <!-- Paginátor -->
+    <Pagination
+      :useCollectionStore="useCollectionStore"
+      :selectedPerPage="Number(selectedPerPage)"
+    />
+
+    <!-- oldalanként hány sor választó -->
 
     <!-- Sportok táblázat CRUD -->
     <div>
       <ToastContainer />
-      <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
 
       <!-- <div v-if="loading">Betöltés...</div> -->
 
@@ -30,28 +42,30 @@
     />
 
     <!-- Form -->
-    <FormItem 
-      ref="form" 
+    <FormItem
+      ref="form"
       :title="title"
       :item="item"
       @yesEventForm="yesEventFormHandler"
-    /> 
+    />
   </div>
 </template>
 
 <script>
-
 import { mapActions, mapState } from "pinia";
 import { useSearchStore } from "@/stores/searchStore";
 //módosítás
 import { useSportStore } from "@/stores/sportStore";
+//Komponensek
 import FormItem from "@/components/Forms/FormSport.vue";
+import Pagination from "@/components/Pagination/Pagination.vue";
 
 export default {
   //módosítás
   name: "sports",
   components: {
-    FormItem
+    FormItem,
+    Pagination,
   },
   data() {
     return {
@@ -65,8 +79,10 @@ export default {
       ],
       isOpenConfirmModal: false,
       selectedId: null,
-      title: '',
-      state: 'r', //'crud'
+      title: "",
+      state: "r", //'crud'
+      selectedPerPage: 10,
+      useCollectionStore: useSportStore,
     };
   },
   computed: {
@@ -77,6 +93,7 @@ export default {
   methods: {
     //módosítás
     ...mapActions(useSportStore, [
+      "setSelectedPerPage",
       "clearItem",
       "getAll",
       "getPaging",
@@ -86,52 +103,51 @@ export default {
       "delete",
     ]),
     createHandler() {
-      this.state='c';
+      this.state = "c";
       console.log("create");
-      this.title= "Új adatbevitel"
+      this.title = "Új adatbevitel";
       this.clearItem();
       this.$refs.form.show();
-
     },
     async updateHandler(id) {
-      this.state='u';
+      this.state = "u";
       console.log("update:", id);
-      this.title= "Adatmódosítás"
+      this.title = "Adatmódosítás";
       await this.getById(id);
       this.$refs.form.show();
     },
     deleteHandler(id) {
-      this.state='d';
+      this.state = "d";
       this.selectedId = id;
       this.isOpenConfirmModal = true;
     },
     async confirmHandler() {
       await this.delete(this.selectedId);
-      this.state = 'r';
+      this.state = "r";
       this.isOpenConfirmModal = false;
     },
     cancelHandler() {
       this.isOpenConfirmModal = false;
     },
-    async yesEventFormHandler(item){
-      if (this.state === 'c') {
+    async yesEventFormHandler(item) {
+      if (this.state === "c") {
         //új rekord
         console.log("új rekord");
         await this.create(item);
-        this.state = 'r';
-      } else if(this.state === 'u') {
+        this.state = "r";
+      } else if (this.state === "u") {
         //rekord módosítás
         console.log("rekord módosítás");
         await this.update(item.id, item);
-        this.state = 'r';
+        this.state = "r";
       }
-    }
+    },
   },
   async mounted() {
-    await this.getAll();
+    await this.getPaging(1, this.selectedPerPage);
+    this.setSelectedPerPage(this.selectedPerPage);
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

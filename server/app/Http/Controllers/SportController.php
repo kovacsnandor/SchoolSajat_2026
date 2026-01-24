@@ -52,7 +52,20 @@ class SportController extends Controller
             Paginator::currentPageResolver(function () use ($page) {
                 return $page;
             });
+            //1. lépés: Megpróbáljuk lekérni a kért oldalt
             $rows = Sport::paginate($per_page);
+
+            // 2. lépés: Ellenőrizzük, hogy túlmentünk-e a határon
+            // Ha üres a lista, de az utolsó oldal kisebb, mint amit kértünk
+            if ($rows->isEmpty() && $rows->lastPage() > 0 && $page > $rows->lastPage()) {
+                $lastPage = $rows->lastPage();
+
+                // Újra beállítjuk a resolvert az utolsó létező oldalra
+                Paginator::currentPageResolver(fn() => $lastPage);
+                $rows = Sport::paginate($per_page);
+            }
+
+
             $status = 200;
             $data = [
                 'message' => 'OK',

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <table class="table table-hover">
-      <thead>
+  <div class="d-flex justify-content-center">
+    <table class="table table-hover d-inline-block w-auto">
+      <thead class="table-dark">
         <tr>
           <template v-for="col in columns">
             <th
