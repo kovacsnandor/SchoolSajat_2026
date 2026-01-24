@@ -1,6 +1,20 @@
 <template>
   <nav v-if="pagination.last_page > 1" class="mt-3">
     <ul class="pagination">
+      <!-- firs -->
+      <li
+        class="page-item"
+        :class="{ disabled: pagination.current_page === 1 }"
+      >
+        <button
+          class="page-link"
+          @click="getPaging(1, selectedPerPage)"
+          title="Első oldal"
+        >
+          &laquo;&laquo;
+        </button>
+      </li>
+      <!-- Previous -->
       <li
         class="page-item"
         :class="{ disabled: pagination.current_page === 1 }"
@@ -12,7 +26,7 @@
           &laquo;
         </button>
       </li>
-
+      <!-- numbers -->
       <li
         v-for="p in pagination.last_page"
         :key="p"
@@ -23,7 +37,7 @@
           {{ p }}
         </button>
       </li>
-
+      <!-- next -->
       <li
         class="page-item"
         :class="{ disabled: pagination.current_page === pagination.last_page }"
@@ -35,6 +49,19 @@
           &raquo;
         </button>
       </li>
+      <!-- last -->
+      <li
+        class="page-item"
+        :class="{ disabled: pagination.current_page === pagination.last_page }"
+      >
+        <button
+          class="page-link"
+          @click="getPaging(pagination.last_page, selectedPerPage)"
+          title="Utolsó oldal"
+        >
+          &raquo;&raquo;
+        </button>
+      </li>
     </ul>
   </nav>
 </template>
@@ -44,13 +71,13 @@ import { mapActions, mapState } from "pinia";
 export default {
   name: "Paginaiton",
   props: {
-    useCollectionStore: { type: Function, required: true},
+    useCollectionStore: { type: Function, required: true },
     selectedPerPage: { type: Number, default: 10 },
   },
-  data(){
+  data() {
     return {
-       store: null, 
-    }
+      store: null,
+    };
   },
   created() {
     // Itt példányosítjuk a kapott store-t
@@ -61,14 +88,14 @@ export default {
   computed: {
     pagination() {
       return this.store ? this.store.pagination : {};
-    }
+    },
   },
   methods: {
     async getPaging(page, perPage) {
       if (this.store) {
         await this.store.getPaging(page, perPage);
       }
-    }
+    },
   },
 };
 </script>
