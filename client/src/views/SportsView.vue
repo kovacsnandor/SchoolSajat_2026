@@ -11,10 +11,15 @@
       <i v-if="loading" class="bi bi-hourglass-split fs-3"></i>
     </div>
     <!-- Paginátor -->
-    <Pagination
+     <div class="d-flex align-items-center">
+      <SetSelectedPerPage
       :useCollectionStore="useCollectionStore"
-      :selectedPerPage="Number(selectedPerPage)"
-    />
+      />
+       <Pagination class="ms-2"
+       :useCollectionStore="useCollectionStore"
+       :selectedPerPage="Number(selectedPerPage)"
+       />
+      </div>
 
     <!-- oldalanként hány sor választó -->
 
@@ -59,6 +64,7 @@ import { useSportStore } from "@/stores/sportStore";
 //Komponensek
 import FormItem from "@/components/Forms/FormSport.vue";
 import Pagination from "@/components/Pagination/Pagination.vue";
+import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
 
 export default {
   //módosítás
@@ -66,6 +72,7 @@ export default {
   components: {
     FormItem,
     Pagination,
+    SetSelectedPerPage
   },
   data() {
     return {
@@ -81,13 +88,12 @@ export default {
       selectedId: null,
       title: "",
       state: "r", //'crud'
-      selectedPerPage: 10,
       useCollectionStore: useSportStore,
     };
   },
   computed: {
     //módosítás
-    ...mapState(useSportStore, ["item", "items", "loading", "error"]),
+    ...mapState(useSportStore, ["item", "items", "loading", "error", "selectedPerPage"]),
     ...mapState(useSearchStore, ["searchWord"]),
   },
   methods: {

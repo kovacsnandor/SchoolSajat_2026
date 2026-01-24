@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Sportok</h1>
     <Modal ref="modal" :title="title" 
       @yesEvent="yesEventHandler">
       <!-- vezérlőelemek -->

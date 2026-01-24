@@ -161,7 +161,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get sports: lapozás: oldal/rekord_oldalanként
-GET {{host}}/api/sportspaging/4/10 
+GET {{host}}/api/sportspaging/1/1000000
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}

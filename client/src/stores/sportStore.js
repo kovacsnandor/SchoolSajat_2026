@@ -23,12 +23,21 @@ export const useSportStore = defineStore("sport", {
     items: [new Item()],
     pagination: new Pagination(),
     selectedPerPage: 10,
+    selectedPerPageList: [10,30,50,100],
     loading: false,
     error: null,
   }),
   actions: {
-    setSelectedPerPage(value) {
+    async setSelectedPerPage(value) {
       this.selectedPerPage = value;
+      console.log('ffffffffff', this.selectedPerPage);
+      
+      const response = await service.getPaging(
+          1,
+          value
+        );
+        this.items = response.data;
+        this.pagination = response.meta;
     },
     clearItem() {
       this.item = new Item();
@@ -52,14 +61,14 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
 
       try {
-        console.log("getPaging!!!!!!!!!!!");
+        console.log('vvvvvvvvvvvv',page, per_page);
+        
         const response = await service.getPaging(page, per_page);
         this.items = response.data;
         this.pagination = response.meta;
-        console.log("pppppppppppp:", this.pagination);
       } catch (err) {
         this.error = err;
-        console.log("getPaging Error !!!!!!!!!!!", this.error);
+        console.log("getPaging Error", this.error);
       } finally {
         this.loading = false;
       }
@@ -75,8 +84,8 @@ export const useSportStore = defineStore("sport", {
         console.log("ccc", this.item);
       } catch (err) {
         this.error = err;
-        toast.messages.push(`User nem található`);
-        toast.show("Error");
+        // toast.messages.push(`User nem található`);
+        // toast.show("Error");
       } finally {
         this.loading = false;
       }

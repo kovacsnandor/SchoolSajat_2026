@@ -1,6 +1,6 @@
 <template>
-  <nav v-if="pagination.last_page > 1" class="mt-3">
-    <ul class="pagination">
+  <nav v-if="pagination.last_page > 1">
+    <ul class="pagination m-0">
       <!-- firs -->
       <li
         class="page-item"

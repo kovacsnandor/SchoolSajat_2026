@@ -43,7 +43,7 @@ class SportController extends Controller
             $page = 1;
         }
 
-        if (!is_numeric($per_page) || $per_page < 1 || $per_page > 100) {
+        if (!is_numeric($per_page) || $per_page < 1) {
             $per_page = 10; // Maximáljuk is a lapméretet, ne lehessen 1 milliót kérni
         }
         try {

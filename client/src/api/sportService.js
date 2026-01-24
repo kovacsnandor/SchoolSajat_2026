@@ -10,8 +10,8 @@ export default {
   //paginátor: oldal/rekord_oldalanként
   async getPaging(page, per_page = 10) {
     const url = `/sportspaging/${page}/${per_page}`;
-        console.log("getPaging url:", url);
-
+    console.log("url", url);
+    
     return await apiClient.get(url);
   },
 
@@ -23,16 +23,13 @@ export default {
 
   // POST: Új rekord posztolás
   async create(data) {
-    // Az Axios automatikusan JSON-ná alakítja
-    // és beteszi a Body-ba
-    delete data.id;
+    delete data.id; //id kulcsot kiveszi az objektumból
     return await apiClient.post(`${route}`, data);
   },
 
   // PUT: Módosítás
   async update(id, data) {
-    delete data.id;
-    console.log("data", data);
+    delete data.id; //id kulcsot kiveszi az objektumból
     return await apiClient.patch(`${route}/${id}`, data);
   },
 
