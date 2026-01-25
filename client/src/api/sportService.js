@@ -8,10 +8,11 @@ export default {
   },
 
   //paginátor: oldal/rekord_oldalanként
-  async getPaging(page, per_page = 10) {
-    const url = `/sportspaging/${page}/${per_page}`;
-    console.log("url", url);
-    
+  async getPaging(page, per_page = 10, column='id', direction='asc', search='') {
+    let url = `/sportspaging/${page}/${per_page}/${column}/${direction}`;
+    if (search) {
+      url = `/sportspaging/${page}/${per_page}/${column}/${direction}/${search}`;
+    } 
     return await apiClient.get(url);
   },
 

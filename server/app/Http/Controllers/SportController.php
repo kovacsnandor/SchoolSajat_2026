@@ -36,7 +36,76 @@ class SportController extends Controller
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
-    public function indexPaging($page, $per_page = 10)
+    //ping: /indexpaging/{page}/{per_page}/{column}/{direction}/{search}
+    //csak lapozás: /indexpaging/2/10/id/asc/
+
+    public function indexPaging($page, $per_page = 10, $column, $direction, $search = null)
+    {
+        //
+        if (!is_numeric($page) || $page < 1) {
+            $page = 1;
+        }
+
+        if (!is_numeric($per_page) || $per_page < 1) {
+            $per_page = 10; // Maximáljuk is a lapméretet, ne lehessen 1 milliót kérni
+        }
+        try {
+
+            // 1. A lekérdezés alapjainak felépítése (Query Builder)
+            //késleltett betöltés: láncilással építjük a lekérdezést
+            $query = Sport::query();
+
+            // 2. Szűrés (ha van keresőszó)
+            if (!empty($search) && $search !== 'all') {
+                $query->where(function ($q) use ($search) {
+                    $q->where('sportNev', 'like', "%{$search}%");
+                        // ->orWhere('description', 'like', "%{$search}%");
+                });
+            }
+
+            // 3. Sorbarendezés
+            $allowedColumns = ['id', 'sportNev']; // Biztonsági lista
+            $sortColumn = in_array($column, $allowedColumns) ? $column : 'id';
+            $sortDirection = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($sortColumn, $sortDirection);
+            //Felépült a query, de még nem nyúltunk az adatbázishoz
+
+            // 4. ELSŐ PRÓBÁLKOZÁS: Lekérjük a kért oldalt
+            // A 4. paraméter ($page) mondja meg a paginátornak, hanyadik oldalt akarjuk
+            $rows = $query->paginate($per_page, ['*'], 'page', $page);
+
+            // 5. ELLENŐRZÉS: Ha túlmentünk a határon (üres, de van tartalom)
+            if ($rows->isEmpty() && $rows->lastPage() > 0 && $page > $rows->lastPage()) {
+                $lastPage = $rows->lastPage();
+
+                // MÁSODIK PRÓBÁLKOZÁS: Lekérjük az utolsó létező oldalt
+                // Fontos: a $query-t újra kell futtatni az utolsó oldallal
+                $rows = $query->paginate($per_page, ['*'], 'page', $lastPage);
+            }
+
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $rows->items(),
+                'meta' => [
+                    'current_page' => $rows->currentPage(),
+                    'last_page' => $rows->lastPage(),
+                    'total' => $rows->total(),
+                ]
+            ];
+        } catch (\Exception $e) {
+            $status = 500;
+            $data = [
+                'message' => "Server error: {$e->getCode()}",
+                'data' => $rows
+            ];
+        }
+
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    //Működő, csak lapozó változat
+    public function indexPaging_old($page, $per_page = 10)
     {
         //
         if (!is_numeric($page) || $page < 1) {
@@ -86,6 +155,7 @@ class SportController extends Controller
 
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
+
 
 
     /**

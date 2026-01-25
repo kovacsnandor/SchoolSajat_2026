@@ -11,15 +11,15 @@
       <i v-if="loading" class="bi bi-hourglass-split fs-3"></i>
     </div>
     <!-- Paginátor -->
-     <div class="d-flex align-items-center">
-      <SetSelectedPerPage
-      :useCollectionStore="useCollectionStore"
+    <div class="d-flex align-items-center mb-2">
+      <span>({{ pagination.total }}) | </span>
+      <SetSelectedPerPage :useCollectionStore="useCollectionStore" />
+      <Pagination
+        class="ms-2"
+        :useCollectionStore="useCollectionStore"
+        :selectedPerPage="Number(selectedPerPage)"
       />
-       <Pagination class="ms-2"
-       :useCollectionStore="useCollectionStore"
-       :selectedPerPage="Number(selectedPerPage)"
-       />
-      </div>
+    </div>
 
     <!-- oldalanként hány sor választó -->
 
@@ -33,6 +33,8 @@
       <GenericTable
         :items="items"
         :columns="tableColumns"
+        :useCollectionStore="useCollectionStore"
+        @sort="handleSort"
         @create="createHandler"
         @update="updateHandler"
         @delete="deleteHandler"
@@ -72,7 +74,7 @@ export default {
   components: {
     FormItem,
     Pagination,
-    SetSelectedPerPage
+    SetSelectedPerPage,
   },
   data() {
     return {
@@ -93,8 +95,30 @@ export default {
   },
   computed: {
     //módosítás
-    ...mapState(useSportStore, ["item", "items", "loading", "error", "selectedPerPage"]),
+    ...mapState(useSportStore, [
+      "item",
+      "items",
+      "loading",
+      "error",
+      "selectedPerPage",
+      "pagination",
+      "sortColumn",
+      "sortDirection",
+    ]),
     ...mapState(useSearchStore, ["searchWord"]),
+  },
+  watch: {
+    // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk
+    
+    searchWord(newValue) {
+      this.getPaging(
+        1,
+        this.selectedPerPage,
+        this.sortColumn,
+        this.sortDirection,
+        newValue,
+      );
+    },
   },
   methods: {
     //módosítás
@@ -108,6 +132,29 @@ export default {
       "update",
       "delete",
     ]),
+    handleSort(column) {
+      // Ha ugyanarra az oszlopra kattint, megfordítjuk az irányt
+      const direction =
+        this.sortColumn === column && this.sortDirection === "asc"
+          ? "desc"
+          : "asc";
+      this.getPaging(
+        1,
+        this.selectedPerPage,
+        column,
+        direction,
+        this.searchWord,
+      );
+    },
+    async pageChangeHandler(page) {
+      await this.getPaging(
+        page,
+        this.selectedPerPage,
+        this.sortColumn,
+        this.sortDirection,
+        this.searchWord,
+      );
+    },
     createHandler() {
       this.state = "c";
       console.log("create");

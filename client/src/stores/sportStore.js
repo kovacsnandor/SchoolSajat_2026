@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
+import { useSearchStore } from "./searchStore";
 import service from "@/api/sportService";
 
 //változtatás
@@ -23,21 +24,20 @@ export const useSportStore = defineStore("sport", {
     items: [new Item()],
     pagination: new Pagination(),
     selectedPerPage: 10,
-    selectedPerPageList: [10,30,50,100],
+    selectedPerPageList: [10, 30, 50, 100],
     loading: false,
     error: null,
+    sortColumn: "id",
+    sortDirection: "asc",
   }),
   actions: {
     async setSelectedPerPage(value) {
       this.selectedPerPage = value;
-      console.log('ffffffffff', this.selectedPerPage);
-      
-      const response = await service.getPaging(
-          1,
-          value
-        );
-        this.items = response.data;
-        this.pagination = response.meta;
+      this.loading = true;
+      const response = await service.getPaging(1, value);
+      this.items = response.data;
+      this.pagination = response.meta;
+      this.loading = false;
     },
     clearItem() {
       this.item = new Item();
@@ -56,16 +56,56 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
-    async getPaging(page = 1, per_page = 10) {
+    async getPaging(page = 1, per_page = 10, column, direction, search) {
       //   const toast = useToastStore();
       this.loading = true;
+      console.log("keressünk");
+
+      if (page) {
+        this.pagination.current_page = page;
+      }
+      if (per_page) {
+        this.selectedPerPage = per_page;
+      }
+      if (column) {
+        this.sortColumn = column;
+      }
+      if (direction) {
+        this.sortDirection = direction;
+      }
+
+      search = search && search.trim() !== "" ? search : "";
+      column = column || this.sortColumn;
+      direction = direction || this.sortDirection;
+
+      const searchStore = useSearchStore();
+      const s =
+        searchStore.searchWord && searchStore.searchWord.trim() !== ""
+          ? searchStore.searchWord
+          : "";
 
       try {
-        console.log('vvvvvvvvvvvv',page, per_page);
-        
-        const response = await service.getPaging(page, per_page);
+        console.log(
+          "keresés",
+          this.pagination.current_page,
+          this.selectedPerPage,
+          this.sortColumn,
+          this.sortDirection,
+          s,
+        );
+
+        const response = await service.getPaging(
+          this.pagination.current_page,
+          this.selectedPerPage,
+          this.sortColumn,
+          this.sortDirection,
+          s,
+        );
+
         this.items = response.data;
         this.pagination = response.meta;
+        this.sortColumn = column;
+        this.sortDirection = direction;
       } catch (err) {
         this.error = err;
         console.log("getPaging Error", this.error);
@@ -96,10 +136,18 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const newItem = await service.create(data);
+        const searchStore = useSearchStore();
+        const s =
+          searchStore.searchWord && searchStore.searchWord.trim() !== ""
+            ? searchStore.searchWord
+            : "";
+
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
-        );
+          this.sortColumn,
+          this.sortDirection,
+          s,);
         this.items = response.data;
         this.pagination = response.meta;
         // const toast = useToastStore();
@@ -121,9 +169,19 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
+
+        const searchStore = useSearchStore();
+        const s =
+          searchStore.searchWord && searchStore.searchWord.trim() !== ""
+            ? searchStore.searchWord
+            : "";
+
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
+          this.sortColumn,
+          this.sortDirection,
+          s,
         );
         this.items = response.data;
         this.pagination = response.meta;
@@ -142,7 +200,19 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         await service.delete(id);
-        const response = await service.getPaging(this.pagination.current_page, this.selectedPerPage);
+        const searchStore = useSearchStore();
+        const s =
+          searchStore.searchWord && searchStore.searchWord.trim() !== ""
+            ? searchStore.searchWord
+            : "";
+
+        const response = await service.getPaging(
+          this.pagination.current_page,
+          this.selectedPerPage,
+          this.sortColumn,
+          this.sortDirection,
+          s,
+        );
         this.items = response.data;
         this.pagination = response.meta;
         // const toast = useToastStore();

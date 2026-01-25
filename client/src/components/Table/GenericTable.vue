@@ -5,11 +5,16 @@
         <tr>
           <template v-for="col in columns">
             <th
+              class="my-pointer"
               v-if="col.debug >= 1"
               :key="col.key"
+              @click="$emit('sort', col.key)"
               :class="{ 'my-debug': col.debug == 1 }"
             >
               {{ col.label }}
+              <span v-if="sortColumn === col.key">
+                {{ sortDirection === "asc" ? "▲" : "▼" }}
+              </span>
             </th>
           </template>
           <th>Műveletek</th>
@@ -53,6 +58,7 @@ export default {
   props: {
     items: { type: Array, required: true },
     columns: { type: Array, required: true }, // Pl: [{key: 'name', label: 'Név', debug: false}]
+    useCollectionStore: { type: Function, required: true },
   },
   components: {
     ButtonsCrud,
@@ -60,7 +66,22 @@ export default {
   data() {
     return {
       selectedId: null,
+      store: null, // Itt tároljuk a példányosított store-t
     };
+  },
+  created() {
+    if (this.useCollectionStore) {
+      this.store = this.useCollectionStore();
+    }
+  },
+  computed: {
+    // Ezeket a store-ból húzzuk be reaktívan
+    sortColumn() {
+      return this.store ? this.store.sortColumn : "";
+    },
+    sortDirection() {
+      return this.store ? this.store.sortDirection : "asc";
+    },
   },
   methods: {
     onClickRow(id) {
@@ -70,5 +91,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
