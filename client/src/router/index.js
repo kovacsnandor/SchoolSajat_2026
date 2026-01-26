@@ -67,7 +67,8 @@ const router = createRouter({
       component: EmptyWrapper,
       meta: {
         breadcrumb: "Adatok",
-        disabled: true, // Egyedi jelző, hogy ne legyen kattintható
+        disabled: true, // Egyedi jelző, hogy ne legyen kattintható breadcrumb-ban
+        roles: [1, 2],
       },
       children: [
         {
@@ -81,6 +82,49 @@ const router = createRouter({
           meta: {
             title: (route) => "Sportok",
             breadcrumb: "Sportok",
+            roles: [1, 2],
+          },
+        },
+        {
+          path: "schoolclasses",
+          name: "schoolclasses",
+          // route level code-splitting
+          // this generates a separate chunk (About.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import("@/views/SchoolclassesView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Osztályok",
+            breadcrumb: "Osztályok",
+            roles: [1],
+          },
+        },
+        {
+          path: "students",
+          name: "students",
+          // route level code-splitting
+          // this generates a separate chunk (About.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import("@/views/StudentsView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Tanulók",
+            breadcrumb: "Tanulók",
+            roles: [1,2],
+          },
+        },
+        {
+          path: "playngsports",
+          name: "playngsports",
+          // route level code-splitting
+          // this generates a separate chunk (About.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import("@/views/PlayngsportsView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Sportolások",
+            breadcrumb: "Sportolások",
+            roles: [1,2],
           },
         },
       ],

@@ -21,11 +21,7 @@
             >
           </li>
           <li class="nav-item">
-            <RouterLink
-              class="nav-link"
-              to="/about"
-              >About</RouterLink
-            >
+            <RouterLink class="nav-link" to="/about">About</RouterLink>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -140,6 +136,22 @@ export default {
       await this.logout();
       this.$router.push("/login");
     },
+    hasMenuAccess(targetPath) {
+      //A jogosultsági szintnek megfelelően engedélyezi, vagy tiltja a menüt
+      const userStore = useUserLoginLogoutStore();
+      const resolved = this.$router.resolve(targetPath);
+
+      if (!resolved || !resolved.matched.length) return false;
+
+      // Végigmeneteltetjük a szabályt az összes szülőn keresztül (adatok -> sports)
+      // Az 'every' akkor igaz, ha minden egyes elemre igaz a feltétel
+      return resolved.matched.every((route) => {
+        const requiredRoles = route.meta?.roles;
+
+        // A már meglévő Pinia getterünket hívjuk meg minden szinten
+        return userStore.canAccess(requiredRoles);
+      });
+    },
   },
   mounted() {
     this.searchWordInput = this.searchWord;
@@ -169,7 +181,7 @@ export default {
   /* background-color: #ffff00 !important; */
   /* color: #000 !important; */
   background-color: transparent !important; /* Levesszük a teli hátteret */
-  color: #ffff00 !important;               /* Csak a szöveg lesz sárga */
+  color: #ffff00 !important; /* Csak a szöveg lesz sárga */
   font-weight: bold;
 }
 
