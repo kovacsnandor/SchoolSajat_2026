@@ -23,7 +23,7 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="/about">About</RouterLink>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown"  v-if="hasMenuAccess('/adatok')">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -34,23 +34,23 @@
               Adatok
             </a>
             <ul class="dropdown-menu">
-              <li>
+              <li v-if="hasMenuAccess('/adatok/sports')">
                 <RouterLink class="dropdown-item" to="/adatok/sports"
                   >Sportok</RouterLink
                 >
               </li>
-              <li>
+              <li v-if="hasMenuAccess('/adatok/schoolclasses')">
                 <RouterLink class="dropdown-item" to="/adatok/schoolclasses"
                   >Osztályok</RouterLink
                 >
               </li>
-              <li>
+              <li v-if="hasMenuAccess('/adatok/students')">
                 <RouterLink class="dropdown-item" to="/adatok/students"
                   >Diákok</RouterLink
                 >
               </li>
               <li><hr class="dropdown-divider" /></li>
-              <li>
+              <li v-if="hasMenuAccess('/adatok/playngsports')">
                 <RouterLink class="dropdown-item" to="/adatok/playngsports"
                   >Sportolás</RouterLink
                 >
@@ -65,7 +65,7 @@
             <div v-if="isLoggedIn" class="d-flex align-items-center">
               <RouterLink class="nav-link" to="/userprofil">
                 <i class="bi bi-person"></i>
-                {{ userName }}
+                {{ userNameWithRole }}
               </RouterLink>
 
               <!-- logout -->
@@ -110,7 +110,7 @@ export default {
   },
   computed: {
     ...mapState(useSearchStore, ["searchWord"]),
-    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName"]),
+    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userName", "userNameWithRole"]),
   },
   watch: {
     //Keresőszó késleltetés

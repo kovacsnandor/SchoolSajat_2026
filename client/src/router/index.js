@@ -82,7 +82,7 @@ const router = createRouter({
           meta: {
             title: (route) => "Sportok",
             breadcrumb: "Sportok",
-            roles: [1, 2],
+            roles: [1],
           },
         },
         {
@@ -110,7 +110,7 @@ const router = createRouter({
           meta: {
             title: (route) => "Tanulók",
             breadcrumb: "Tanulók",
-            roles: [1,2],
+            roles: [1, 2],
           },
         },
         {
@@ -124,7 +124,7 @@ const router = createRouter({
           meta: {
             title: (route) => "Sportolások",
             breadcrumb: "Sportolások",
-            roles: [1,2],
+            roles: [1, 2],
           },
         },
       ],
@@ -144,7 +144,29 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = "Iskola - " + to.meta.title(to);
   //mehetsz tovább az oldalra
-  next();
+
+  // Megkeressük az összes meta.roles beállítást az útvonal láncban
+  // (A to.matched azért jó, mert ha a szülő védett, az egész ág védett lesz)
+  const requiredRoles = to.meta.roles;
+  const userStore = useUserLoginLogoutStore();
+  // Használjuk a már megismert logikát
+  if (userStore.canAccess(requiredRoles)) {
+    // 1. eset: Van joga (vagy publikus), mehet tovább
+    next();
+  } else {
+    // 2. eset: Nincs joga
+    if (!userStore.isLoggedIn) {
+      // Ha nincs belépve, küldjük a loginra
+      next({ path: "/login", query: { redirect: to.fullPath } });
+    } else {
+      // Ha be van lépve, de ehhez nincs joga (pl. diák admin oldalra téved)
+      // Küldjük a főoldalra vagy egy "Nincs jogosultság" oldalra
+      alert("Nincs jogosultságod az oldal megtekintéséhez!");
+      next("/");
+    }
+  }
+
+  // next();
 });
 
 export default router;

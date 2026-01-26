@@ -8,7 +8,8 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
     item: null,
     loading: false,
     error: null,
-     toast: useToastStore(),
+    toast: useToastStore(),
+    rolNames: ['Admin', 'Tanár', 'Diák']
   }),
   //valamilyen formában visszaadja
   getters: {
@@ -30,12 +31,25 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       }
       return this.item.name;
     },
+    userNameWithRole() {
+      if (!this.item) {
+        return null;
+      }
+      const userInfo = `${this.item.name}: ${this.rolNames[(this.item.role-1)]}`
+      return userInfo;
+    },
     isLoggedIn() {
       return this.item != null ? true : false;
     },
   },
   //csinál vele valamit
   actions: {
+    canAccess(requiredRoles) {
+      // Itt a 'this' kulcsszóval éred el a state-et
+      if (!requiredRoles || requiredRoles.length === 0) return true;
+      if (!this.isLoggedIn) return false;
+      return requiredRoles.includes(this.role);
+    },
     async login(data) {
       try {
         const response = await service.login(data);
