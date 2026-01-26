@@ -16,12 +16,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/"
+            <RouterLink class="nav-link" aria-current="page" to="/"
               >Home</RouterLink
             >
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/about">About</RouterLink>
+            <RouterLink
+              class="nav-link"
+              to="/about"
+              >About</RouterLink
+            >
           </li>
           <li class="nav-item dropdown">
             <a
@@ -144,6 +148,31 @@ export default {
 </script>
 
 <style scoped>
+/* 1. A sima .active ÉS a router által adott osztály is legyen sárga */
+.nav-link.active,
+.nav-link.router-link-exact-active {
+  color: #ffff00 !important;
+  font-weight: bold;
+  border-bottom: 2px solid yellow;
+}
+
+/* 2. Az "Adatok" gomb sárgítása, ha az alatta lévő listában van aktív elem */
+/* Azt mondjuk: "Színezd a .nav-item-et, ha van benne aktív router-link" */
+.nav-item:has(.dropdown-item.router-link-active) .nav-link.dropdown-toggle {
+  color: #ffff00 !important;
+  font-weight: bold;
+  border-bottom: 2px solid yellow;
+}
+
+/* 3. A lenyíló menüben a konkrét aktív elem (pl. Sportok) kijelölése */
+.dropdown-item.router-link-active {
+  /* background-color: #ffff00 !important; */
+  /* color: #000 !important; */
+  background-color: transparent !important; /* Levesszük a teli hátteret */
+  color: #ffff00 !important;               /* Csak a szöveg lesz sárga */
+  font-weight: bold;
+}
+
 .tight-icon {
   line-height: 1 !important;
   display: inline-flex;
