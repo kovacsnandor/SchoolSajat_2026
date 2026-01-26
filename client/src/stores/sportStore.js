@@ -59,8 +59,6 @@ export const useSportStore = defineStore("sport", {
     async getPaging(page = 1, per_page = 10, column, direction, search) {
       //   const toast = useToastStore();
       this.loading = true;
-      console.log("keressünk");
-
       if (page) {
         this.pagination.current_page = page;
       }
@@ -85,15 +83,6 @@ export const useSportStore = defineStore("sport", {
           : "";
 
       try {
-        console.log(
-          "keresés",
-          this.pagination.current_page,
-          this.selectedPerPage,
-          this.sortColumn,
-          this.sortDirection,
-          s,
-        );
-
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
@@ -121,7 +110,6 @@ export const useSportStore = defineStore("sport", {
       try {
         const response = await service.getById(id);
         this.item = response.data;
-        console.log("ccc", this.item);
       } catch (err) {
         this.error = err;
         // toast.messages.push(`User nem található`);
@@ -147,7 +135,8 @@ export const useSportStore = defineStore("sport", {
           this.selectedPerPage,
           this.sortColumn,
           this.sortDirection,
-          s,);
+          s,
+        );
         this.items = response.data;
         this.pagination = response.meta;
         // const toast = useToastStore();
@@ -169,7 +158,6 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
-
         const searchStore = useSearchStore();
         const s =
           searchStore.searchWord && searchStore.searchWord.trim() !== ""
