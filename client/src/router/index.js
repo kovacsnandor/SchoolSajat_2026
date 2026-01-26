@@ -16,7 +16,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      beforeEnter: [checkIfNotLogged],
+      // beforeEnter: [checkIfNotLogged],
       meta:{
         title: (route) => 'Home'
       }
@@ -25,7 +25,7 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import('@/views/AboutView.vue'),
-      beforeEnter: [checkIfNotLogged],
+      // beforeEnter: [checkIfNotLogged],
       meta:{
         title: (route) => 'About'
       }
