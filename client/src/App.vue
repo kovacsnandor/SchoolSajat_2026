@@ -7,6 +7,9 @@
     <!-- Menü -->
     <Menu/>
 
+    <!-- Breadcrumb -->
+    <Breadcrumb/>
+    
     <!-- Ide töltődnek be az oldalak -->
     <RouterView />
   </div>
@@ -14,10 +17,12 @@
 
 <script>
 import Menu from '@/components/Layout/Menu.vue';
+import Breadcrumb from './components/Layout/Breadcrumb.vue';
 
 export default {
   components: {
-    Menu
+    Menu,
+    Breadcrumb
   }
 }
 </script>

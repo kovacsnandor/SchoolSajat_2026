@@ -39,23 +39,23 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <RouterLink class="dropdown-item" to="/sports"
+                <RouterLink class="dropdown-item" to="/adatok/sports"
                   >Sportok</RouterLink
                 >
               </li>
               <li>
-                <RouterLink class="dropdown-item" to="/schoolclasses"
+                <RouterLink class="dropdown-item" to="/adatok/schoolclasses"
                   >Osztályok</RouterLink
                 >
               </li>
               <li>
-                <RouterLink class="dropdown-item" to="/students"
+                <RouterLink class="dropdown-item" to="/adatok/students"
                   >Diákok</RouterLink
                 >
               </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
-                <RouterLink class="dropdown-item" to="/playngsports"
+                <RouterLink class="dropdown-item" to="/adatok/playngsports"
                   >Sportolás</RouterLink
                 >
               </li>
