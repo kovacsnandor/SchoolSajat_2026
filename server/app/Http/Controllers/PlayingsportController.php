@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Playingsport;
-use App\Http\Requests\StorePlayingsportRequest;
-use App\Http\Requests\UpdatePlayingsportRequest;
+use App\Models\Playingsport as CurrentModel;
+use App\Http\Requests\StorePlayingsportRequest as StoreCurrentModelRequest;
+use App\Http\Requests\UpdatePlayingsportRequest as UpdateCurrentModelRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -15,10 +15,9 @@ class PlayingsportController extends Controller
      */
     public function index()
     {
-
         return $this->apiResponse(
             function () {
-                return Playingsport::all();
+                return CurrentModel::all();
             }
         );
     }
@@ -26,11 +25,11 @@ class PlayingsportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePlayingsportRequest $request)
+    public function store(StoreCurrentModelRequest $request)
     {
         return $this->apiResponse(
             function () use ($request) {
-                return Playingsport::create($request->validated());
+                return CurrentModel::create($request->validated());
             }
         );
     }
@@ -41,17 +40,17 @@ class PlayingsportController extends Controller
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
-            return Playingsport::findOrFail($id);
+            return CurrentModel::findOrFail($id);
         });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePlayingsportRequest $request, Playingsport $playingsport, int $id)
+    public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
-            $row = Playingsport::findOrFail($id);
+            $row = CurrentModel::findOrFail($id);
             $row->update($request->validated());
             return $row;
         });
@@ -63,7 +62,7 @@ class PlayingsportController extends Controller
     public function destroy(int $id)
     {
         return $this->apiResponse(function () use ($id) {
-            Playingsport::findOrFail($id)->delete();
+            CurrentModel::findOrFail($id)->delete();
             return ['id' => $id];
         });
     }
