@@ -214,7 +214,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### delete students by id 
-delete {{host}}/api/students/674
+delete {{host}}/api/students/673
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}

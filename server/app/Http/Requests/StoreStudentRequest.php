@@ -36,13 +36,18 @@ class StoreStudentRequest extends FormRequest
     {
 
         return [
-            
-            'igazolvanyszam' => [
-                'required',
-                'string',
-                'max:20',
-                'unique:students',              
-            ],
+            'diakNev' => 'required|string|max:255',
+            'schoolclassId' => 'required|integer|exists:schoolclasses,id',
+            'neme' => 'required|boolean',
+            'iranyitoszam' => 'required|string|max:10',
+            'lakHelyseg' => 'required|string|max:100',
+            'lakCim' => 'required|string|max:255',
+            'szulHelyseg' => 'required|string|max:100',
+            'szulDatum' => 'required|date|before:today',
+            // Itt az egyediség vizsgálat: unique:táblanév,oszlopnév
+            'igazolvanyszam' => 'required|string|unique:students,igazolvanyszam|max:20',
+            'atlag' => 'required|numeric|between:1,5',
+            'osztondij' => 'required|integer|min:0',
         ];
     }
 }

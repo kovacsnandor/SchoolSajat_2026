@@ -20,30 +20,32 @@ class UpdateStudentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(int $studentId): array
+    public function rules(): array
     {
-    //    $studentId = $this->route('student');  
-    //     return [
-    //             'igazolvanyszam' => [          
-    //             'required',             
-    //             'string',             
-    //             'max:20',           
-    //             Rule::unique('students')->ignore($studentId), 
-    //             ]];
-      // route paraméter neve: students/{studentId}
-        $studentId = $this->route('studentId');
+      // route paraméter neve: students/{id}
+        $studentId = $this->route('id');
 
         return [
+// A 'sometimes' azt jelenti: csak akkor validálj, ha a mező jelen van a kérésben
+            'diakNev' => 'sometimes|string|max:255',
+            'schoolclassId' => 'sometimes|integer|exists:schoolclasses,id',
+            'neme' => 'sometimes|boolean',
+            'iranyitoszam' => 'sometimes|string|max:10',
+            'lakHelyseg' => 'sometimes|string|max:100',
+            'lakCim' => 'sometimes|string|max:255',
+            'szulHelyseg' => 'sometimes|string|max:100',
+            'szulDatum' => 'sometimes|date|before:today',
+            
+            // UNIQUE TRÜKK: Figyelmen kívül hagyjuk a jelenlegi diák ID-ját
             'igazolvanyszam' => [
-                'required',
+                'sometimes',
                 'string',
                 'max:20',
-                Rule::unique('students')
-                    ->ignore($studentId)
-                    ->where(fn($query) =>
-                        $query->where('schoolclassId', $this->schoolclassId)
-                    ),
+                Rule::unique('students', 'igazolvanyszam')->ignore($studentId),
             ],
+            
+            'atlag' => 'sometimes|numeric|between:1,5',
+            'osztondij' => 'sometimes|integer|min:0',
         ];
     }
 }
