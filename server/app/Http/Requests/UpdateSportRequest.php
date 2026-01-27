@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSportRequest extends FormRequest
 {
@@ -21,8 +22,16 @@ class UpdateSportRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
-            'sportNev' => ['required', 'string', 'max:255'],
+            'sportNev' => [
+                'required',
+                'string',
+                'min:1',
+                'max:255',
+                // Itt mondjuk meg, hogy legyen egyedi, de hagyja ki az aktuális ID-t
+                Rule::unique('sports', 'sportNev')->ignore($id),
+            ],
         ];
     }
 }

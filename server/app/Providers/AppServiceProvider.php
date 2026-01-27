@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Policies\StudentPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
@@ -19,8 +20,8 @@ use Illuminate\Support\Facades\Log;
 class AppServiceProvider extends ServiceProvider
 {
     protected $policies = [
-    Student::class => StudentPolicy::class,
-];
+        Student::class => StudentPolicy::class,
+    ];
     /**
      * Register any application services.
      */
@@ -55,6 +56,7 @@ class AppServiceProvider extends ServiceProvider
                 ], 403);
             }
         });
+
 
         // Exceptions::renderable(function (\Throwable $e, $request) {
         //     if ($request->is('api/*')) {

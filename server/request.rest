@@ -122,7 +122,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get class by id 
-GET {{host}}/api/schoolclasses/25 
+GET {{host}}/api/schoolclasses/2
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
@@ -168,7 +168,7 @@ Authorization: Bearer {{token}}
 
 
 ### get sport by id 
-GET {{host}}/api/sports/5 
+GET {{host}}/api/sports/1
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
@@ -185,17 +185,17 @@ Authorization: Bearer {{token}}
 }
 
 ### patch sport 
-PATCH {{host}}/api/sports/1 
+PATCH {{host}}/api/sports/1111
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "foci1"
+"sportNev": "Foci1"
 }
 
 ### delete sport 
-DELETE {{host}}/api/sports/38 
+DELETE {{host}}/api/sports/31
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
