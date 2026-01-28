@@ -168,7 +168,7 @@ Authorization: Bearer {{token}}
 
 
 ### get sport by id 
-GET {{host}}/api/sports/1
+GET {{host}}/api/sports/1111
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
@@ -181,21 +181,21 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "Táj csí1"
+"sportNev": 1
 }
 
 ### patch sport 
-PATCH {{host}}/api/sports/1111
+PATCH {{host}}/api/sports/2
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "Foci1"
+"sportNev": "Foci"
 }
 
 ### delete sport 
-DELETE {{host}}/api/sports/31
+DELETE {{host}}/api/sports/33
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}

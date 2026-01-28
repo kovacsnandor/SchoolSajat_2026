@@ -27,7 +27,7 @@ class UpdateSportRequest extends FormRequest
             'sportNev' => [
                 'required',
                 'string',
-                'min:1',
+                'min:2',
                 'max:255',
                 // Itt mondjuk meg, hogy legyen egyedi, de hagyja ki az aktuális ID-t
                 Rule::unique('sports', 'sportNev')->ignore($id),

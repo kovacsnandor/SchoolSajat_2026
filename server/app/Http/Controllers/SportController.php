@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSportRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
 
 class SportController extends Controller
@@ -17,6 +18,9 @@ class SportController extends Controller
         return $this->apiResponse(
             function () {
                 return Sport::all();
+                // $sql = "SELECT * FROM sports";
+                // $rows = DB::select($sql);
+                // return $rows;
             }
         );
     }
