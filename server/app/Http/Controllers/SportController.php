@@ -18,9 +18,7 @@ class SportController extends Controller
         return $this->apiResponse(
             function () {
                 return Sport::all();
-                // $sql = "SELECT * FROM sports";
-                // $rows = DB::select($sql);
-                // return $rows;
+                
             }
         );
     }

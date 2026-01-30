@@ -219,11 +219,19 @@ Accept: application/json
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
-### get students by schoolclassId
-GET {{host}}/api/sturdentsbyschoolclassid/1
+### get sturdentsbyschoolclassid/{schoolclassId}/{column}/{direction}/{search?}
+GET {{host}}/api/sturdentsbyschoolclassid/1/atlag/asc/
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
+
+
+### get sturdentswithschoolclass/{column}/{direction}/{search?}
+GET {{host}}/api/sturdentswithschoolclass/diakNev/asc/2.9
+Accept: application/json 
+Content-Type: application/json 
+Authorization: Bearer {{token}}
+
 
 
 ### get students by id 
