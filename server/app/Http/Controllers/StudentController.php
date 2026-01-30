@@ -12,9 +12,17 @@ class StudentController extends Controller
 {
     use AuthorizesRequests;
 
-    /**
-     * Display a listing of the resource.
-     */
+    public function indexSturdentsBySchoolclassId(int $schoolclassId)
+    {
+        return $this->apiResponse(
+            function () {
+                return CurrentModel::all();
+            }
+        );
+    }
+
+
+    //region crud
     public function index()
     {
         return $this->apiResponse(
@@ -24,9 +32,6 @@ class StudentController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCurrentModelRequest $request)
     {
         return $this->apiResponse(
@@ -36,9 +41,6 @@ class StudentController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
@@ -46,10 +48,6 @@ class StudentController extends Controller
         });
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
@@ -59,9 +57,6 @@ class StudentController extends Controller
         });
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(int $id)
     {
         return $this->apiResponse(function () use ($id) {
@@ -69,4 +64,6 @@ class StudentController extends Controller
             return ['id' => $id];
         });
     }
+
+    //endregion
 }

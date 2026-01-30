@@ -55,6 +55,7 @@ Route::delete('users/{id}', [UserController::class, 'destroy'])
 //region Students
 Route::get('students', [StudentController::class, 'index']);
 Route::get('students/{id}', [StudentController::class, 'show']);
+Route::get('sturdentsbyschoolclassid/{schoolclassId}', [StudentController::class, 'indexSturdentsBySchoolclassId']);
 Route::post('students', [StudentController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:students:post']);
 Route::patch('students/{id}', [StudentController::class, 'update'])
@@ -76,6 +77,7 @@ Route::delete('playingsports/{id}', [PlayingsportController::class, 'destroy'])
 
 //region Schoolclass
 Route::get('schoolclasses', [SchoolclassController::class, 'index']);
+Route::get('schoolclassesabc', [SchoolclassController::class, 'indexAbc']);
 Route::get('schoolclasses/{id}', [SchoolclassController::class, 'show']);
 Route::post('schoolclasses', [SchoolclassController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:schoolclasses:post']);
@@ -87,6 +89,7 @@ Route::delete('schoolclasses/{id}', [SchoolclassController::class, 'destroy'])
 
 //region Sport
 Route::get('sports', [SportController::class, 'index']);
+Route::get('sportsabc', [SportController::class, 'indexAbc']);
 Route::get('sportspaging/{page}/{per_page}/{column}/{direction}/{search?}', [SportController::class, 'indexPaging']);
 Route::get('sports/{id}', [SportController::class, 'show']);
 Route::post('sports', [SportController::class, 'store'])

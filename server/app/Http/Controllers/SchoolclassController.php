@@ -9,14 +9,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class SchoolclassController extends Controller
 {
     use AuthorizesRequests;
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function indexAbc()
+    {
+        return $this->apiResponse(
+            function () {
+                return DB::table('schoolclasses')
+                    ->select('id', 'osztalyNev')
+                    ->orderBy('osztalyNev')
+                    ->get();
+            }
+        );
+    }
+
     public function index()
     {
         return $this->apiResponse(
@@ -26,9 +37,7 @@ class SchoolclassController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreCurrentModelRequest $request)
     {
         return $this->apiResponse(
@@ -38,9 +47,6 @@ class SchoolclassController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
@@ -48,9 +54,6 @@ class SchoolclassController extends Controller
         });
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
@@ -59,10 +62,6 @@ class SchoolclassController extends Controller
             return $row;
         });
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
 
     public function destroy(int $id)
     {

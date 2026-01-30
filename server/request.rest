@@ -121,6 +121,12 @@ Accept: application/json
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
+### get classes abc-ben
+GET {{host}}/api/schoolclassesabc 
+Accept: application/json 
+Content-Type: application/json 
+Authorization: Bearer {{token}}
+
 ### get class by id 
 GET {{host}}/api/schoolclasses/2
 Accept: application/json 
@@ -156,6 +162,12 @@ Authorization: Bearer {{token}}
 ### --- sports
 ### get sports 
 GET {{host}}/api/sports 
+Accept: application/json 
+Content-Type: application/json 
+Authorization: Bearer {{token}}
+
+### get sports név szerint növekvő
+GET {{host}}/api/sportsabc 
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
@@ -206,6 +218,13 @@ GET {{host}}/api/students
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
+
+### get students by schoolclassId
+GET {{host}}/api/sturdentsbyschoolclassid/1
+Accept: application/json 
+Content-Type: application/json 
+Authorization: Bearer {{token}}
+
 
 ### get students by id 
 GET {{host}}/api/students/567

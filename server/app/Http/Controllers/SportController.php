@@ -24,6 +24,17 @@ class SportController extends Controller
             }
         );
     }
+    public function indexAbc()
+    {
+        return $this->apiResponse(
+            function () {
+                return DB::table('sports')
+                    ->select('id', 'sportNev')
+                    ->orderBy('sportNev')
+                    ->get();
+            }
+        );
+    }
 
     public function show(int $id)
     {
