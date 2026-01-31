@@ -1,6 +1,7 @@
 <template>
   <div>
     <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
+    <!-- Az oldal címe -->
     <div class="d-flex justify-content-between align-items-center">
       <h1>
         {{ pageTitle }}
@@ -10,6 +11,7 @@
       <!-- homokóra -->
       <i v-if="loading" class="bi bi-hourglass-split fs-3"></i>
     </div>
+    <!-- módosítás: nem kell, ha nincs lapozás -->
     <!-- Paginátor -->
     <div class="d-flex align-items-center mb-2">
       <span>({{ pagination.total }}) | </span>
@@ -21,13 +23,9 @@
       />
     </div>
 
-    <!-- oldalanként hány sor választó -->
-
-    <!-- Sportok táblázat CRUD -->
+    <!-- Táblázat CRUD -->
     <div>
       <ToastContainer />
-
-      <!-- <div v-if="loading">Betöltés...</div> -->
 
       <!-- Táblázat -->
       <GenericTable
@@ -64,6 +62,7 @@ import { useSearchStore } from "@/stores/searchStore";
 //módosítás
 import { useSportStore } from "@/stores/sportStore";
 //Komponensek
+//módosítás
 import FormItem from "@/components/Forms/FormSport.vue";
 import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
@@ -146,6 +145,7 @@ export default {
         this.searchWord,
       );
     },
+    //módosítás: Csak ha van lapozás
     async pageChangeHandler(page) {
       await this.getPaging(
         page,
@@ -197,6 +197,7 @@ export default {
     },
   },
   async mounted() {
+    //módosítás, ha nem kell lapozás: this.getAll()
     await this.getPaging(1, this.selectedPerPage);
     this.setSelectedPerPage(this.selectedPerPage);
   },
