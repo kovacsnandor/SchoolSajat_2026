@@ -12,7 +12,12 @@ class Student extends Model
     /** @use HasFactory<\Database\Factories\StudentsFactory> */
     use HasFactory;
 
+    //Fontos!!! Ez engedi meg a camelCase neveket
+    public static $snakeAttributes = false;
 
+
+    //A Carbon egy Laravel csomag, ami rengteg dátummal kapcsolatos
+    //segédfüggvényt atartalmaz, például kiszámolja precizen az életkort
     public function eletkor(): Attribute
     {
         return Attribute::make(
@@ -20,16 +25,22 @@ class Student extends Model
             // Segítünk az IDE-nek: "Hé, ez itt egy Carbon dátum!"
                 /** @var \Illuminate\Support\Carbon|null $date */
                 $date = $this->szulDatum;
-
                 return $date?->age;
             }
         );
     }
+    
 
-    // public function getOsztalyNevAttribute()
-    // {
-    //     return $this->schoolclass?->osztalyNev;
-    // }
+    //Fontos!!! nem lehet a függvény neve camelCase formátumú 
+    public function nemeString(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->neme ? 'fiú' : 'lány';
+            }
+        );
+    }
+
 
 
     // public function osztaly(): Attribute
@@ -53,7 +64,8 @@ class Student extends Model
         );
     }
 
-    protected $appends = ['eletkor'];
+    protected $appends = ['eletkor', 'nemeString'];
+    // protected $appends = ['eletkor', 'nemestring'];
     // protected $appends = ['eletkor', 'osztaly'];
 
     protected $fillable = [
@@ -76,7 +88,7 @@ class Student extends Model
     ];
 
     protected $casts = [
-        'szulDatum' => 'date',
+        'szulDatum' => 'date:Y-m-d',
         'atlag' => 'float',
         'osztondij' => 'float',
     ];

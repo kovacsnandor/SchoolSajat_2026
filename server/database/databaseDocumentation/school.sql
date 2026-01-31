@@ -36,5 +36,12 @@ INNER JOIN schoolclasses sc ON sc.id = st.schoolclassId
 order BY eletkor;
 
 
+# diákok táblázathoz
+select s.*, FLOOR(DATEDIFF(CURDATE(), s.szulDatum)/365.25) eletkor, sc.osztalyNev from students s
+  INNER JOIN schoolclasses sc ON s.schoolclassId = sc.id
+  WHERE s.schoolclassId = 1 and (
+    
+  )
+  ORDER BY s.diakNev;
 
 
