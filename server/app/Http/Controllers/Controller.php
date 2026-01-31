@@ -13,10 +13,25 @@ abstract class Controller
     {
         try {
             $result = $callback();
-            return response()->json([
+
+
+            $response = [
                 'message' => 'OK',
                 'data' => $result
-            ], 200, options: JSON_UNESCAPED_UNICODE);
+            ];
+
+            // Ha a callback-ből egy speciális "csomagolt" választ kapunk (pl. lapozásnál)
+            if (is_array($result) && isset($result['data']) && isset($result['meta'])) {
+                $response['data'] = $result['data'];
+                $response['meta'] = $result['meta'];
+            }
+
+            return response()->json($response, 200, options: JSON_UNESCAPED_UNICODE);
+
+            // return response()->json([
+            //     'message' => 'OK',
+            //     'data' => $result
+            // ], 200, options: JSON_UNESCAPED_UNICODE);
 
         } catch (ValidationException $e) {
             // Validációs hiba (pl. üresen hagyott kötelező mező)
@@ -25,14 +40,13 @@ abstract class Controller
                 'errors' => $e->errors(), // Itt küldjük vissza, mi volt a baj pontosan
                 'data' => null
             ], 422, options: JSON_UNESCAPED_UNICODE);
-
         } catch (\Throwable $e) {
             $status = 500;
             if ($e instanceof HttpExceptionInterface) $status = $e->getStatusCode();
             if ($e instanceof ModelNotFoundException) $status = 404;
 
             return response()->json([
-                'message' => config('app.debug') ? 
+                'message' => config('app.debug') ?
                     $e->getMessage() : 'Váratlan hiba történt.',
                 'data' => null
             ], $status, options: JSON_UNESCAPED_UNICODE);

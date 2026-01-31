@@ -18,7 +18,6 @@ class SportController extends Controller
         return $this->apiResponse(
             function () {
                 return Sport::all();
-                
             }
         );
     }
@@ -72,15 +71,14 @@ class SportController extends Controller
 
     public function indexPaging($page, $per_page = 10, $column, $direction, $search = null)
     {
-        //
-        if (!is_numeric($page) || $page < 1) {
-            $page = 1;
-        }
+        return $this->apiResponse(function () use ($page, $per_page, $column, $direction, $search) {
+            if (!is_numeric($page) || $page < 1) {
+                $page = 1;
+            }
 
-        if (!is_numeric($per_page) || $per_page < 1) {
-            $per_page = 10; // Maximáljuk is a lapméretet, ne lehessen 1 milliót kérni
-        }
-        try {
+            if (!is_numeric($per_page) || $per_page < 1) {
+                $per_page = 10; // Maximáljuk is a lapméretet, ne lehessen 1 milliót kérni
+            }
 
             // 1. A lekérdezés alapjainak felépítése (Query Builder)
             //késleltett betöltés: láncilással építjük a lekérdezést
@@ -113,25 +111,14 @@ class SportController extends Controller
                 // Fontos: a $query-t újra kell futtatni az utolsó oldallal
                 $rows = $query->paginate($per_page, ['*'], 'page', $lastPage);
             }
-
-            $status = 200;
-            $data = [
-                'message' => 'OK',
-                'data' => $rows->items(),
+            return [
+                'data' => $rows->items(), // Csak a tiszta modellek listája
                 'meta' => [
                     'current_page' => $rows->currentPage(),
                     'last_page' => $rows->lastPage(),
                     'total' => $rows->total(),
                 ]
             ];
-        } catch (\Exception $e) {
-            $status = 500;
-            $data = [
-                'message' => "Server error: {$e->getCode()}",
-                'data' => $rows
-            ];
-        }
-
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+        });
     }
 }
