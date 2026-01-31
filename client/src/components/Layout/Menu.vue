@@ -128,6 +128,11 @@ export default {
         this.setSearchWord(newVal);
       }, 500);
     },
+    searchWord(value){
+      if (!value) {
+        this.searchWordInput = '';
+      }
+    }
   },
   methods: {
     ...mapActions(useSearchStore, ["setSearchWord"]),

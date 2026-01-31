@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center table-responsive">
     <table class="table table-hover d-inline-block w-auto">
       <thead class="table-dark">
         <tr>

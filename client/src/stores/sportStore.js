@@ -37,6 +37,8 @@ export const useSportStore = defineStore("sport", {
       const response = await service.getPaging(1, value);
       this.items = response.data;
       this.pagination = response.meta;
+      const searchStore = useSearchStore();
+      searchStore.reset();
       this.loading = false;
     },
     clearItem() {

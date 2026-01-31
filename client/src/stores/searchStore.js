@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const useSearchStore = defineStore("search", {
   //Ezek a változók
   state: () => ({
-    searchWord: null,
+    searchWord: '',
   }),
   //valamilyen formában visszaadja
   getters: {
@@ -14,7 +14,7 @@ export const useSearchStore = defineStore("search", {
   //csinál vele valamit
   actions: {
     reset(){
-        this.searchWord = null;
+        this.searchWord = '';
     },
     setSearchWord(value){
         this.searchWord = value;

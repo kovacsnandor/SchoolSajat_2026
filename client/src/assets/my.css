@@ -1,3 +1,8 @@
+:root {
+  /* --my-border: 10px; */
+  --my-border-space: 0px;
+}
+
 .my-container {
   max-width: 1200px;
 }
@@ -8,6 +13,10 @@
 
 .my-pointer {
   cursor: pointer;
+}
+
+.my-content-height {
+  height: calc(100vh - 251px + var(--my-border-space));
 }
 
 .my-debug {

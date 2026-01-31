@@ -1,6 +1,6 @@
 <template>
   <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb m-0">
       <li class="breadcrumb-item">
         <router-link to="/">Kezdőlap</router-link>
       </li>
