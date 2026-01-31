@@ -195,4 +195,13 @@ export default {
   display: inline-flex;
   vertical-align: middle;
 }
+
+.navbar {
+  position: relative;
+  z-index: 1050 !important; /* A Bootstrap modalok 1050-nél kezdődnek */
+}
+
+.dropdown-menu {
+  z-index: 1060 !important;
+}
 </style>

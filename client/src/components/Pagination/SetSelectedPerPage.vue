@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-center">
+  <div class="d-flex align-items-center p-0">
     <label class="me-2" for="select">
       {{ label }}
     </label>

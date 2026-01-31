@@ -1,7 +1,8 @@
 <template>
-  <div class="d-flex justify-content-center table-responsive">
-    <table class="table table-hover d-inline-block w-auto">
-      <thead class="table-dark">
+  <div class="table-responsive my-table-container" 
+  style="max-height: calc(100vh - 300px); overflow-y: auto;">
+    <table class="table table-hover w-auto mx-auto">
+      <thead class="table-dark sticky-top" style="z-index: 10; top: 0;">
         <tr>
           <template v-for="col in columns">
             <th
@@ -91,4 +92,23 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* Ez a titkos szósz a sticky fejléc stabilizálásához */
+.my-table-container {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+/* Megakadályozza, hogy görgetéskor "átlátszanak" a betűk a fekete fejléc alatt */
+/* .sticky-top th {
+  background-color: #212529 !important;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+} */
+
+/* Ha a táblázat keskenyebb mint a képernyő, de középre akarod tenni */
+.table {
+  margin-left: auto;
+  margin-right: auto;
+  width: auto !important; /* Csak akkor, ha nem akarod, hogy kifeszüljön */
+}
+</style>

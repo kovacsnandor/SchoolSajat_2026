@@ -1,23 +1,21 @@
 <template>
   <div>
     <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
-    <!-- Az oldal címe -->
-    <div class="d-flex justify-content-between align-items-center">
-      <h1>
+    <div class="row d-flex align-items-center m-0 mb-2 sticky-top">
+      <!-- Az oldal címe -->
+      <h1 class="col-auto">
         {{ pageTitle }}
-        <!-- <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
       </h1>
-
+  
       <!-- homokóra -->
-      <i v-if="loading" class="bi bi-hourglass-split fs-3"></i>
-    </div>
-    <!-- módosítás: nem kell, ha nincs lapozás -->
-    <!-- Paginátor -->
-    <div class="d-flex align-items-center mb-2">
-      <span>({{ pagination.total }}) | </span>
-      <SetSelectedPerPage :useCollectionStore="useCollectionStore" />
+      <i v-if="loading" class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"></i>
+      <ButtonsCrudCreate class="col-auto p-0" v-if="!loading" @create="createHandler"/>
+      <!-- módosítás: nem kell, ha nincs lapozás -->
+      <!-- Paginátor -->
+      <div class="col-auto p-1"> | ({{ pagination.total }}) |</div>
+      <SetSelectedPerPage class="col-auto" :useCollectionStore="useCollectionStore" />
       <Pagination
-        class="ms-2"
+        class="ms-1 col"
         :useCollectionStore="useCollectionStore"
         :selectedPerPage="Number(selectedPerPage)"
       />
@@ -66,6 +64,7 @@ import { useSportStore } from "@/stores/sportStore";
 import FormItem from "@/components/Forms/FormSport.vue";
 import Pagination from "@/components/Pagination/Pagination.vue";
 import SetSelectedPerPage from "@/components/Pagination/SetSelectedPerPage.vue";
+import ButtonsCrudCreate from "@/components/Table/ButtonsCrudCreate.vue";
 
 export default {
   //módosítás
@@ -74,6 +73,7 @@ export default {
     FormItem,
     Pagination,
     SetSelectedPerPage,
+    ButtonsCrudCreate,
   },
   data() {
     return {
@@ -199,7 +199,7 @@ export default {
   async mounted() {
     //módosítás, ha nem kell lapozás: this.getAll()
     await this.getPaging(1, this.selectedPerPage);
-    this.setSelectedPerPage(this.selectedPerPage);
+    // this.setSelectedPerPage(this.selectedPerPage);
   },
 };
 </script>
