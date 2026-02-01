@@ -5,7 +5,7 @@ import service from "@/api/userLoginLogoutService";
 export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
   //Ezek a változók
   state: () => ({
-    item: null,
+    item: JSON.parse(localStorage.getItem("user_data")) || null,
     loading: false,
     error: null,
     toast: useToastStore(),
@@ -54,6 +54,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       try {
         const response = await service.login(data);
         this.item = response.data;
+        localStorage.setItem("user_data", JSON.stringify(response.data));
         this.loading = true;
         return true;
       } catch (err) {
@@ -67,6 +68,8 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         const toast = useToastStore();
         const response = await service.logout();
         this.item = null;
+        // Törlés localStorage-ból
+        localStorage.removeItem("user_data");
         this.loading = false;
         return true;
       } catch (err) {

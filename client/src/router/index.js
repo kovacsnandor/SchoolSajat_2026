@@ -157,7 +157,7 @@ router.beforeEach((to, from, next) => {
     // 2. eset: Nincs joga
     if (!userStore.isLoggedIn) {
       // Ha nincs belépve, küldjük a loginra
-      next({ path: "/login", query: { redirect: to.fullPath } });
+      next({ path: "/login" });
     } else {
       // Ha be van lépve, de ehhez nincs joga (pl. diák admin oldalra téved)
       // Küldjük a főoldalra vagy egy "Nincs jogosultság" oldalra
