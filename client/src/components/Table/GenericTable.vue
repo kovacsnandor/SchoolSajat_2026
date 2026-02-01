@@ -1,7 +1,7 @@
 <template>
   <div
     class="table-responsive my-table-container"
-    style="max-height: calc(100vh - 300px); overflow-y: auto"
+    style="max-height: calc(100vh - 360px); overflow-y: auto"
   >
     <table class="table table-hover w-auto mx-auto">
       <thead class="table-dark sticky-top" style="z-index: 10; top: 0">

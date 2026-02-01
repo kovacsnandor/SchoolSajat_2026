@@ -224,7 +224,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get sturdentsbyschoolclassid/{schoolclassId}/{column}/{direction}/{search?}
-GET {{host}}/api/sturdentsbyschoolclassid/1/atlag/asc/
+GET {{host}}/api/sturdentsbyschoolclassid/1/eletkor/asc/
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}

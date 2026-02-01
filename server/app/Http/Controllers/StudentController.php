@@ -54,12 +54,19 @@ class StudentController extends Controller
                     'szulDatum',
                     'igazolvanyszam',
                     'atlag',
-                    'osztondij'
+                    'osztondij',
+                    'nemeString',
+                    'eletkor',
                 ];
 
                 // Ha az URL-ben kapott oszlopnév nincs a listában, válasszuk a diák nevét alapértelmezettnek
-                $sortColumn = in_array($column, $validColumns) ? $column : 'diakNev';
-
+                $sortColumn = in_array($column, $validColumns) ? $column : 'id';
+                if ($sortColumn == 'nemeString') {
+                    $sortColumn = 'neme';
+                }
+                if ($sortColumn == 'eletkor') {
+                    $sortColumn = 'szulDatum';
+                }
                 // Az irány is legyen biztonságos (csak asc vagy desc)
                 $sortDirection = strtolower($direction) === 'desc' ? 'desc' : 'asc';
 
@@ -111,6 +118,12 @@ class StudentController extends Controller
                                     ->orWhere('szulDatum', 'like', "%{$search}%")
                                     ->orWhere('atlag', 'like', "%{$search}%");
                             });
+                        }
+                        if ($sortColumn == 'nemeString') {
+                            $sortColumn = 'neme';
+                        }
+                        if ($sortColumn == 'eletkor') {
+                            $sortColumn = 'szulDatum';
                         }
                         $q->orderBy($sortColumn, $sortDirection);
                     }]);
