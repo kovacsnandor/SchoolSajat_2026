@@ -119,6 +119,12 @@ Accept: application/json
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
+### get schoolclassessortsearch/{column}/{direction}/{search?}
+GET {{host}}/api/schoolclassessortsearch/osztalyNev/asc/8
+Accept: application/json 
+Content-Type: application/json 
+Authorization: Bearer {{token}}
+
 ### get classes abc-ben
 GET {{host}}/api/schoolclassesabc 
 Accept: application/json 

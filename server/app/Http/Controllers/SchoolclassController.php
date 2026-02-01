@@ -28,6 +28,32 @@ class SchoolclassController extends Controller
         );
     }
 
+    public function indexSortSearch($column, $direction, $search = null)
+    {
+        return $this->apiResponse(
+            function () use ($column, $direction, $search) {
+
+                $query = CurrentModel::query();
+
+                // 2. Szűrés (ha van keresőszó)
+                if (!empty($search) && $search !== 'all') {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('osztalyNev', 'like', "%{$search}%");
+                        // ->orWhere('description', 'like', "%{$search}%");
+                    });
+                }
+
+                // 3. Sorbarendezés
+                $allowedColumns = ['id', 'osztalyNev']; // Biztonsági lista
+                $sortColumn = in_array($column, $allowedColumns) ? $column : 'id';
+                $sortDirection = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+                $rows = $query->orderBy($sortColumn, $sortDirection)->get();
+
+                return $rows;
+            }
+        );
+    }
+
     public function index()
     {
         return $this->apiResponse(
