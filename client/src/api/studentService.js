@@ -1,14 +1,19 @@
-import apiClient from './axiosClient'; 
-const route = '/schoolclasses';
+import apiClient from "./axiosClient";
+const route = "/students";
 
 export default {
-  async getAllAbc() {
-    const route = `/schoolclassesabc`
+  async getAllByShoolclassId(
+    schoolclassId,
+    column = "id",
+    direction = "asc",
+    search = "",
+  ) {
+    const route = `/sturdentsbyschoolclassid/${schoolclassId}/${column}/${direction}/${search}`;
     return await apiClient.get(route);
   },
 
-   async getAllSortSearch(column='id', direction='asc', search='') {
-    const route = `/schoolclassessortsearch/${column}/${direction}/${search}`
+  async getAllWithShoolclass(column = "id", direction = "asc", search = "") {
+    const route = `/sturdentsbyschoolclassid/${column}/${direction}/${search}`;
     return await apiClient.get(route);
   },
 
@@ -19,7 +24,7 @@ export default {
 
   // GET: Egy rekord (ID alapján)
   async getById(id) {
-    const url = `${route}/${id}`
+    const url = `${route}/${id}`;
     return await apiClient.get(url);
   },
 
@@ -38,5 +43,5 @@ export default {
   // DELETE: Törlés
   async delete(id) {
     return await apiClient.delete(`${route}/${id}`);
-  }
+  },
 };
