@@ -29,6 +29,7 @@ export const useSportStore = defineStore("sport", {
     error: null,
     sortColumn: "id",
     sortDirection: "asc",
+    searchStore: useSearchStore(),
   }),
   actions: {
     async setSelectedPerPage(value) {
@@ -37,8 +38,7 @@ export const useSportStore = defineStore("sport", {
       const response = await service.getPaging(1, value);
       this.items = response.data;
       this.pagination = response.meta;
-      const searchStore = useSearchStore();
-      searchStore.reset();
+      this.searchStore.reset();
       this.loading = false;
     },
     clearItem() {
@@ -57,7 +57,7 @@ export const useSportStore = defineStore("sport", {
         this.loading = false;
       }
     },
-    
+
     async getAllAbc() {
       //   const toast = useToastStore();
       this.loading = true;
@@ -71,7 +71,7 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
-    async getPaging(page = 1, per_page = 10, column, direction, search) {
+    async getPaging(page = 1, per_page = 10, column='id') {
       //   const toast = useToastStore();
       this.loading = true;
       if (page) {
@@ -81,35 +81,23 @@ export const useSportStore = defineStore("sport", {
         this.selectedPerPage = per_page;
       }
       if (column) {
+        const direction =
+          this.sortColumn === column && this.sortDirection === "asc"
+            ? "desc"
+            : "asc";
         this.sortColumn = column;
-      }
-      if (direction) {
         this.sortDirection = direction;
       }
-
-      search = search && search.trim() !== "" ? search : "";
-      column = column || this.sortColumn;
-      direction = direction || this.sortDirection;
-
-      const searchStore = useSearchStore();
-      const s =
-        searchStore.searchWord && searchStore.searchWord.trim() !== ""
-          ? searchStore.searchWord
-          : "";
-
       try {
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
           this.sortColumn,
           this.sortDirection,
-          s,
+          this.searchStore.searchWord,
         );
-
         this.items = response.data;
         this.pagination = response.meta;
-        this.sortColumn = column;
-        this.sortDirection = direction;
       } catch (err) {
         this.error = err;
         console.log("getPaging Error", this.error);
@@ -139,18 +127,13 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const newItem = await service.create(data);
-        const searchStore = useSearchStore();
-        const s =
-          searchStore.searchWord && searchStore.searchWord.trim() !== ""
-            ? searchStore.searchWord
-            : "";
-
+        this.searchStore.reset();
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
           this.sortColumn,
           this.sortDirection,
-          s,
+          this.searchStore.searchWord,
         );
         this.items = response.data;
         this.pagination = response.meta;
@@ -173,18 +156,12 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
-        const searchStore = useSearchStore();
-        const s =
-          searchStore.searchWord && searchStore.searchWord.trim() !== ""
-            ? searchStore.searchWord
-            : "";
-
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
           this.sortColumn,
           this.sortDirection,
-          s,
+          this.searchStore.searchWord,
         );
         this.items = response.data;
         this.pagination = response.meta;
@@ -203,18 +180,12 @@ export const useSportStore = defineStore("sport", {
       this.loading = true;
       try {
         await service.delete(id);
-        const searchStore = useSearchStore();
-        const s =
-          searchStore.searchWord && searchStore.searchWord.trim() !== ""
-            ? searchStore.searchWord
-            : "";
-
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
           this.sortColumn,
           this.sortDirection,
-          s,
+          this.searchStore.searchWord,
         );
         this.items = response.data;
         this.pagination = response.meta;

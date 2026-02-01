@@ -93,15 +93,11 @@ export default {
     ...mapState(useSearchStore, ["searchWord"]),
   },
   watch: {
-    // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk
-    
+    // Ha változik a keresőszó, újra keresünk
     searchWord(newValue) {
-      this.getPaging(
-        1,
-        this.selectedPerPage,
+      this.getAllSortSearch(
         this.sortColumn,
-        this.sortDirection,
-        newValue,
+        this.sortDirection
       );
     },
   },
@@ -109,36 +105,25 @@ export default {
     //módosítás
     ...mapActions(useSchoolclassStore, [
       "clearItem",
+      "getAllSortSearch",
       "getAll",
       "getById",
       "create",
       "update",
       "delete",
     ]),
+    ...mapActions(useSearchStore, ['reset']),
     handleSort(column) {
-      // Ha ugyanarra az oszlopra kattint, megfordítjuk az irányt
-      const direction =
-        this.sortColumn === column && this.sortDirection === "asc"
-          ? "desc"
-          : "asc";
-      this.getPaging(
-        1,
-        this.selectedPerPage,
-        column,
-        direction,
-        this.searchWord,
-      );
+      this.getAllSortSearch(column);
     },
     createHandler() {
       this.state = "c";
-      console.log("create");
       this.title = "Új adatbevitel";
       this.clearItem();
       this.$refs.form.show();
     },
     async updateHandler(id) {
       this.state = "u";
-      console.log("update:", id);
       this.title = "Adatmódosítás";
       await this.getById(id);
       this.$refs.form.show();
@@ -159,19 +144,18 @@ export default {
     async yesEventFormHandler(item) {
       if (this.state === "c") {
         //új rekord
-        console.log("új rekord");
         await this.create(item);
         this.state = "r";
       } else if (this.state === "u") {
         //rekord módosítás
-        console.log("rekord módosítás");
         await this.update(item.id, item);
         this.state = "r";
       }
     },
   },
   async mounted() {
-    await this.getAll();
+    this.reset()
+    await this.getAllSortSearch();
   },
 };
 </script>

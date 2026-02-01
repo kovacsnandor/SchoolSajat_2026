@@ -7,6 +7,11 @@ export default {
     return await apiClient.get(url);
   },
 
+   async getAllSortSearch(column='id', direction='asc', search='') {
+    const route = `/schoolclassessortsearch/${column}/${direction}/${search}`
+    return await apiClient.get(route);
+  },
+
   // GET: Összes rekord lekérése
   async getAll() {
     return await apiClient.get(`${route}`);

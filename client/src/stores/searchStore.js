@@ -17,7 +17,7 @@ export const useSearchStore = defineStore("search", {
         this.searchWord = '';
     },
     setSearchWord(value){
-        this.searchWord = value;
+        this.searchWord = value.trim();
     }
   },
 });

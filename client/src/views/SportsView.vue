@@ -109,14 +109,11 @@ export default {
   },
   watch: {
     // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk
-    
     searchWord(newValue) {
       this.getPaging(
         1,
         this.selectedPerPage,
-        this.sortColumn,
-        this.sortDirection,
-        newValue,
+        this.sortColumn
       );
     },
   },
@@ -134,16 +131,10 @@ export default {
     ]),
     handleSort(column) {
       // Ha ugyanarra az oszlopra kattint, megfordítjuk az irányt
-      const direction =
-        this.sortColumn === column && this.sortDirection === "asc"
-          ? "desc"
-          : "asc";
       this.getPaging(
         1,
         this.selectedPerPage,
-        column,
-        direction,
-        this.searchWord,
+        column
       );
     },
     //módosítás: Csak ha van lapozás
@@ -152,8 +143,6 @@ export default {
         page,
         this.selectedPerPage,
         this.sortColumn,
-        this.sortDirection,
-        this.searchWord,
       );
     },
     createHandler() {
