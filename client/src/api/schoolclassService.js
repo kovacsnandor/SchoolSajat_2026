@@ -1,24 +1,14 @@
 import apiClient from './axiosClient'; 
-const route = '/sports';
+const route = '/schoolclasses';
 
 export default {
+  async getAllAbc(id) {
+    const url = `/schoolclassesabc`
+    return await apiClient.get(url);
+  },
+
   // GET: Összes rekord lekérése
   async getAll() {
-    return await apiClient.get(`${route}`);
-  },
-
-  // GET: Összes rekord lekérése Abc sorendben
-  async getAllAbc() {
-    const route='/sportsabc'
-    return await apiClient.get(`${route}`);
-  },
-
-  //paginátor: oldal/rekord_oldalanként
-  async getPaging(page, per_page = 10, column='id', direction='asc', search='') {
-    let route = `/sportspaging/${page}/${per_page}/${column}/${direction}`;
-    if (search) {
-      route = `/sportspaging/${page}/${per_page}/${column}/${direction}/${search}`;
-    } 
     return await apiClient.get(`${route}`);
   },
 

@@ -112,8 +112,6 @@ Authorization: Bearer {{token}}
 ### --- API teszt
 get {{host}}/api/x
 
-
-
 ### --- schoolclasses
 ### get classes 
 GET {{host}}/api/schoolclasses 

@@ -89,6 +89,7 @@ export default {
       selectedId: null,
       title: "",
       state: "r", //'crud'
+      // módosítás
       useCollectionStore: useSportStore,
     };
   },

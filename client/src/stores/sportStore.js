@@ -57,6 +57,19 @@ export const useSportStore = defineStore("sport", {
         this.loading = false;
       }
     },
+    
+    async getAllAbc() {
+      //   const toast = useToastStore();
+      this.loading = true;
+      try {
+        const response = await service.getAllAbc();
+        this.items = response.data;
+      } catch (err) {
+        this.error = err;
+      } finally {
+        this.loading = false;
+      }
+    },
 
     async getPaging(page = 1, per_page = 10, column, direction, search) {
       //   const toast = useToastStore();
