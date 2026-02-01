@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
-import service from "@/api/schoolclassService";
+import service from "@/api/studentService";
 
 //változtatás
 class Item {
@@ -38,7 +38,7 @@ class Item {
   }
 }
 
-export const useSturdentStore = defineStore("students", {
+export const useStudentStore = defineStore("students", {
   state: () => ({
     item: new Item(),
     items: [new Item()],
@@ -63,6 +63,8 @@ export const useSturdentStore = defineStore("students", {
           : "asc";
       this.sortDirection = direction;
       try {
+        console.log("oszlop", column);
+        
         const response = await service.getAllByShoolclassId(
           schoolclassId,
           this.sortColumn,

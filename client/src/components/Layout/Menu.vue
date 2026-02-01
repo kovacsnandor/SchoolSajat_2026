@@ -126,7 +126,7 @@ export default {
       //500ms késleltetés után tárolja
       this.timeout = setTimeout(() => {
         this.setSearchWord(newVal);
-      }, 500);
+      }, 1000);
     },
     searchWord(value){
       if (!value) {

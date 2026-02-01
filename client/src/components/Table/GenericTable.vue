@@ -1,9 +1,12 @@
 <template>
-  <div class="table-responsive my-table-container" 
-  style="max-height: calc(100vh - 300px); overflow-y: auto;">
+  <div
+    class="table-responsive my-table-container"
+    style="max-height: calc(100vh - 300px); overflow-y: auto"
+  >
     <table class="table table-hover w-auto mx-auto">
-      <thead class="table-dark sticky-top" style="z-index: 10; top: 0;">
-        <tr>
+      <thead class="table-dark sticky-top" style="z-index: 10; top: 0">
+        <tr class="align-middle text-center">
+          <th>Műveletek</th>
           <template v-for="col in columns">
             <th
               class="my-pointer"
@@ -12,13 +15,19 @@
               @click="$emit('sort', col.key)"
               :class="{ 'my-debug': col.debug == 1 }"
             >
-              {{ col.label }}
-              <span v-if="sortColumn === col.key">
-                {{ sortDirection === "asc" ? "▲" : "▼" }}
-              </span>
+              <div
+                class="d-flex align-items-center justify-content-center text-nowrap"
+              >
+                <span>{{ col.label }}</span>
+                <span
+                  :class="{ invisible: sortColumn !== col.key }"
+                  class="ms-1"
+                >
+                  {{ sortDirection === "asc" ? "▲" : "▼" }}
+                </span>
+              </div>
             </th>
           </template>
-          <th>Műveletek</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -28,6 +37,14 @@
           @click="onClickRow(item.id)"
           :class="{ 'table-primary': selectedId === item.id }"
         >
+          <td>
+            <ButtonsCrud
+              :id="item.id"
+              @delete="$emit('delete', $event)"
+              @update="$emit('update', $event)"
+              @create="$emit('create', $event)"
+            />
+          </td>
           <template v-for="col in columns">
             <td
               v-if="col.debug >= 1"
@@ -37,14 +54,6 @@
               {{ item[col.key] }}
             </td>
           </template>
-          <td>
-            <ButtonsCrud
-              :id="item.id"
-              @delete="$emit('delete', $event)"
-              @update="$emit('update', $event)"
-              @create="$emit('create', $event)"
-            />
-          </td>
         </tr>
       </tbody>
     </table>
