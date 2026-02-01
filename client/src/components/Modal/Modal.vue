@@ -8,7 +8,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered" :class="modalSizeClass">
       <div class="modal-content">
         <form
           @submit.prevent="onClickYes"
@@ -68,6 +68,7 @@ export default {
     title: { type: String, default: "Modális ablak" },
     yes: { type: String, default: "Mentés" },
     no: { type: String, default: "Mégsem" },
+    modalSize: {type: String, default: ''}
   },
   data() {
     return {
@@ -77,6 +78,15 @@ export default {
   },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
+  },
+  computed: {
+    modalSizeClass(){
+      return {
+        'modal-sm': this.modalSize == 'sm',
+        'modal-lg': this.modalSize == 'lg',
+        'modal-xl': this.modalSize == 'xl',
+      }
+    }
   },
   methods: {
     onClickYes(event) {

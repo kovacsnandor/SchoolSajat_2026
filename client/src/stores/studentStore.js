@@ -19,7 +19,7 @@ class Item {
     atlag = 0,
     osztondij = 0,
     eletkor = 0,
-    nemeString = ""
+    nemeString = "",
   ) {
     this.id = id;
     this.diakNev = diakNev;
@@ -49,27 +49,30 @@ export const useStudentStore = defineStore("students", {
     searchStore: useSearchStore(),
   }),
   actions: {
-    clearItem() {
+    clearItem(schoolclassId = 0) {
       this.item = new Item();
+      this.item.schoolclassId = schoolclassId;
     },
-    
-    async getAllByShoolclassId(schoolclassId,column='id') {
+
+    async getAllByShoolclassId(schoolclassId, column = "id", direction='') {
       //   const toast = useToastStore();
       this.loading = true;
       this.sortColumn = column;
-      const direction =
-        this.sortColumn === column && this.sortDirection === "asc"
-          ? "desc"
-          : "asc";
+      if (!direction) {
+        direction =
+          this.sortColumn === column && this.sortDirection === "asc"
+            ? "desc"
+            : "asc";
+      }
       this.sortDirection = direction;
       try {
         console.log("oszlop", column);
-        
+
         const response = await service.getAllByShoolclassId(
           schoolclassId,
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
       } catch (err) {
@@ -79,7 +82,7 @@ export const useStudentStore = defineStore("students", {
       }
     },
 
-    async getAllWithShoolclass(column='id') {
+    async getAllWithShoolclass(column = "id") {
       //   const toast = useToastStore();
       this.loading = true;
       this.sortColumn = column;
@@ -92,7 +95,7 @@ export const useStudentStore = defineStore("students", {
         const response = await service.getAllWithShoolclass(
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
       } catch (err) {
@@ -107,7 +110,7 @@ export const useStudentStore = defineStore("students", {
       this.loading = true;
       try {
         const response = await service.getAll();
-        this.searchStore.reset()
+        this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
         this.error = err;
@@ -133,13 +136,18 @@ export const useStudentStore = defineStore("students", {
     },
 
     // CREATE - Új elem hozzáadása
-    async create(data) {
+    async create(data, schoolclassId) {
       this.loading = true;
       try {
         const newItem = await service.create(data);
-        const response = await service.getAll();
+        const response = await service.getAllByShoolclassId(
+          schoolclassId,
+          this.sortColumn,
+          this.sortDirection,
+          this.searchStore.searchWord,
+        );
         //Töröjük a keresést
-        this.searchStore.reset()
+        this.searchStore.reset();
         this.items = response.data;
         // const toast = useToastStore();
         // toast.messages.push("User sikeresen létrehozva!");
@@ -156,14 +164,15 @@ export const useStudentStore = defineStore("students", {
     },
 
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
-    async update(id, updateData) {
+    async update(id, updateData, schoolclassId) {
       this.loading = true;
       try {
         const updatedItem = await service.update(id, updateData);
-        const response = await service.getAllSortSearch(
+        const response = await service.getAllByShoolclassId(
+          schoolclassId,
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
         // const toast = useToastStore();
@@ -177,14 +186,15 @@ export const useStudentStore = defineStore("students", {
     },
 
     // 4. DELETE - Törlés
-    async delete(id) {
+    async delete(id, schoolclassId) {
       this.loading = true;
       try {
         await service.delete(id);
-        const response = await service.getAllSortSearch(
+        const response = await service.getAllByShoolclassId(
+          schoolclassId,
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
         // const toast = useToastStore();

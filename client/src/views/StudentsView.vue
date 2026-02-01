@@ -127,10 +127,10 @@ export default {
   watch: {
     // Ha változik a keresőszó, újra keresünk
     searchWord(newValue) {
-      this.getAllByShoolclassId(this.schoolclassId);
+      this.getAllByShoolclassId(this.schoolclassId, this.sortColumn, this.sortDirection);
     },
     schoolclassId(value){
-      this.getAllByShoolclassId(this.schoolclassId);
+      this.getAllByShoolclassId(this.schoolclassId, this.sortColumn, this.sortDirection);
     }
   },
   methods: {
@@ -156,7 +156,7 @@ export default {
     createHandler() {
       this.state = "c";
       this.title = "Új adatbevitel";
-      this.clearItem();
+      this.clearItem(this.schoolclassId);
       this.$refs.form.show();
     },
     async updateHandler(id) {
@@ -171,7 +171,7 @@ export default {
       this.isOpenConfirmModal = true;
     },
     async confirmHandler() {
-      await this.delete(this.selectedId);
+      await this.delete(this.selectedId, this.schoolclassId);
       this.state = "r";
       this.isOpenConfirmModal = false;
     },
@@ -181,11 +181,11 @@ export default {
     async yesEventFormHandler(item) {
       if (this.state === "c") {
         //új rekord
-        await this.create(item);
+        await this.create(item, this.schoolclassId);
         this.state = "r";
       } else if (this.state === "u") {
         //rekord módosítás
-        await this.update(item.id, item);
+        await this.update(item.id, item, this.schoolclassId);
         this.state = "r";
       }
     },
