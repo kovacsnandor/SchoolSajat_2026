@@ -207,7 +207,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "Foci"
+"sportNev": "F"
 }
 
 ### delete sport 

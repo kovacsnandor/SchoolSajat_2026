@@ -9,7 +9,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
     loading: false,
     error: null,
     toast: useToastStore(),
-    rolNames: ['Admin', 'Tanár', 'Diák']
+    rolNames: ["Admin", "Tanár", "Diák"],
   }),
   //valamilyen formában visszaadja
   getters: {
@@ -35,7 +35,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       if (!this.item) {
         return null;
       }
-      const userInfo = `${this.item.name}: ${this.rolNames[(this.item.role-1)]}`
+      const userInfo = `${this.item.name}: ${this.rolNames[this.item.role - 1]}`;
       return userInfo;
     },
     isLoggedIn() {
@@ -52,43 +52,53 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
     },
     async login(data) {
       try {
+        this.loading = true;
+        this.error = null;
         const response = await service.login(data);
         this.item = response.data;
         localStorage.setItem("user_data", JSON.stringify(response.data));
-        this.loading = true;
         return true;
       } catch (err) {
-        this.toast.messages.push(`Login failed`);
-        this.toast.show("Error");
+        this.error = err;
         return false;
+      } finally {
+        this.loading = false;
       }
     },
     async logout() {
       try {
+        this.error = null;
+        this.loading = true;
         const toast = useToastStore();
         const response = await service.logout();
         this.item = null;
         // Törlés localStorage-ból
         localStorage.removeItem("user_data");
-        this.loading = false;
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Login failed`);
         this.toast.show("Error");
         return false;
+      } finally {
+        this.loading = false;
       }
     },
     async getMeRefresh() {
       try {
+        this.error = null;
+        this.loading = true;
         const response = await service.getMeRefresh();
         this.item.name = response.data.name;
         this.item.email = response.data.email;
-        this.loading = true;
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Ferfesh failed`);
         this.toast.show("Error");
         return false;
+      } finally {
+        this.loading = false;
       }
     },
   },
