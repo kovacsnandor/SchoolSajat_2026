@@ -6,10 +6,17 @@
       <h1 class="col-auto">
         {{ pageTitle }}
       </h1>
-  
+
       <!-- homokóra -->
-      <i v-if="loading" class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"></i>
-      <ButtonsCrudCreate class="col-auto p-0" v-if="!loading" @create="createHandler"/>
+      <i
+        v-if="loading"
+        class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"
+      ></i>
+      <ButtonsCrudCreate
+        class="col-auto p-0"
+        v-if="!loading"
+        @create="createHandler"
+      />
     </div>
 
     <!-- Táblázat CRUD -->
@@ -95,10 +102,7 @@ export default {
   watch: {
     // Ha változik a keresőszó, újra keresünk
     searchWord(newValue) {
-      this.getAllSortSearch(
-        this.sortColumn,
-        this.sortDirection
-      );
+      this.getAllSortSearch(this.sortColumn, this.sortDirection);
     },
   },
   methods: {
@@ -112,7 +116,7 @@ export default {
       "update",
       "delete",
     ]),
-    ...mapActions(useSearchStore, ['reset']),
+    ...mapActions(useSearchStore, ["reset"]),
     handleSort(column) {
       this.getAllSortSearch(column);
     },
@@ -142,19 +146,32 @@ export default {
       this.isOpenConfirmModal = false;
     },
     async yesEventFormHandler(item) {
-      if (this.state === "c") {
-        //új rekord
-        await this.create(item);
+      try {
+        if (this.state === "c") {
+          //új rekord
+          await this.create(item);
+        } else if (this.state === "u") {
+          //rekord módosítás
+          await this.update(item.id, item);
+        }
+        // Ha ide eljut, sikeres volt a mentés
         this.state = "r";
-      } else if (this.state === "u") {
-        //rekord módosítás
-        await this.update(item.id, item);
-        this.state = "r";
+        done(true); // Bezárja a modalt
+      } catch (err) {
+        // Ha 422-es hiba van (validáció)
+        if (err.response && err.response.status === 422) {
+          // Átadjuk a formnak a konkrét hibaüzeneteket (pl. "min 2 karakter")
+          this.$refs.form.setServerErrors(err.response.data.errors);
+          done(false); // Nyitva tartja a modalt
+        } else {
+          // Minden más hiba (500, 401) esetén is értesítjük a modalt, hogy ne záródjon be
+          done(false);
+        }
       }
     },
   },
   async mounted() {
-    this.reset()
+    this.reset();
     await this.getAllSortSearch();
   },
 };

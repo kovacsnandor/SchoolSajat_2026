@@ -28,10 +28,20 @@ class UpdateSportRequest extends FormRequest
                 'required',
                 'string',
                 'min:2',
-                'max:255',
+                'max:75',
                 // Itt mondjuk meg, hogy legyen egyedi, de hagyja ki az aktuális ID-t
                 Rule::unique('sports', 'sportNev')->ignore($id),
             ],
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'sportNev.required' => 'A sport nevének megadása kötelező!',
+            'sportNev.string' => 'A sport neve string kell legyen!',
+            'sportNev.unique' => 'Már van ilyen sportnév!',
+            'sportNev.min' => 'A sport nevének hossza min: 2',
+            'sportNev.max' => 'A sport nevének hossza max: 75',
         ];
     }
 }

@@ -68,7 +68,7 @@ export default {
     title: { type: String, default: "Modális ablak" },
     yes: { type: String, default: "Mentés" },
     no: { type: String, default: "Mégsem" },
-    modalSize: {type: String, default: ''}
+    modalSize: { type: String, default: "" },
   },
   data() {
     return {
@@ -80,13 +80,13 @@ export default {
     this.modal = new Modal(this.$refs.modal);
   },
   computed: {
-    modalSizeClass(){
+    modalSizeClass() {
       return {
-        'modal-sm': this.modalSize == 'sm',
-        'modal-lg': this.modalSize == 'lg',
-        'modal-xl': this.modalSize == 'xl',
-      }
-    }
+        "modal-sm": this.modalSize == "sm",
+        "modal-lg": this.modalSize == "lg",
+        "modal-xl": this.modalSize == "xl",
+      };
+    },
   },
   methods: {
     onClickYes(event) {
@@ -95,10 +95,17 @@ export default {
       this.validated = true;
       if (form.checkValidity() === false) {
         //hiba van az űrlapon
-        console.log("Hiba az űrlapon");
+        console.log("Kliens oldali hiba az űrlapon");
       } else {
-        this.$emit("yesEvent");
-        this.hide();
+        // Átadunk egy függvényt (callback), amit a szülő hív meg, ha végzett
+        this.$emit("yesEvent", (success) => {
+          if (success) {
+            this.hide();
+          } else {
+            // Ha success === false, nem hívunk hide()-ot, a modal nyitva marad a hibákkal
+            console.log("Szerveroldali hiba, a modal marad");
+          }
+        });
       }
     },
     show() {

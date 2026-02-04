@@ -57,6 +57,9 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        //A validációs válaszok ékezethelyesen látszódnak
+
+
 
         // Exceptions::renderable(function (\Throwable $e, $request) {
         //     if ($request->is('api/*')) {

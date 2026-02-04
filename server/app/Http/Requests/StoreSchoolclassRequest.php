@@ -21,8 +21,18 @@ class StoreSchoolclassRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
-            'osztalyNev' => 'required|string'
+        return [
+            'osztalyNev' => 'required|string|unique:schoolclasses|min:2|max:10'
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'osztalyNev.required' => 'Az osztály nevének megadása kötelező!',
+            'osztalyNev.string' => 'Az osztály neve string kell legyen!',
+            'osztalyNev.unique' => 'Már van ilyen osztálynév!',
+            'osztalyNev.min' => 'Az osztály nevének hossza min: 2',
+            'osztalyNev.max' => 'Az osztály nevének hossza max: 75',
         ];
     }
 }

@@ -13,17 +13,17 @@ return new class extends Migration
     {
            Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('diakNev');
+            $table->string('diakNev',50);
             //dzsingiszkan hatalmas birodalma ._.
             $table->foreignId('schoolclassId')->constrained('schoolclasses')->onDelete('restrict');
             //erre kellene megirni hibakodot :)
             $table->boolean('neme')->default(true);
-            $table->string('iranyitoszam')->nullable();
-            $table->string('lakHelyseg')->nullable();
-            $table->string('lakCim')->nullable();
-            $table->string('szulHelyseg')->nullable();
+            $table->string('iranyitoszam',5)->nullable();
+            $table->string('lakHelyseg',50)->nullable();
+            $table->string('lakCim',120)->nullable();
+            $table->string('szulHelyseg',50)->nullable();
             $table->date('szulDatum')->nullable();
-            $table->string('igazolvanyszam')->nullable();
+            $table->string('igazolvanyszam',15)->nullable();
             $table->unique('igazolvanyszam');
             $table->decimal('atlag', 2, 1)->nullable();
             $table->decimal('osztondij', 10, 0)->nullable();

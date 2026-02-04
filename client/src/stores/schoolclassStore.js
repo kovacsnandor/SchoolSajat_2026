@@ -7,7 +7,7 @@ import service from "@/api/schoolclassService";
 class Item {
   constructor(id = 0, osztalyNev = "") {
     this.id = id;
-    this.sportNev = osztalyNev;
+    this.osztalyNev = osztalyNev;
   }
 }
 

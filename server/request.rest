@@ -197,7 +197,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"sportNev": 1
+"sportNev": "Foci"
 }
 
 ### patch sport 
@@ -207,7 +207,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-"sportNev": "F"
+"sportNev": "Hólabda"
 }
 
 ### delete sport 
