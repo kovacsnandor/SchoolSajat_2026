@@ -25,11 +25,26 @@ class StorePlayingsportRequest extends FormRequest
     {
         return [
             //
-            'studentId' => ['required','integer'
-            ,Rule::unique('playingsports')->where(fn($q)
-             =>$q->where('sportId', request('sportId'))),
-            'sportsId' => ['required', 'integer']
-        ]
+            'studentId' => [
+                'required',
+                'integer',
+                Rule::unique('playingsports')
+                    ->where(fn($q)
+                    => $q->where('sportId', request('sportId'))),
+                'sportsId' => ['required', 'integer']
+            ]
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'studentId.required' => 'A diák azonosítója kötelező.',
+            'studentId.integer'  => 'A diák azonosítója csak szám lehet.',
+            'studentId.unique'   => 'Ez a diák már hozzá van rendelve ehhez a sporthoz!',
+
+            'sportsId.required'  => 'A sport azonosítója kötelező.',
+            'sportsId.integer'   => 'A sport azonosítója csak szám lehet.',
         ];
     }
 }

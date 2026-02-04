@@ -290,7 +290,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get playingsports by id 
-GET {{host}}/api/playingsports/673 
+GET {{host}}/api/playingsports/2
 Accept: application/json 
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -302,23 +302,23 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "studentId": 1, 
-    "sportId": 8
+    "studentId": 49, 
+    "sportId": 30
 }
 
 ### delete playingsports by id 
-DELETE {{host}}/api/students/3 
+DELETE {{host}}/api/playingsports/1 
 Accept: application/json 
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post playingsports 
-PATCH {{host}}/api/playingsports/1 
+PATCH {{host}}/api/playingsports/3
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
 
 {
-    "studentId": 1, 
-    "sportId": 8
+    "studentId": 49, 
+    "sportId": 30
 }

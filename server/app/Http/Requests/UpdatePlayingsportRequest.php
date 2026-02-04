@@ -22,13 +22,29 @@ class UpdatePlayingsportRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Megszerezzük a rekord azonosítóját a route-ból
+        // Pl. /api/playingsports/{playingsport}
+        $id = $this->route('id');
+
         return [
-            //
-             'studentId' => ['required','integer'
-            ,Rule::unique('playingsports')->where(fn($q)
-             =>$q->where('sportId', request('sportId'))),
-            'sportsId' => ['required', 'integer']
-        ]
+            'studentId' => [
+                'sometimes',
+                'integer',
+                Rule::unique('playingsports', 'studentId')
+                    ->where(fn($q) => $q->where('sportId', $this->sportId))
+                    ->ignore($id), // Ez zárja ki az aktuális rekordot
+            ],
+            'sportId' => ['sometimes', 'integer'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'studentId.integer' => 'A diák azonosítója csak szám lehet.',
+            'studentId.unique'  => 'Ez a párosítás (diák és sport) már létezik egy másik bejegyzésben.',
+
+            'sportId.integer'   => 'A sport azonosítója csak szám lehet.',
         ];
     }
 }
