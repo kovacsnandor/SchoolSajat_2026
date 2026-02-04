@@ -19,11 +19,14 @@ export default {
   methods: {
     ...mapActions(useUserLoginLogoutStore, ["login"]),
     async loginHandler(user) {
-      await this.login(user);
-      if (this.error) {
-        return;
+      try {
+        //Sikeres bejelentkezés
+        await this.login(user);
+        this.$router.push("/");
+        
+      } catch (error) {
+        console.log("A bejelentkezés sikertelen, az interceptor már kezelte.");
       }
-      this.$router.push("/");
     },
   },
 };

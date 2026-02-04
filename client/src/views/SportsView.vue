@@ -23,8 +23,6 @@
 
     <!-- Táblázat CRUD -->
     <div>
-      <ToastContainer />
-
       <!-- Táblázat -->
       <GenericTable
         :items="items"

@@ -3,6 +3,8 @@ import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/schoolclassService";
 
+const toast = useToastStore();
+
 //változtatás
 class Item {
   constructor(id = 0, osztalyNev = "") {
@@ -29,33 +31,41 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     async getAllAbc() {
       //   const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       try {
         const response = await service.getAllAbc();
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        throw err;
       } finally {
         this.loading = false;
       }
     },
-    async getAllSortSearch(column='id') {
+    //Ha a direction meg van aadva, akkor ez lesz a sorrend
+    //Ha nincs megadva, akkor ellentettjére vált
+    async getAllSortSearch(column = "id", direction = null) {
       //   const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       this.sortColumn = column;
-      const direction =
-        this.sortColumn === column && this.sortDirection === "asc"
-          ? "desc"
-          : "asc";
-      this.sortDirection = direction;
+      if (!direction) {
+        direction =
+          this.sortColumn === column && this.sortDirection === "asc"
+            ? "desc"
+            : "asc";
+        this.sortDirection = direction;
+      }
       try {
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        throw err;
       } finally {
         this.loading = false;
       }
@@ -63,12 +73,14 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     async getAll() {
       //   const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       try {
         const response = await service.getAll();
-        this.searchStore.reset()
+        this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        throw err;
       } finally {
         this.loading = false;
       }
@@ -77,6 +89,7 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
+      this.error = null;
       //   const toast = useToastStore();
       try {
         const response = await service.getById(id);
@@ -85,6 +98,7 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.error = err;
         // toast.messages.push(`User nem található`);
         // toast.show("Error");
+        throw err;
       } finally {
         this.loading = false;
       }
@@ -93,20 +107,22 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     // CREATE - Új elem hozzáadása
     async create(data) {
       this.loading = true;
+      this.error = null;
       try {
         const newItem = await service.create(data);
-        const response = await service.getAll();
-        //Töröjük a keresést
-        this.searchStore.reset()
+        const response = await service.getAllSortSearch(
+          this.sortColumn,
+          this.sortDirection,
+          this.searchStore.searchWord,
+        );
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.messages.push("User sikeresen létrehozva!");
-        // toast.show("Success");
+        toast.messages.push("Sikeresen létrehozva!");
+        toast.show("Success");
         return true;
       } catch (err) {
-        console.log("új elem Error", err);
-        // toast.messages.push(`Usert nem sikarült létrehozni`);
-        // toast.show("Error");
+        toast.messages.push(`Létrehozás sikertelen`);
+        toast.show("Error");
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -116,18 +132,23 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
     async update(id, updateData) {
       this.loading = true;
+      this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.show("User sikeresen frissítve!", "Success");
+        toast.messages.push(`Sikeresen módosítva`);
+        toast.show("Success");
         return true;
       } catch (err) {
+        this.error = err;
+        toast.messages.push(`Sikertelen módosítás`);
+        toast.show("Error");
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -137,19 +158,24 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     // 4. DELETE - Törlés
     async delete(id) {
       this.loading = true;
+      this.error = null;
       try {
         await service.delete(id);
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
-          this.searchStore.searchWord
+          this.searchStore.searchWord,
         );
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.show("User törlés sikeres!", "Success");
-        return false;
-      } catch (err) {
+        toast.messages.push(`Sikeresen törölve`);
+        toast.show("Success");
         return true;
+      } catch (err) {
+        this.error = err;
+        toast.messages.push(`Sikertelen törlés`);
+        toast.show("Error");
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }

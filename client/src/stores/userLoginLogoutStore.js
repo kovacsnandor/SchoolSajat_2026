@@ -60,6 +60,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         return true;
       } catch (err) {
         this.error = err;
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -79,6 +80,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.error = err;
         this.toast.messages.push(`Login failed`);
         this.toast.show("Error");
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -96,6 +98,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.error = err;
         this.toast.messages.push(`Ferfesh failed`);
         this.toast.show("Error");
+        throw err;
         return false;
       } finally {
         this.loading = false;

@@ -21,8 +21,6 @@
 
     <!-- Táblázat CRUD -->
     <div>
-      <ToastContainer />
-
       <!-- Táblázat -->
       <GenericTable
         :items="items"
@@ -145,7 +143,7 @@ export default {
     cancelHandler() {
       this.isOpenConfirmModal = false;
     },
-    async yesEventFormHandler(item) {
+    async yesEventFormHandler({ item, done }) {
       try {
         if (this.state === "c") {
           //új rekord

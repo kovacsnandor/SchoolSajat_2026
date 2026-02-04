@@ -31,7 +31,7 @@
             >Regisztráció</RouterLink
           >
         </form>
-        <ToastContainer />
+       
       </div>
     </div>
     <!-- hibaüzenet -->

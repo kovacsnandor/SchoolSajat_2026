@@ -9,15 +9,16 @@
         <div class="col">
           <input
             type="text"
-            class="form-control"
+            class="form-control"           
             id="osztalyNev"
             v-model="formItem.osztalyNev"
+            @input="clearError('osztalyNev')"
             required
           />
-          <div class="invalid-feedback position-absolute">
-            Az osztály neve kötelező
+          <div v-if="!serverErrors.osztalyNev" class="invalid-feedback position-absolute">
+             Az osztály neve kötelező
           </div>
-          <div v-if="serverErrors.osztalyNev" class="invalid-feedback d-block">
+          <div v-if="serverErrors.osztalyNev" class="invalid-feedback position-absolute d-block">
             {{ serverErrors.osztalyNev[0] }}
           </div>
         </div>
@@ -48,7 +49,7 @@ export default {
   watch: {
     //Fontos!!! frissülhessen a szülő által küldött item
     item(value) {
-      this.formItem = {...value};
+      this.formItem = { ...value };
       this.serverErrors = {}; // Reseteljük a hibákat, ha új itemet kapunk
     },
   },
@@ -71,7 +72,7 @@ export default {
     hide() {
       this.$refs.modal.hide();
     },
-    yesEventHandler() {
+    yesEventHandler(done) {
       // Továbbküldjük a done callback-et a View-nak
       this.$emit("yesEventForm", { item: this.formItem, done });
     },

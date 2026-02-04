@@ -8,7 +8,7 @@ export const useUserMeStore = defineStore("userMe", {
     item: null,
     loading: false,
     error: null,
-     toast: useToastStore(),
+    toast: useToastStore(),
   }),
   //valamilyen formában visszaadja
   getters: {
@@ -29,28 +29,34 @@ export const useUserMeStore = defineStore("userMe", {
   actions: {
     async getMe() {
       try {
+        this.loading = true;
+        this.error = null;
         const response = await service.getMe();
         this.item = response.data;
-        this.loading = true;
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Az adatok betöltése sikertelen`);
         this.toast.show("Error");
+        throw err;
         return false;
       }
     },
     async updateMe(data) {
       try {
-        const response = await service.updateMe(data);
         this.item = response.data;
         this.loading = true;
+        const response = await service.updateMe(data);
+        this.error = null;
         this.toast.messages.push(`Az adatmódosítás sikerült`);
         this.toast.show("Success");
         await this.getMe();
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Update failed`);
         this.toast.show("Error");
+        throw err;
         return false;
       }
     },
@@ -59,12 +65,15 @@ export const useUserMeStore = defineStore("userMe", {
         const response = await service.updatePassword(data);
         this.item = response.data;
         this.loading = true;
+        this.error = null;
         this.toast.messages.push(`Jelszó módosítás sikeres`);
         this.toast.show("Success");
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Jelszó módosítás meghiúsult`);
         this.toast.show("Error");
+        throw err;
         return false;
       }
     },
@@ -73,12 +82,15 @@ export const useUserMeStore = defineStore("userMe", {
         const response = await service.deleteMe();
         this.item = response.data;
         this.loading = true;
+        this.error = null;
         this.toast.messages.push(`A profil törlődött`);
         this.toast.show("Success");
         return true;
       } catch (err) {
+        this.error = err;
         this.toast.messages.push(`Get me failed`);
         this.toast.show("Error");
+        throw err;
         return false;
       }
     },

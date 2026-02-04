@@ -29,11 +29,14 @@ export const useUserStore = defineStore("user", {
     async getAll() {
       const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       try {
         const request = await service.getAll();
         this.items = request.data;
       } catch (err) {
         this.error = err;
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
@@ -42,6 +45,7 @@ export const useUserStore = defineStore("user", {
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
+      this.error = null;
       const toast = useToastStore();
       try {
         const request = service.getById(id);
@@ -50,6 +54,8 @@ export const useUserStore = defineStore("user", {
         this.error = err;
         toast.messages.push(`User nem található`);
         toast.show("Error");
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
@@ -57,53 +63,64 @@ export const useUserStore = defineStore("user", {
 
     // CREATE - Új elem hozzáadása
     async create(data) {
+      this.loading = true;
+      this.error = null;
+      const toast = useToastStore();
       try {
         const newItem = await service.create(data);
-        this.items.push(newItem);
-
-        const toast = useToastStore();
+        const response = await service.getAll();
+        this.items = response.data;
         toast.messages.push("User sikeresen létrehozva!");
         toast.show("Success");
         return true;
       } catch (err) {
         toast.messages.push(`Usert nem sikarült létrehozni`);
         toast.show("Error");
+        this.error = err;
+        throw err;
         return false;
+      } finally {
+        this.loading = false;
       }
     },
 
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
     async update(id, updateData) {
+      this.loading = true;
+      this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
-
-        // Megkeressük az elem helyét a listában
-        const index = this.items.findIndex((item) => item.id === id);
-
-        if (index !== -1) {
-          // A splice-szal garantáljuk, hogy a Vue azonnal észrevegye a változást
-          this.items.splice(index, 1, updatedItem);
-        }
-
+        const response = await service.getAll();
+        this.items = response.data;
         const toast = useToastStore();
         toast.show("User sikeresen frissítve!", "Success");
         return true;
       } catch (err) {
+        this.error = err;
+        throw err;
         return false;
+      } finally {
+        this.loading = false;
       }
     },
 
     // 4. DELETE - Törlés
     async delete(id) {
+      this.loading = true;
+      this.error = null;
       try {
         await service.delete(id);
-        this.items = this.items.filter((item) => item.id !== id);
-
+        const response = await service.getAll();
+        this.items = response.data;
         const toast = useToastStore();
         toast.show("User törlés sikeres!", "Success");
         return true;
       } catch (err) {
+        this.error = err;
+        throw err;
         return false;
+      } finally {
+        this.loading = false;
       }
     },
   },

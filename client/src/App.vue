@@ -15,6 +15,8 @@
     <!-- lábléc -->
 
     <Footer class="my-border"/>
+
+    <ToastContainer />
   </div>
 </template>
 

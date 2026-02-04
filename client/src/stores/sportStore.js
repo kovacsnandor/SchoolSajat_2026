@@ -48,11 +48,15 @@ export const useSportStore = defineStore("sport", {
     async getAll() {
       //   const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       try {
         const response = await service.getAll();
         this.items = response.data;
+        return true;
       } catch (err) {
         this.error = err;
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
@@ -61,17 +65,21 @@ export const useSportStore = defineStore("sport", {
     async getAllAbc() {
       //   const toast = useToastStore();
       this.loading = true;
+      this.error = null;
       try {
         const response = await service.getAllAbc();
         this.items = response.data;
+        return true;
       } catch (err) {
         this.error = err;
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
     },
 
-    async getPaging(page = 1, per_page = 10, column='id') {
+    async getPaging(page = 1, per_page = 10, column = "id") {
       //   const toast = useToastStore();
       this.loading = true;
       if (page) {
@@ -88,6 +96,7 @@ export const useSportStore = defineStore("sport", {
         this.sortColumn = column;
         this.sortDirection = direction;
       }
+      this.error = null;
       try {
         const response = await service.getPaging(
           this.pagination.current_page,
@@ -98,9 +107,11 @@ export const useSportStore = defineStore("sport", {
         );
         this.items = response.data;
         this.pagination = response.meta;
+        return true;
       } catch (err) {
         this.error = err;
-        console.log("getPaging Error", this.error);
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
@@ -110,13 +121,17 @@ export const useSportStore = defineStore("sport", {
     async getById(id) {
       this.loading = true;
       //   const toast = useToastStore();
+      this.error = null;
       try {
         const response = await service.getById(id);
         this.item = response.data;
+        return true
       } catch (err) {
         this.error = err;
         // toast.messages.push(`User nem található`);
         // toast.show("Error");
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }
@@ -125,6 +140,7 @@ export const useSportStore = defineStore("sport", {
     // CREATE - Új elem hozzáadása
     async create(data) {
       this.loading = true;
+      this.error = null;
       try {
         const newItem = await service.create(data);
         this.searchStore.reset();
@@ -142,9 +158,10 @@ export const useSportStore = defineStore("sport", {
         // toast.show("Success");
         return true;
       } catch (err) {
-        console.log("új elem Error", err);
         // toast.messages.push(`Usert nem sikarült létrehozni`);
         // toast.show("Error");
+        this.error = err;
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -154,6 +171,7 @@ export const useSportStore = defineStore("sport", {
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
     async update(id, updateData) {
       this.loading = true;
+      this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
         const response = await service.getPaging(
@@ -169,6 +187,8 @@ export const useSportStore = defineStore("sport", {
         // toast.show("User sikeresen frissítve!", "Success");
         return true;
       } catch (err) {
+        this.error = err;
+        throw err;
         return false;
       } finally {
         this.loading = false;
@@ -178,6 +198,7 @@ export const useSportStore = defineStore("sport", {
     // 4. DELETE - Törlés
     async delete(id) {
       this.loading = true;
+      this.error = null;
       try {
         await service.delete(id);
         const response = await service.getPaging(
@@ -191,9 +212,11 @@ export const useSportStore = defineStore("sport", {
         this.pagination = response.meta;
         // const toast = useToastStore();
         // toast.show("User törlés sikeres!", "Success");
-        return false;
-      } catch (err) {
         return true;
+      } catch (err) {
+        this.error = err;
+        throw err;
+        return false;
       } finally {
         this.loading = false;
       }

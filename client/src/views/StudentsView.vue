@@ -28,8 +28,6 @@
 
     <!-- Táblázat CRUD -->
     <div class="mt-2">
-      <ToastContainer />
-
       <!-- Táblázat -->
       <GenericTable
         :items="items"
