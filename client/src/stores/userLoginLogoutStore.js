@@ -2,13 +2,14 @@ import { defineStore } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
 import service from "@/api/userLoginLogoutService";
 
+// const toast = useToastStore();
+
 export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
   //Ezek a változók
   state: () => ({
     item: JSON.parse(localStorage.getItem("user_data")) || null,
     loading: false,
     error: null,
-    toast: useToastStore(),
     rolNames: ["Admin", "Tanár", "Diák"],
   }),
   //valamilyen formában visszaadja
@@ -70,7 +71,6 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       try {
         this.error = null;
         this.loading = true;
-        const toast = useToastStore();
         const response = await service.logout();
         this.item = null;
         // Törlés localStorage-ból
@@ -78,8 +78,8 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Login failed`);
-        this.toast.show("Error");
+        // toast.messages.push(`Logout sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -96,8 +96,8 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Ferfesh failed`);
-        this.toast.show("Error");
+        // toast.messages.push(`Az adat nem található`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {

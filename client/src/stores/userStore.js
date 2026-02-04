@@ -3,8 +3,7 @@ import { defineStore } from "pinia";
 import { useToastStore } from "@/stores/toastStore";
 import service from "@/api/userService";
 
-// Csak átadod a Store nevét és a hozzá tartozó Service-t
-// export const useUserStore = createTableStore('users', service);
+const toast = useToastStore();
 
 //változtatás
 class Item {
@@ -27,7 +26,6 @@ export const useUserStore = defineStore("user", {
   actions: {
     // READ - Összes adat lekérése
     async getAll() {
-      const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -35,6 +33,8 @@ export const useUserStore = defineStore("user", {
         this.items = request.data;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -46,14 +46,13 @@ export const useUserStore = defineStore("user", {
     async getById(id) {
       this.loading = true;
       this.error = null;
-      const toast = useToastStore();
       try {
         const request = service.getById(id);
         this.item = await request.data;
       } catch (err) {
         this.error = err;
-        toast.messages.push(`User nem található`);
-        toast.show("Error");
+        // toast.messages.push(`Az adat nem található`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -65,18 +64,19 @@ export const useUserStore = defineStore("user", {
     async create(data) {
       this.loading = true;
       this.error = null;
-      const toast = useToastStore();
       try {
         const newItem = await service.create(data);
         const response = await service.getAll();
         this.items = response.data;
-        toast.messages.push("User sikeresen létrehozva!");
+        toast.messages.push("Sikeresen létrehozva!");
         toast.show("Success");
         return true;
       } catch (err) {
         toast.messages.push(`Usert nem sikarült létrehozni`);
         toast.show("Error");
         this.error = err;
+        // toast.messages.push(`Létrehozás sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -92,11 +92,13 @@ export const useUserStore = defineStore("user", {
         const updatedItem = await service.update(id, updateData);
         const response = await service.getAll();
         this.items = response.data;
-        const toast = useToastStore();
-        toast.show("User sikeresen frissítve!", "Success");
+        toast.messages.push(`Sikeresen módosítva`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Módosítás Sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -112,11 +114,13 @@ export const useUserStore = defineStore("user", {
         await service.delete(id);
         const response = await service.getAll();
         this.items = response.data;
-        const toast = useToastStore();
-        toast.show("User törlés sikeres!", "Success");
+        toast.messages.push(`Sikeresen törölve`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Törlés sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {

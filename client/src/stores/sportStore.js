@@ -3,6 +3,8 @@ import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/sportService";
 
+const toast = useToastStore();
+
 //változtatás
 class Item {
   constructor(id = 0, sportNev = "") {
@@ -46,7 +48,6 @@ export const useSportStore = defineStore("sport", {
     },
     // READ - Összes adat lekérése
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -55,6 +56,8 @@ export const useSportStore = defineStore("sport", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -63,7 +66,6 @@ export const useSportStore = defineStore("sport", {
     },
 
     async getAllAbc() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -72,6 +74,8 @@ export const useSportStore = defineStore("sport", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -79,25 +83,27 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
-    async getPaging(page = 1, per_page = 10, column = "id") {
-      //   const toast = useToastStore();
+    async getPaging(page = 1, per_page = 10, column = "id", direction = null) {
+      console.log("paginátor", column,
+        direction);
       this.loading = true;
+      this.error = null;
       if (page) {
         this.pagination.current_page = page;
       }
       if (per_page) {
         this.selectedPerPage = per_page;
       }
-      if (column) {
-        const direction =
+      this.sortColumn = column;
+      if (!direction) {
+        direction =
           this.sortColumn === column && this.sortDirection === "asc"
             ? "desc"
             : "asc";
-        this.sortColumn = column;
         this.sortDirection = direction;
       }
-      this.error = null;
       try {
+        
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
@@ -110,6 +116,8 @@ export const useSportStore = defineStore("sport", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -120,15 +128,14 @@ export const useSportStore = defineStore("sport", {
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
-      //   const toast = useToastStore();
       this.error = null;
       try {
         const response = await service.getById(id);
         this.item = response.data;
-        return true
+        return true;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`User nem található`);
+        // toast.messages.push(`Az adat nem található`);
         // toast.show("Error");
         throw err;
         return false;
@@ -153,12 +160,11 @@ export const useSportStore = defineStore("sport", {
         );
         this.items = response.data;
         this.pagination = response.meta;
-        // const toast = useToastStore();
-        // toast.messages.push("User sikeresen létrehozva!");
-        // toast.show("Success");
+        toast.messages.push("Sikeresen létrehozva!");
+        toast.show("Success");
         return true;
       } catch (err) {
-        // toast.messages.push(`Usert nem sikarült létrehozni`);
+        // toast.messages.push(`Létrehozás sikertelen`);
         // toast.show("Error");
         this.error = err;
         throw err;
@@ -183,11 +189,13 @@ export const useSportStore = defineStore("sport", {
         );
         this.items = response.data;
         this.pagination = response.meta;
-        // const toast = useToastStore();
-        // toast.show("User sikeresen frissítve!", "Success");
+        toast.messages.push(`Sikeresen módosítva`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Módosítás Sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -210,11 +218,13 @@ export const useSportStore = defineStore("sport", {
         );
         this.items = response.data;
         this.pagination = response.meta;
-        // const toast = useToastStore();
-        // toast.show("User törlés sikeres!", "Success");
+        toast.messages.push(`Sikeresen törölve`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Törlés sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {

@@ -106,12 +106,13 @@ export default {
     ...mapState(useSearchStore, ["searchWord"]),
   },
   watch: {
-    // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk
+    // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk, de tartsuk meg a jelenlegi sorrendet
     searchWord(newValue) {
       this.getPaging(
         1,
         this.selectedPerPage,
-        this.sortColumn
+        this.sortColumn,
+        this.sortDirection
       );
     },
   },
@@ -136,13 +137,16 @@ export default {
       );
     },
     //módosítás: Csak ha van lapozás
-    async pageChangeHandler(page) {
-      await this.getPaging(
-        page,
-        this.selectedPerPage,
-        this.sortColumn,
-      );
-    },
+    // async pageChangeHandler(page) {
+    //   console.log("lapozás");
+      
+    //   await this.getPaging(
+    //     page,
+    //     this.selectedPerPage,
+    //     this.sortColumn,
+    //     this.sortDirection
+    //   );
+    // },
     createHandler() {
       this.state = "c";
       console.log("create");
@@ -170,24 +174,34 @@ export default {
     cancelHandler() {
       this.isOpenConfirmModal = false;
     },
-    async yesEventFormHandler(item) {
+    async yesEventFormHandler({ item, done }) {
+      try {
       if (this.state === "c") {
         //új rekord
         console.log("új rekord");
         await this.create(item);
-        this.state = "r";
       } else if (this.state === "u") {
         //rekord módosítás
         console.log("rekord módosítás");
         await this.update(item.id, item);
-        this.state = "r";
+      }
+      this.state = "r";
+      } catch (err) {
+        // Ha 422-es hiba van (validáció)
+        if (err.response && err.response.status === 422) {
+          // Átadjuk a formnak a konkrét hibaüzeneteket (pl. "min 2 karakter")
+          this.$refs.form.setServerErrors(err.response.data.errors);
+          done(false); // Nyitva tartja a modalt
+        } else {
+          // Minden más hiba (500, 401) esetén is értesítjük a modalt, hogy ne záródjon be
+          done(false);
+        }
       }
     },
   },
   async mounted() {
     //módosítás, ha nem kell lapozás: this.getAll()
     await this.getPaging(1, this.selectedPerPage);
-    // this.setSelectedPerPage(this.selectedPerPage);
   },
 };
 </script>

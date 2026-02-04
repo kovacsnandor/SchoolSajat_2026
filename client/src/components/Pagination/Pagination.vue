@@ -8,7 +8,9 @@
       >
         <button
           class="page-link"
-          @click="getPaging(1, selectedPerPage)"
+          @click="
+            getPaging(1, selectedPerPage, store.sortColumn, store.sortDirection)
+          "
           title="Első oldal"
         >
           &laquo;&laquo;
@@ -21,7 +23,14 @@
       >
         <button
           class="page-link"
-          @click="getPaging(pagination.current_page - 1, selectedPerPage)"
+          @click="
+            getPaging(
+              pagination.current_page - 1,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
         >
           &laquo;
         </button>
@@ -33,7 +42,12 @@
         class="page-item"
         :class="{ active: p === pagination.current_page }"
       >
-        <button class="page-link" @click="getPaging(p, selectedPerPage)">
+        <button
+          class="page-link"
+          @click="
+            getPaging(p, selectedPerPage, store.sortColumn, store.sortDirection)
+          "
+        >
           {{ p }}
         </button>
       </li>
@@ -44,7 +58,14 @@
       >
         <button
           class="page-link"
-          @click="getPaging(pagination.current_page + 1, selectedPerPage)"
+          @click="
+            getPaging(
+              pagination.current_page + 1,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
         >
           &raquo;
         </button>
@@ -56,7 +77,14 @@
       >
         <button
           class="page-link"
-          @click="getPaging(pagination.last_page, selectedPerPage)"
+          @click="
+            getPaging(
+              pagination.last_page,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
           title="Utolsó oldal"
         >
           &raquo;&raquo;
@@ -91,9 +119,9 @@ export default {
     },
   },
   methods: {
-    async getPaging(page, perPage) {
+    async getPaging(page, perPage, sortColumn, sortDirection) {
       if (this.store) {
-        await this.store.getPaging(page, perPage);
+        await this.store.getPaging(page, perPage, sortColumn, sortDirection);
       }
     },
   },

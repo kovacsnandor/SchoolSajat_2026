@@ -3,6 +3,8 @@ import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/studentService";
 
+const toast = useToastStore();
+
 //változtatás
 class Item {
   constructor(
@@ -55,7 +57,6 @@ export const useStudentStore = defineStore("students", {
     },
 
     async getAllByShoolclassId(schoolclassId, column = "id", direction = "") {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -79,6 +80,8 @@ export const useStudentStore = defineStore("students", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -87,7 +90,6 @@ export const useStudentStore = defineStore("students", {
     },
 
     async getAllWithShoolclass(column = "id") {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -106,6 +108,8 @@ export const useStudentStore = defineStore("students", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -114,7 +118,6 @@ export const useStudentStore = defineStore("students", {
     },
 
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -124,6 +127,8 @@ export const useStudentStore = defineStore("students", {
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -134,7 +139,6 @@ export const useStudentStore = defineStore("students", {
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
-      //   const toast = useToastStore();
       this.error = null;
       try {
         const response = await service.getById(id);
@@ -142,7 +146,7 @@ export const useStudentStore = defineStore("students", {
         return true;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`User nem található`);
+        // toast.messages.push(`Az adat nem található`);
         // toast.show("Error");
         throw err;
         return false;
@@ -166,15 +170,13 @@ export const useStudentStore = defineStore("students", {
         //Töröjük a keresést
         this.searchStore.reset();
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.messages.push("User sikeresen létrehozva!");
-        // toast.show("Success");
+        toast.messages.push("Sikeresen létrehozva!");
+        toast.show("Success");
         return true;
       } catch (err) {
-        console.log("új elem Error", err);
-        // toast.messages.push(`Usert nem sikarült létrehozni`);
-        // toast.show("Error");
         this.error = err;
+        // toast.messages.push(`Létrehozás sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -195,11 +197,13 @@ export const useStudentStore = defineStore("students", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.show("User sikeresen frissítve!", "Success");
+        toast.messages.push(`Sikeresen módosítva`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Módosítás Sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -220,11 +224,13 @@ export const useStudentStore = defineStore("students", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // const toast = useToastStore();
-        // toast.show("User törlés sikeres!", "Success");
+        toast.messages.push(`Sikeresen törölve`);
+        toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Törlés sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {

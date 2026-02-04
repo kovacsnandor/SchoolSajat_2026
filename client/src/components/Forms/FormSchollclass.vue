@@ -9,16 +9,22 @@
         <div class="col">
           <input
             type="text"
-            class="form-control"           
+            class="form-control"
             id="osztalyNev"
             v-model="formItem.osztalyNev"
             @input="clearError('osztalyNev')"
             required
           />
-          <div v-if="!serverErrors.osztalyNev" class="invalid-feedback position-absolute">
-             Az osztály neve kötelező
+          <div
+            v-if="!serverErrors.osztalyNev"
+            class="invalid-feedback position-absolute"
+          >
+            Az osztály neve kötelező
           </div>
-          <div v-if="serverErrors.osztalyNev" class="invalid-feedback position-absolute d-block">
+          <div
+            v-if="serverErrors.osztalyNev"
+            class="invalid-feedback position-absolute d-block"
+          >
             {{ serverErrors.osztalyNev[0] }}
           </div>
         </div>
@@ -42,7 +48,7 @@ export default {
   },
   data() {
     return {
-      formItem: this.item,
+      formItem: { ...this.item },
       serverErrors: {}, // Itt tároljuk a szerver válaszát
     };
   },

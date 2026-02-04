@@ -37,6 +37,8 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
       } finally {
         this.loading = false;
@@ -65,6 +67,8 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
       } finally {
         this.loading = false;
@@ -80,6 +84,8 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.items = response.data;
       } catch (err) {
         this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
         throw err;
       } finally {
         this.loading = false;
@@ -96,7 +102,7 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.item = response.data;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`User nem található`);
+        // toast.messages.push(`Az adat nem található`);
         // toast.show("Error");
         throw err;
       } finally {
@@ -120,8 +126,9 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         toast.show("Success");
         return true;
       } catch (err) {
-        toast.messages.push(`Létrehozás sikertelen`);
-        toast.show("Error");
+        this.error = err;
+        // toast.messages.push(`Létrehozás sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -146,8 +153,8 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         return true;
       } catch (err) {
         this.error = err;
-        toast.messages.push(`Sikertelen módosítás`);
-        toast.show("Error");
+        // toast.messages.push(`Módosítás Sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -172,8 +179,8 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         return true;
       } catch (err) {
         this.error = err;
-        toast.messages.push(`Sikertelen törlés`);
-        toast.show("Error");
+        // toast.messages.push(`Törlés sikertelen`);
+        // toast.show("Error");
         throw err;
         return false;
       } finally {

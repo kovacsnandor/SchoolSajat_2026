@@ -98,7 +98,7 @@ export default {
     ...mapState(useSearchStore, ["searchWord"]),
   },
   watch: {
-    // Ha változik a keresőszó, újra keresünk
+    // Ha változik a keresőszó, újra keresünk, de tartsuk meg a jelenlegi sorrendet
     searchWord(newValue) {
       this.getAllSortSearch(this.sortColumn, this.sortDirection);
     },

@@ -36,8 +36,8 @@ export const useUserMeStore = defineStore("userMe", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Az adatok betöltése sikertelen`);
-        this.toast.show("Error");
+        // this.toast.messages.push(`Az adatok betöltése sikertelen`);
+        // this.toast.show("Error");
         throw err;
         return false;
       }
@@ -54,8 +54,8 @@ export const useUserMeStore = defineStore("userMe", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Update failed`);
-        this.toast.show("Error");
+        // this.toast.messages.push(`Az adatmódosítás sikertelen`);
+        // this.toast.show("Error");
         throw err;
         return false;
       }
@@ -71,8 +71,8 @@ export const useUserMeStore = defineStore("userMe", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Jelszó módosítás meghiúsult`);
-        this.toast.show("Error");
+        // this.toast.messages.push(`Jelszó módosítás meghiúsult`);
+        // this.toast.show("Error");
         throw err;
         return false;
       }
@@ -88,8 +88,8 @@ export const useUserMeStore = defineStore("userMe", {
         return true;
       } catch (err) {
         this.error = err;
-        this.toast.messages.push(`Get me failed`);
-        this.toast.show("Error");
+        // this.toast.messages.push(`A profil törlése sikertelen`);
+        // this.toast.show("Error");
         throw err;
         return false;
       }
