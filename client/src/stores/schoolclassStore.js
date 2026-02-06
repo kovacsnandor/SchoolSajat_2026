@@ -84,8 +84,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.items = response.data;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`Az adatok nem töltődtek be`);
-        // toast.show("Error");
         throw err;
       } finally {
         this.loading = false;
