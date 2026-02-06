@@ -40,8 +40,8 @@ class UpdateSportRequest extends FormRequest
             'sportNev.required' => 'A sport nevének megadása kötelező!',
             'sportNev.string' => 'A sport neve string kell legyen!',
             'sportNev.unique' => 'Már van ilyen sportnév!',
-            'sportNev.min' => 'A sport nevének hossza min: 2',
-            'sportNev.max' => 'A sport nevének hossza max: 75',
+            'sportNev.min' => 'A sport nevének hossza :min!',
+            'sportNev.max' => 'A sport nevének hossza :max!',
         ];
     }
 }

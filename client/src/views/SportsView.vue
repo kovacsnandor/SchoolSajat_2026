@@ -186,6 +186,7 @@ export default {
         await this.update(item.id, item);
       }
       this.state = "r";
+      done(true);
       } catch (err) {
         // Ha 422-es hiba van (validáció)
         if (err.response && err.response.status === 422) {

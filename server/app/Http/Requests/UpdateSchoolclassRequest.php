@@ -40,8 +40,8 @@ class UpdateSchoolclassRequest extends FormRequest
             'osztalyNev.required' => 'Az osztály nevének megadása kötelező!',
             'osztalyNev.string' => 'Az osztály neve string kell legyen!',
             'osztalyNev.unique' => 'Már van ilyen osztálynév!',
-            'osztalyNev.min' => 'Az osztály nevének hossza min: 2',
-            'osztalyNev.max' => 'Az osztály nevének hossza max: 75',
+            'osztalyNev.min' => 'Az osztály nevének hossza :min!',
+            'osztalyNev.max' => 'Az osztály nevének hossza :max!',
         ];
     }
 }
