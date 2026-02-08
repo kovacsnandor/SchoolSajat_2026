@@ -108,21 +108,16 @@ export default {
   watch: {
     // Ha változik a keresőszó, ugorjunk az 1. oldalra és keressünk, de tartsuk meg a jelenlegi sorrendet
     searchWord(newValue) {
-      this.getPaging(
-        1,
-        this.selectedPerPage,
-        this.sortColumn,
-        this.sortDirection
-      );
+      this.getPaging();
     },
   },
   methods: {
     //módosítás
     ...mapActions(useSportStore, [
-      "setSelectedPerPage",
       "clearItem",
       "getAll",
       "getPaging",
+      "setColumn",
       "getById",
       "create",
       "update",
@@ -130,23 +125,8 @@ export default {
     ]),
     handleSort(column) {
       // Ha ugyanarra az oszlopra kattint, megfordítjuk az irányt
-      this.getPaging(
-        1,
-        this.selectedPerPage,
-        column
-      );
+      this.setColumn(column);
     },
-    //módosítás: Csak ha van lapozás
-    // async pageChangeHandler(page) {
-    //   console.log("lapozás");
-      
-    //   await this.getPaging(
-    //     page,
-    //     this.selectedPerPage,
-    //     this.sortColumn,
-    //     this.sortDirection
-    //   );
-    // },
     createHandler() {
       this.state = "c";
       console.log("create");
@@ -202,7 +182,7 @@ export default {
   },
   async mounted() {
     //módosítás, ha nem kell lapozás: this.getAll()
-    await this.getPaging(1, this.selectedPerPage);
+    await this.getPaging(1);
   },
 };
 </script>

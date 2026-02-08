@@ -9,7 +9,7 @@
         <button
           class="page-link"
           @click="
-            getPaging(1)
+            getPaging(1, selectedPerPage, store.sortColumn, store.sortDirection)
           "
           title="Első oldal"
         >
@@ -23,7 +23,14 @@
       >
         <button
           class="page-link"
-          @click="getPaging(pagination.current_page - 1)"
+          @click="
+            getPaging(
+              pagination.current_page - 1,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
         >
           &laquo;
         </button>
@@ -38,7 +45,7 @@
         <button
           class="page-link"
           @click="
-            getPaging(p)
+            getPaging(p, selectedPerPage, store.sortColumn, store.sortDirection)
           "
         >
           {{ p }}
@@ -51,7 +58,14 @@
       >
         <button
           class="page-link"
-          @click="getPaging(pagination.current_page + 1)"
+          @click="
+            getPaging(
+              pagination.current_page + 1,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
         >
           &raquo;
         </button>
@@ -64,7 +78,13 @@
         <button
           class="page-link"
           @click="
-            getPaging(pagination.last_page)"
+            getPaging(
+              pagination.last_page,
+              selectedPerPage,
+              store.sortColumn,
+              store.sortDirection,
+            )
+          "
           title="Utolsó oldal"
         >
           &raquo;&raquo;
@@ -80,7 +100,6 @@ export default {
   name: "Paginaiton",
   props: {
     useCollectionStore: { type: Function, required: true },
-    //Ez mand nem kell
     selectedPerPage: { type: Number, default: 10 },
   },
   data() {
@@ -100,9 +119,9 @@ export default {
     },
   },
   methods: {
-    async getPaging(page) {
+    async getPaging(page, perPage, sortColumn, sortDirection) {
       if (this.store) {
-        await this.store.getPaging(page);
+        await this.store.getPaging(page, perPage, sortColumn, sortDirection);
       }
     },
   },

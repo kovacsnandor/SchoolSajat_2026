@@ -37,11 +37,17 @@ export const useSportStore = defineStore("sport", {
     async setSelectedPerPage(value) {
       this.selectedPerPage = value;
       this.loading = true;
-      const response = await service.getPaging(1, value);
-      this.items = response.data;
-      this.pagination = response.meta;
-      this.searchStore.reset();
+      await this.getPaging();
       this.loading = false;
+    },
+    setColumn(column) {
+      this.sortColumn = column;
+      const direction =
+        this.sortColumn === column && this.sortDirection === "asc"
+          ? "desc"
+          : "asc";
+      this.sortDirection = direction;
+      this.getPaging();
     },
     clearItem() {
       this.item = new Item();
@@ -83,9 +89,42 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
-    async getPaging(page = 1, per_page = 10, column = "id", direction = null) {
-      console.log("paginátor", column,
-        direction);
+    async getPaging(page = null) {
+      this.loading = true;
+      this.error = null;
+      //Ha nincs megadva oldal, menj az aktuálisra
+      if (!page) {
+        page = this.pagination.current_page;
+      }
+      try {
+        const response = await service.getPaging(
+          page,
+          this.selectedPerPage,
+          this.sortColumn,
+          this.sortDirection,
+          this.searchStore.searchWord,
+        );
+        this.items = response.data;
+        this.pagination = response.meta;
+        return true;
+      } catch (err) {
+        this.error = err;
+        // toast.messages.push(`Az adatok nem töltődtek be`);
+        // toast.show("Error");
+        throw err;
+        return false;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async getPaging_old(
+      page = 1,
+      per_page = 10,
+      column = "id",
+      direction = null,
+    ) {
+      console.log("paginátor", column, direction);
       this.loading = true;
       this.error = null;
       if (page) {
@@ -103,7 +142,6 @@ export const useSportStore = defineStore("sport", {
         this.sortDirection = direction;
       }
       try {
-        
         const response = await service.getPaging(
           this.pagination.current_page,
           this.selectedPerPage,
@@ -150,16 +188,7 @@ export const useSportStore = defineStore("sport", {
       this.error = null;
       try {
         const newItem = await service.create(data);
-        this.searchStore.reset();
-        const response = await service.getPaging(
-          this.pagination.current_page,
-          this.selectedPerPage,
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        this.pagination = response.meta;
+        await this.getPaging();
         toast.messages.push("Sikeresen létrehozva!");
         toast.show("Success");
         return true;
@@ -180,15 +209,7 @@ export const useSportStore = defineStore("sport", {
       this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
-        const response = await service.getPaging(
-          this.pagination.current_page,
-          this.selectedPerPage,
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        this.pagination = response.meta;
+        await this.getPaging();
         toast.messages.push(`Sikeresen módosítva`);
         toast.show("Success");
         return true;
@@ -209,15 +230,7 @@ export const useSportStore = defineStore("sport", {
       this.error = null;
       try {
         await service.delete(id);
-        const response = await service.getPaging(
-          this.pagination.current_page,
-          this.selectedPerPage,
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        this.pagination = response.meta;
+        await this.getPaging();
         toast.messages.push(`Sikeresen törölve`);
         toast.show("Success");
         return true;
