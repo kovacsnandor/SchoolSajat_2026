@@ -231,7 +231,7 @@
           <label for="igazolvanyszam" class="col-form-label col-auto pt-1 pe-0"
             >Igazolványszám:
           </label>
-          <div class="col">
+          <div class="col position-relative">
             <input
               type="text"
               class="form-control"
@@ -242,13 +242,13 @@
             />
             <div
               v-if="!serverErrors.igazolvanyszam"
-              class="invalid-feedback position-absolute"
+              class="invalid-feedback position-absolute bg-white p-1 rounded shadow-sm custom-error-box"
             >
               Az Igazolványszám kötelező
             </div>
             <div
               v-if="serverErrors.igazolvanyszam"
-              class="invalid-feedback position-absolute d-block"
+              class="invalid-feedback position-absolute d-block bg-white p-1 rounded shadow-sm custom-error-box"
             >
               {{ serverErrors.igazolvanyszam[0] }}
             </div>
@@ -376,4 +376,19 @@ export default {
 };
 </script>
 
-<style></style>
+<style scpoed>
+.custom-error-box {
+  /* A szülő (div.col) teljes szélességét felveszi */
+  width: 100%; 
+  /* Biztosítja, hogy az alatta lévő mezők felett jelenjen meg */
+  z-index: 1000;
+  /* Kicsit eltoljuk az input aljától, hogy ne érjen hozzá teljesen */
+  top: 100%;
+  left: 0;
+  /* Ha túl hosszú a szöveg, törje meg, ne nyújtsa tovább a dobozt */
+  word-wrap: break-word;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  border: 1px solid #dc3545; /* Bootstrap danger color keretnek */
+}
+</style>

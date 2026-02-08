@@ -271,7 +271,7 @@ Authorization: Bearer {{token}}
 }
 
 ### patch student 
-PATCH {{host}}/api/students/1 
+PATCH {{host}}/api/students/2
 Accept: application/json 
 Content-Type: application/json 
 Authorization: Bearer {{token}}
@@ -279,7 +279,7 @@ Authorization: Bearer {{token}}
 {
     "diakNev": "Tóth Géza", 
     "atlag": 4.1, 
-    "osztondij": 30000
+    "igazolvanyszam": "IS638959", 
 }
 
 ### --- playingsports
