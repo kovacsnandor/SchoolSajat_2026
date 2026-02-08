@@ -1,6 +1,7 @@
 <template>
   <div>
     <p v-if="debug != 0" class="my-debug">Keresőszó: [{{ searchWord }}]</p>
+    <!-- Az oldal fejléce -->
     <div class="row d-flex align-items-center m-0 mb-2 sticky-top">
       <!-- Az oldal címe -->
       <h1 class="col-auto">
@@ -12,6 +13,7 @@
         v-if="loading"
         class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"
       ></i>
+      <!-- Új adat felvitele gomb -->
       <ButtonsCrudCreate
         class="col-auto p-0"
         v-if="!loading"
@@ -20,20 +22,17 @@
     </div>
 
     <!-- Táblázat CRUD -->
-    <div>
-      <!-- Táblázat -->
-      <GenericTable
-        :items="items"
-        :columns="tableColumns"
-        :useCollectionStore="useCollectionStore"
-        @sort="handleSort"
-        @create="createHandler"
-        @update="updateHandler"
-        @delete="deleteHandler"
-      />
-    </div>
+    <GenericTable
+      :items="items"
+      :columns="tableColumns"
+      :useCollectionStore="useCollectionStore"
+      @sort="handleSort"
+      @create="createHandler"
+      @update="updateHandler"
+      @delete="deleteHandler"
+    />
 
-    <!-- Confirm modal -->
+    <!-- Confirm modal: Kérdés törléskor -->
     <ConfirmModal
       :isOpenConfirmModal="isOpenConfirmModal"
       @confirm="confirmHandler"

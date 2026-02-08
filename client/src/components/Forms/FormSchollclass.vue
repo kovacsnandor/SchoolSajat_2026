@@ -1,7 +1,8 @@
 <template>
   <div>
     <Modal ref="modal" :title="title" @yesEvent="yesEventHandler">
-      <!-- vezérlőelemek -->
+      <!-- Form elemek -->
+       <!-- Osztály neve -->
       <div class="mb-4 row pt-2">
         <label for="osztalyNev" class="col-form-label col-auto pt-1 pe-0"
           >Osztálynév:</label
@@ -15,12 +16,14 @@
             @input="clearError('osztalyNev')"
             required
           />
+          <!-- űrlap hiba -->
           <div
             v-if="!serverErrors.osztalyNev"
             class="invalid-feedback position-absolute"
           >
             Az osztály neve kötelező
           </div>
+          <!-- 422-es hiba -->
           <div
             v-if="serverErrors.osztalyNev"
             class="invalid-feedback position-absolute d-block"
@@ -61,25 +64,29 @@ export default {
   },
   methods: {
     //metódus továbbítás
+    //Modal nyitó
     show() {
-      this.serverErrors = {}; // Megnyitáskor tiszta lap
+      this.serverErrors = {}; 
       this.$refs.modal.show();
     },
-    // Ezt hívja meg a View, ha 422-es hiba van
+    //Modal záró
+    hide() {
+      this.$refs.modal.hide();
+    },
+    //422-es hiba kezelés
+    // View hívja, ha 422-es hiba van
     setServerErrors(errors) {
       this.serverErrors = errors;
     },
+    //Mező (field) eltüntetése a serverErrors objektumból
     clearError(field) {
       if (this.serverErrors[field]) {
         delete this.serverErrors[field];
       }
     },
 
-    hide() {
-      this.$refs.modal.hide();
-    },
     yesEventHandler(done) {
-      // Továbbküldjük a done callback-et a View-nak
+      // A form adatai és a done callback küldése a View-nak
       this.$emit("yesEventForm", { item: this.formItem, done });
     },
   },

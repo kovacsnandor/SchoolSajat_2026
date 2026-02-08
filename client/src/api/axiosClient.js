@@ -31,7 +31,9 @@ apiClient.interceptors.request.use(
 // RESPONSE INTERCEPTOR:
 // Lefut minden válasz érkezésekor
 apiClient.interceptors.response.use(
-  (response) => response.data, // Csak az adatot adjuk vissza, nem a teljes objektumot
+  // Ha minden ok, akkor vissza: adatok
+  (response) => response.data, 
+  //Ha hiba: akkor kezeli a hibát és visszaküld egy Promies.reject(error)-t
   (error) => {
     
     const toastStore = useToastStore();

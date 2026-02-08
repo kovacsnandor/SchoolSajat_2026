@@ -89,14 +89,16 @@ export default {
     },
   },
   methods: {
+    //Modal yes gombjának kezelése
     onClickYes(event) {
-      // validáció
       const form = event.target;
       this.validated = true;
+      // Van-e űrlap kitöltési hiba
       if (form.checkValidity() === false) {
         //hiba van az űrlapon
         console.log("Kliens oldali hiba az űrlapon");
       } else {
+        //Nincs hiba az űrlapon
         // Átadunk egy függvényt (callback), amit a szülő hív meg, ha végzett
         this.$emit("yesEvent", (success) => {
           if (success) {
