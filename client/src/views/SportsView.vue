@@ -17,7 +17,6 @@
       <Pagination
         class="ms-1 col"
         :useCollectionStore="useCollectionStore"
-        :selectedPerPage="Number(selectedPerPage)"
       />
     </div>
 
@@ -98,7 +97,6 @@ export default {
       "items",
       "loading",
       "error",
-      "selectedPerPage",
       "pagination",
       "sortColumn",
       "sortDirection",

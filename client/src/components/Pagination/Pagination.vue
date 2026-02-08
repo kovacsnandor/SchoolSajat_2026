@@ -80,8 +80,6 @@ export default {
   name: "Paginaiton",
   props: {
     useCollectionStore: { type: Function, required: true },
-    //Ez mand nem kell
-    selectedPerPage: { type: Number, default: 10 },
   },
   data() {
     return {
