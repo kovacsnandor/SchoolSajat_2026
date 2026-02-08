@@ -118,51 +118,6 @@ export const useSportStore = defineStore("sport", {
       }
     },
 
-    async getPaging_old(
-      page = 1,
-      per_page = 10,
-      column = "id",
-      direction = null,
-    ) {
-      console.log("paginátor", column, direction);
-      this.loading = true;
-      this.error = null;
-      if (page) {
-        this.pagination.current_page = page;
-      }
-      if (per_page) {
-        this.selectedPerPage = per_page;
-      }
-      this.sortColumn = column;
-      if (!direction) {
-        direction =
-          this.sortColumn === column && this.sortDirection === "asc"
-            ? "desc"
-            : "asc";
-        this.sortDirection = direction;
-      }
-      try {
-        const response = await service.getPaging(
-          this.pagination.current_page,
-          this.selectedPerPage,
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        this.pagination = response.meta;
-        return true;
-      } catch (err) {
-        this.error = err;
-        // toast.messages.push(`Az adatok nem töltődtek be`);
-        // toast.show("Error");
-        throw err;
-        return false;
-      } finally {
-        this.loading = false;
-      }
-    },
-
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
