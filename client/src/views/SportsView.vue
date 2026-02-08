@@ -6,18 +6,25 @@
       <h1 class="col-auto">
         {{ pageTitle }}
       </h1>
-  
+
       <!-- homokóra -->
-      <i v-if="loading" class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"></i>
-      <ButtonsCrudCreate class="col-auto p-0" v-if="!loading" @create="createHandler"/>
+      <i
+        v-if="loading"
+        class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"
+      ></i>
+      <ButtonsCrudCreate
+        class="col-auto p-0"
+        v-if="!loading"
+        @create="createHandler"
+      />
       <!-- módosítás: nem kell, ha nincs lapozás -->
       <!-- Paginátor -->
-      <div class="col-auto p-1"> | ({{ pagination.total }}) |</div>
-      <SetSelectedPerPage class="col-auto" :useCollectionStore="useCollectionStore" />
-      <Pagination
-        class="ms-1 col"
+      <div class="col-auto p-1">| ({{ pagination.total }}) |</div>
+      <SetSelectedPerPage
+        class="col-auto"
         :useCollectionStore="useCollectionStore"
       />
+      <Pagination class="ms-1 col" :useCollectionStore="useCollectionStore" />
     </div>
 
     <!-- Táblázat CRUD -->
@@ -154,17 +161,17 @@ export default {
     },
     async yesEventFormHandler({ item, done }) {
       try {
-      if (this.state === "c") {
-        //új rekord
-        console.log("új rekord");
-        await this.create(item);
-      } else if (this.state === "u") {
-        //rekord módosítás
-        console.log("rekord módosítás");
-        await this.update(item.id, item);
-      }
-      this.state = "r";
-      done(true);
+        if (this.state === "c") {
+          //új rekord
+          console.log("új rekord");
+          await this.create(item);
+        } else if (this.state === "u") {
+          //rekord módosítás
+          console.log("rekord módosítás");
+          await this.update(item.id, item);
+        }
+        this.state = "r";
+        done(true);
       } catch (err) {
         // Ha 422-es hiba van (validáció)
         if (err.response && err.response.status === 422) {

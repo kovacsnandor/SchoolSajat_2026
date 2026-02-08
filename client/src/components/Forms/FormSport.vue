@@ -15,11 +15,10 @@
             @input="clearError('sportNev')"
             required
           />
-          <div  v-if="!serverErrors.sportNev" class="invalid-feedback position-absolute">
+          <div v-if="!serverErrors.sportNev" class="invalid-feedback position-absolute">
             A sportnév kötelező
           </div>
-          <div
-            v-if="serverErrors.sportNev"
+          <div v-if="serverErrors.sportNev"
             class="invalid-feedback position-absolute d-block"
           >
             {{ serverErrors.sportNev[0] }}

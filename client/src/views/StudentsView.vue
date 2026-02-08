@@ -19,7 +19,13 @@
         @create="createHandler"
       />
       <!-- osztály lista -->
-      <select class="form-select ms-3" style="width:100px;" aria-label="Default select example" v-model="schoolclassId" size="1">
+      <select
+        class="form-select ms-3"
+        style="width: 100px"
+        aria-label="Default select example"
+        v-model="schoolclassId"
+        size="1"
+      >
         <option v-for="item in scholclassItems" :key="item.id" :value="item.id">
           {{ item.osztalyNev }}
         </option>
@@ -125,11 +131,19 @@ export default {
   watch: {
     // Ha változik a keresőszó, újra keresünk
     searchWord(newValue) {
-      this.getAllByShoolclassId(this.schoolclassId, this.sortColumn, this.sortDirection);
+      this.getAllByShoolclassId(
+        this.schoolclassId,
+        this.sortColumn,
+        this.sortDirection,
+      );
     },
-    schoolclassId(value){
-      this.getAllByShoolclassId(this.schoolclassId, this.sortColumn, this.sortDirection);
-    }
+    schoolclassId(value) {
+      this.getAllByShoolclassId(
+        this.schoolclassId,
+        this.sortColumn,
+        this.sortDirection,
+      );
+    },
   },
   methods: {
     //módosítás
@@ -176,15 +190,27 @@ export default {
     cancelHandler() {
       this.isOpenConfirmModal = false;
     },
-    async yesEventFormHandler(item) {
-      if (this.state === "c") {
-        //új rekord
-        await this.create(item, this.schoolclassId);
+    async yesEventFormHandler({ item, done }) {
+      try {
+        if (this.state === "c") {
+          //új rekord
+          await this.create(item, this.schoolclassId);
+        } else if (this.state === "u") {
+          //rekord módosítás
+          await this.update(item.id, item, this.schoolclassId);
+        }
         this.state = "r";
-      } else if (this.state === "u") {
-        //rekord módosítás
-        await this.update(item.id, item, this.schoolclassId);
-        this.state = "r";
+        done(true);
+      } catch (err) {
+        // Ha 422-es hiba van (validáció)
+        if (err.response && err.response.status === 422) {
+          // Átadjuk a formnak a konkrét hibaüzeneteket (pl. "min 2 karakter")
+          this.$refs.form.setServerErrors(err.response.data.errors);
+          done(false); // Nyitva tartja a modalt
+        } else {
+          // Minden más hiba (500, 401) esetén is értesítjük a modalt, hogy ne záródjon be
+          done(false);
+        }
       }
     },
   },

@@ -9,7 +9,7 @@
       <!-- vezérlőelemek -->
       <div class="row">
         <!-- név, osztály, neme -->
-        <div class="row col-md-12 col-lg-7  ms-0 p-0 mt-3">
+        <div class="row col-md-12 col-lg-7 ms-0 p-0 mt-3">
           <label for="diakNev" class="col-form-label col-auto pt-1 pe-0"
             >Név:</label
           >
@@ -19,10 +19,20 @@
               class="form-control"
               id="diakNev"
               v-model="formItem.diakNev"
+              @input="clearError('diakNev')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.diakNev"
+              class="invalid-feedback position-absolute"
+            >
               Az diák neve kötelező
+            </div>
+            <div
+              v-if="serverErrors.diakNev"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.diakNev[0] }}
             </div>
           </div>
         </div>
@@ -55,9 +65,7 @@
               :value="1"
               v-model="formItem.neme"
             />
-            <label class="form-check-label" for="fiu">
-              fiú
-            </label>
+            <label class="form-check-label" for="fiu"> fiú </label>
           </div>
           <div class="form-check ms-2">
             <input
@@ -68,14 +76,12 @@
               :value="0"
               v-model="formItem.neme"
             />
-            <label class="form-check-label" for="lany">
-              lány
-            </label>
+            <label class="form-check-label" for="lany"> lány </label>
           </div>
         </div>
       </div>
       <!-- irszám, helység, cím -->
-       <div class="row mt-4">
+      <div class="row mt-4">
         <!-- irszám -->
         <div class="row col-md-12 col-lg-2 ms-0 p-0 mt-2">
           <label for="iranyitoszam" class="col-form-label col-auto pt-1 pe-0"
@@ -87,14 +93,24 @@
               class="form-control"
               id="iranyitoszam"
               v-model="formItem.iranyitoszam"
+              @input="clearError('iranyitoszam')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.iranyitoszam"
+              class="invalid-feedback position-absolute"
+            >
               Az irányítószám kötelező
+            </div>
+            <div
+              v-if="serverErrors.iranyitoszam"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.iranyitoszam[0] }}
             </div>
           </div>
         </div>
-                <!-- helység -->
+        <!-- helység -->
         <div class="row col-md-12 col-lg-4 ms-0 p-0 mt-2">
           <label for="lakHelyseg" class="col-form-label col-auto pt-1 pe-0"
             >Helység:</label
@@ -105,14 +121,24 @@
               class="form-control"
               id="lakHelyseg"
               v-model="formItem.lakHelyseg"
+              @input="clearError('lakHelyseg')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.lakHelyseg"
+              class="invalid-feedback position-absolute"
+            >
               A helység kötelező
+            </div>
+            <div
+              v-if="serverErrors.lakHelyseg"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.lakHelyseg[0] }}
             </div>
           </div>
         </div>
-          <!-- cím -->
+        <!-- cím -->
         <div class="row col-md-12 col-lg-6 ms-0 p-0 mt-2">
           <label for="lakCim" class="col-form-label col-auto pt-1 pe-0"
             >Cím:</label
@@ -123,31 +149,51 @@
               class="form-control"
               id="lakCim"
               v-model="formItem.lakCim"
+              @input="clearError('lakCim')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.lakCim"
+              class="invalid-feedback position-absolute"
+            >
               A helység kötelező
+            </div>
+            <div
+              v-if="serverErrors.lakCim"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.lakCim[0] }}
             </div>
           </div>
         </div>
-       </div>
-       <!-- szülh, szülidő, igszám -->
-       <div class="row mt-3">
+      </div>
+      <!-- szülh, szülidő, igszám -->
+      <div class="row mt-3">
         <!-- szülh -->
         <div class="row col-md-12 col-lg-4 ms-0 p-0 mt-2">
           <label for="szulHelyseg" class="col-form-label col-auto pt-1 pe-0"
-            >Született: </label
-          >
+            >Született:
+          </label>
           <div class="col">
             <input
               type="text"
               class="form-control"
               id="szulHelyseg"
               v-model="formItem.szulHelyseg"
+              @input="clearError('szulHelyseg')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.szulHelyseg"
+              class="invalid-feedback position-absolute"
+            >
               A születési hely kötelező
+            </div>
+            <div
+              v-if="serverErrors.szulHelyseg"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.szulHelyseg[0] }}
             </div>
           </div>
         </div>
@@ -155,48 +201,68 @@
         <!-- szüldátum -->
         <div class="row col-md-12 col-lg-4 ms-0 p-0 mt-2">
           <label for="szulDatum" class="col-form-label col-auto pt-1 pe-0"
-            >Szül.idő: </label
-          >
+            >Szül.idő:
+          </label>
           <div class="col">
             <input
               type="date"
               class="form-control"
               id="szulDatum"
               v-model="formItem.szulDatum"
+              @input="clearError('szulDatum')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.szulDatum"
+              class="invalid-feedback position-absolute"
+            >
               A születési idő kötelező
+            </div>
+            <div
+              v-if="serverErrors.szulDatum"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.szulDatum[0] }}
             </div>
           </div>
         </div>
-        <!-- szüldátum -->
+        <!-- igazolványszám -->
         <div class="row col-md-12 col-lg-4 ms-0 p-0 mt-2">
           <label for="igazolvanyszam" class="col-form-label col-auto pt-1 pe-0"
-            >Igazolványszám: </label
-          >
+            >Igazolványszám:
+          </label>
           <div class="col">
             <input
               type="text"
               class="form-control"
               id="igazolvanyszam"
               v-model="formItem.igazolvanyszam"
+              @input="clearError('igazolvanyszam')"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.igazolvanyszam"
+              class="invalid-feedback position-absolute"
+            >
               Az Igazolványszám kötelező
+            </div>
+            <div
+              v-if="serverErrors.igazolvanyszam"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.igazolvanyszam[0] }}
             </div>
           </div>
         </div>
-       </div>
+      </div>
 
-              <!-- átlag, ösztöndíj -->
-       <div class="row mt-3">
+      <!-- átlag, ösztöndíj -->
+      <div class="row mt-3">
         <!-- átlag -->
         <div class="row col-md-6 col-lg-3 ms-0 p-0 mt-2">
           <label for="atlag" class="col-form-label col-auto pt-1 pe-0"
-            >Átlag: </label
-          >
+            >Átlag:
+          </label>
           <div class="col">
             <input
               type="number"
@@ -206,8 +272,17 @@
               step="0.1"
               required
             />
-            <div class="invalid-feedback position-absolute">
-              Az Átlag kötelező
+            <div
+              v-if="!serverErrors.atlag"
+              class="invalid-feedback position-absolute"
+            >
+              Az átlag kötelező
+            </div>
+            <div
+              v-if="serverErrors.atlag"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.atlag[0] }}
             </div>
           </div>
         </div>
@@ -215,8 +290,8 @@
         <!-- ösztöndíj -->
         <div class="row col-md-6 col-lg-4 ms-0 p-0 mt-2">
           <label for="osztondij" class="col-form-label col-auto pt-1 pe-0"
-            >Ösztöndíj (Ft): </label
-          >
+            >Ösztöndíj (Ft):
+          </label>
           <div class="col">
             <input
               type="number"
@@ -225,16 +300,21 @@
               v-model="formItem.osztondij"
               required
             />
-            <div class="invalid-feedback position-absolute">
+            <div
+              v-if="!serverErrors.osztondij"
+              class="invalid-feedback position-absolute"
+            >
               Az Ösztöndíj kötelező
+            </div>
+            <div
+              v-if="serverErrors.osztondij"
+              class="invalid-feedback position-absolute d-block"
+            >
+              {{ serverErrors.osztondij[0] }}
             </div>
           </div>
         </div>
-        
-
-
-       </div>
-
+      </div>
     </Modal>
   </div>
 </template>
@@ -257,7 +337,8 @@ export default {
   },
   data() {
     return {
-      formItem: this.item,
+      formItem: { ...this.item },
+      serverErrors: {},
     };
   },
   computed: {
@@ -268,19 +349,28 @@ export default {
   watch: {
     //Fontos!!! frissülhessen a szülő által küldött item
     item(value) {
-      this.formItem = value;
+      this.formItem = { ...value };
     },
   },
   methods: {
     //metódus továbbítás
     show() {
+      this.serverErrors = {};
       this.$refs.modal.show();
     },
     hide() {
       this.$refs.modal.hide();
     },
-    yesEventHandler() {
-      this.$emit("yesEventForm", this.formItem);
+    setServerErrors(errors) {
+      this.serverErrors = errors;
+    },
+    clearError(field) {
+      if (this.serverErrors[field]) {
+        delete this.serverErrors[field];
+      }
+    },
+    yesEventHandler(done) {
+      this.$emit("yesEventForm", { item: this.formItem, done });
     },
   },
 };
