@@ -26,7 +26,7 @@ export const useSportStore = defineStore("sport", {
     items: [new Item()],
     pagination: new Pagination(),
     selectedPerPage: 10,
-    selectedPerPageList: [10, 30, 50, 100],
+    selectedPerPageList: [3, 30, 50, 100],
     loading: false,
     error: null,
     sortColumn: "id",

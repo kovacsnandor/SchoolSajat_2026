@@ -49,13 +49,13 @@ Accept: application/json
 }
 
 ### patch user
-PATCH {{host}}/api/users/4
+PATCH {{host}}/api/users/1
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "No Boss"
+    "role": 2
 }
 
 ### delete user

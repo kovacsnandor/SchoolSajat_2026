@@ -18,12 +18,12 @@
         @create="createHandler"
       />
       <!-- módosítás: nem kell, ha nincs lapozás -->
-      <!-- Paginátor -->
       <div class="col-auto p-1">| ({{ pagination.total }}) |</div>
       <SetSelectedPerPage
-        class="col-auto"
-        :useCollectionStore="useCollectionStore"
+      class="col-auto"
+      :useCollectionStore="useCollectionStore"
       />
+      <!-- Paginátor -->
       <Pagination class="ms-1 col" :useCollectionStore="useCollectionStore" />
     </div>
 

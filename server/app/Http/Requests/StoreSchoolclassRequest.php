@@ -31,8 +31,8 @@ class StoreSchoolclassRequest extends FormRequest
             'osztalyNev.required' => 'Az osztály nevének megadása kötelező!',
             'osztalyNev.string' => 'Az osztály neve string kell legyen!',
             'osztalyNev.unique' => 'Már van ilyen osztálynév!',
-            'osztalyNev.min' => 'Az osztály nevének hossza :min!',
-            'osztalyNev.max' => 'Az osztály nevének hossza :max!',
+            'osztalyNev.min' => 'Az osztály nevének hossza :min kell legyen!',
+            'osztalyNev.max' => 'Az osztály nevének hossza :max lehet!',
         ];
     }
 }

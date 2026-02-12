@@ -39,9 +39,10 @@ order BY eletkor;
 # diákok táblázathoz
 select s.*, FLOOR(DATEDIFF(CURDATE(), s.szulDatum)/365.25) eletkor, sc.osztalyNev from students s
   INNER JOIN schoolclasses sc ON s.schoolclassId = sc.id
-  WHERE s.schoolclassId = 1 and (
-    
-  )
+  WHERE s.schoolclassId = 1 
   ORDER BY s.diakNev;
 
-
+# sorbarendez, keres
+select * from schoolclasses
+  WHERE osztalyNev like '%1%'
+  ORDER BY osztalyNev asc;
