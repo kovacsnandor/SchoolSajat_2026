@@ -127,6 +127,20 @@ const router = createRouter({
             roles: [1, 2],
           },
         },
+        {
+          path: "users",
+          name: "users",
+          // route level code-splitting
+          // this generates a separate chunk (About.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import("@/views/UsersView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Userek",
+            breadcrumb: "Userek",
+            roles: [1],
+          },
+        },
       ],
     },
     {

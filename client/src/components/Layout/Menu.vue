@@ -55,6 +55,12 @@
                   >Sportolás</RouterLink
                 >
               </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li v-if="hasMenuAccess('/adatok/users')">
+                <RouterLink class="dropdown-item" to="/adatok/users"
+                  >Userek</RouterLink
+                >
+              </li>
             </ul>
           </li>
           <li class="nav-item ms-5 d-flex align-items-center">

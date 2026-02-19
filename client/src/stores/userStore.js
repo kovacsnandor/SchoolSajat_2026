@@ -24,6 +24,9 @@ export const useUserStore = defineStore("user", {
     error: null,
   }),
   actions: {
+    clearItem() {
+      this.item = new Item();
+    },
     // READ - Összes adat lekérése
     async getAll() {
       this.loading = true;
