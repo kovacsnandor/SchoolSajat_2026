@@ -99,15 +99,17 @@ export default {
         console.log("Kliens oldali hiba az űrlapon");
       } else {
         //Nincs hiba az űrlapon
-        // Átadunk egy függvényt (callback), amit a szülő hív meg, ha végzett
-        this.$emit("yesEvent", (success) => {
-          if (success) {
-            this.hide();
-          } else {
-            // Ha success === false, nem hívunk hide()-ot, a modal nyitva marad a hibákkal
-            console.log("Szerveroldali hiba, a modal marad");
-          }
-        });
+        // Átadunk egy függvényt (callback), amit a szülő hív meg
+        this.$emit(
+          "yesEvent", 
+          (success) => {
+            if (success) {
+              this.hide();
+            } else {
+              // Ha success === false, a modal nyitva marad a hibákkal
+              console.log("Szerveroldali hiba, a modal marad");
+            }
+          });
       }
     },
     show() {

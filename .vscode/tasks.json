@@ -9,7 +9,7 @@
         {
             "label": "S-PHP",
             "type": "shell",
-            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd server && php artisan serve; exec bash'"
+            "command": "\"C:\\Program Files\\Git\\bin\\bash.exe\" -c 'cd server && php artisan serve --port 8001; exec bash'"
         },
         {
             "label": "S-BASH",

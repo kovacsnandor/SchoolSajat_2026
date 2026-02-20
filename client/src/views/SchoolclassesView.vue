@@ -46,6 +46,7 @@
       :item="item"
       @yesEventForm="yesEventFormHandler"
     />
+    
   </div>
 </template>
 

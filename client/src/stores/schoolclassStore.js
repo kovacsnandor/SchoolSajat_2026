@@ -125,8 +125,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         return true;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`Létrehozás sikertelen`);
-        // toast.show("Error");
         throw err;
         return false;
       } finally {
@@ -151,8 +149,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         return true;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`Módosítás Sikertelen`);
-        // toast.show("Error");
         throw err;
         return false;
       } finally {

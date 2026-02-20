@@ -1,33 +1,28 @@
 <template>
   <div>
-    <Modal ref="modal" :title="title" @yesEvent="yesEventHandler">
+    <Modal ref="modal" :title="title" 
+      @yesEvent="yesEventHandler">
       <!-- Form elemek -->
-       <!-- Osztály neve -->
       <div class="mb-4 row pt-2">
+        <!-- Osztály neve -->
         <label for="osztalyNev" class="col-form-label col-auto pt-1 pe-0"
           >Osztálynév:</label
         >
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
+          <input type="text" class="form-control"
             id="osztalyNev"
             v-model="formItem.osztalyNev"
             @input="clearError('osztalyNev')"
             required
           />
           <!-- űrlap hiba -->
-          <div
-            v-if="!serverErrors.osztalyNev"
-            class="invalid-feedback position-absolute"
-          >
+          <div v-if="!serverErrors.osztalyNev"
+            class="invalid-feedback">
             Az osztály neve kötelező
           </div>
           <!-- 422-es hiba -->
-          <div
-            v-if="serverErrors.osztalyNev"
-            class="invalid-feedback position-absolute d-block"
-          >
+          <div v-if="serverErrors.osztalyNev"
+            class="invalid-feedback d-block">
             {{ serverErrors.osztalyNev[0] }}
           </div>
         </div>
@@ -87,7 +82,9 @@ export default {
 
     yesEventHandler(done) {
       // A form adatai és a done callback küldése a View-nak
-      this.$emit("yesEventForm", { item: this.formItem, done });
+      this.$emit(
+        "yesEventForm", 
+        { item: this.formItem, done });
     },
   },
 };
