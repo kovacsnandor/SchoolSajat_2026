@@ -23,7 +23,11 @@ class UpdateUserRequest extends FormRequest
         $userId = $this->route('id');
 
         return [
-            'name'  => 'sometimes|string|max:255',
+            'name' => [
+                'sometimes',
+                'string',
+                Rule::unique('users')->ignore($userId), // Ne dobjon hibát a saját nevére
+            ],
             'email' => [
                 'sometimes',
                 'email',
@@ -51,6 +55,8 @@ class UpdateUserRequest extends FormRequest
        return [
         // Name & Email (csak akkor jönnek elő, ha beküldték az adatot, de az hibás)
         'name.string'       => 'A névnek szöveges formátumúnak kell lennie.',
+        'name.unique'      => 'Ez a név már foglalt.',
+
         'email.email'       => 'Érvényes e-mail címet kell megadni.',
         'email.unique'      => 'Ez az e-mail cím már foglalt.',
         

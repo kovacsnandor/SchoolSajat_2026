@@ -22,7 +22,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => 'required|string|max:255',
+            'name'     => 'required|string|unique:users,name|max:255',
             'email'    => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:8',
             // Itt a változtatás:
@@ -37,6 +37,7 @@ class StoreUserRequest extends FormRequest
         return [
             'name.required'     => 'A név megadása kötelező.',
             'name.string'       => 'A név csak szöveges formátumú lehet.',
+            'name.unique'      => 'Ez a név már használatban van.',
             'name.max'          => 'A név nem lehet hosszabb 255 karakternél.',
 
             'email.required'    => 'Az e-mail cím megadása kötelező.',

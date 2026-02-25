@@ -23,6 +23,12 @@
           <!-- {{ $refs[inputRef]?.validationMessage || "A jelszó kötelező" }} -->
           {{  passwordErrorMessage || "A jelszó kötelező" }}
       </div>
+      <div
+              v-if="serverErrors?.password"
+              class="invalid-feedback d-block"
+            >
+              {{ serverErrors?.password[0] }}
+            </div>
     </div>
   </div>
 </template>
@@ -34,7 +40,8 @@ export default {
     label: { type: String, default: "Jelszó" },
     inputRef: { type: String, default: "" },
     labelId: { type: String, default: "" },
-    passwordErrorMessage: {type: String, default: ""}
+    passwordErrorMessage: {type: String, default: ""},
+    serverErrors: {type: Object, default: null},
   },
   data() {
     return {

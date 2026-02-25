@@ -16,9 +16,17 @@
               class="form-control"
               id="userName"
               v-model="userName"
+              @input="clearError('name')"
               required
             />
-            <div class="invalid-feedback">A user név kötelező</div>
+            <div  v-if="!serverErrors.name" class="invalid-feedback">A user név kötelező</div>
+            <div
+              v-if="serverErrors.name"
+              class="invalid-feedback d-block"
+            >
+              {{ serverErrors.name[0] }}
+            </div>
+
           </div>
           <!-- Email -->
           <div class="mb-3">
@@ -28,10 +36,18 @@
               class="form-control"
               id="email"
               v-model="email"
+              @input="clearError('email')"
               required
             />
-            <div class="invalid-feedback">
+            <div v-if="!serverErrors.email" class="invalid-feedback">
               A email kötelező, vagy nem szabályos
+            </div>
+            <!-- 422-es hiba -->
+            <div
+              v-if="serverErrors.email"
+              class="invalid-feedback d-block"
+            >
+              {{ serverErrors.email[0] }}
             </div>
           </div>
           <!-- Password1 -->
@@ -42,6 +58,7 @@
             :label="'Jelszavad'"
             :inputRef="'firstInput'"
             :label-id="'password'"
+            :serverErrors="serverErrors"
           />
           <!-- Password2 -->
           <PasswordField
@@ -51,6 +68,7 @@
             :inputRef="'confirmInput'"
             :label-id="'confirmPassword'"
             :passwordErrorMessage="passwordErrorMessage"
+            :serverErrors="serverErrors"
           />
           <button type="submit" class="btn btn-success">Regisztrálás</button>
           <button
@@ -84,6 +102,7 @@ export default {
       confirmPassword: "",
       validated: false,
       passwordErrorMessage: "",
+      serverErrors: {}, // Itt tároljuk a szerver válaszát
     };
   },
 
@@ -119,15 +138,32 @@ export default {
           email: this.email,
           password: this.password,
         };
-        this.$emit("createUser", data);
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 3500);
+        this.$emit("createUser", {
+          data: data,
+          done: (success) => {
+            if (success) {
+              this.$router.push("/login");
+            } else {
+              // Ha success === false, a modal nyitva marad a hibákkal
+              console.log("Szerveroldali hiba, a modal marad");
+            }
+          },
+        });
+      }
+    },
+    //422-es hiba kezelés
+    // View hívja, ha 422-es hiba van
+    setServerErrors(errors) {
+      this.serverErrors = errors;
+    },
+    //Mező (field) eltüntetése a serverErrors objektumból
+    clearError(field) {
+      if (this.serverErrors[field]) {
+        delete this.serverErrors[field];
       }
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

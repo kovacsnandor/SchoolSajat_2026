@@ -69,14 +69,14 @@ export const useUserStore = defineStore("user", {
       this.error = null;
       try {
         const newItem = await service.create(data);
-        const response = await service.getAll();
-        this.items = response.data;
+        // const response = await service.getAll();
+        // this.items = response.data;
         toast.messages.push("Sikeresen létrehozva!");
         toast.show("Success");
         return true;
       } catch (err) {
-        toast.messages.push(`Usert nem sikarült létrehozni`);
-        toast.show("Error");
+        // toast.messages.push(`Usert nem sikarült létrehozni`);
+        // toast.show("Error");
         this.error = err;
         // toast.messages.push(`Létrehozás sikertelen`);
         // toast.show("Error");
